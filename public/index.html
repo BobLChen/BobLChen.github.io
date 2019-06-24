@@ -23,7 +23,7 @@
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
   
   
-    <link rel="icon" href="/images/favicon.png">
+    <link rel="icon" href="/public/images/favicon.png">
   
   <link rel="stylesheet" type="text/css" href="/public/./main.0cf68a.css">
   <style type="text/css">
@@ -47,7 +47,7 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="/images/head.png" class="js-avatar">
+			<img src="/public/images/head.png" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">小朋友</a></h1>
@@ -105,7 +105,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="/images/head.png" class="js-avatar">
+				<img src="/public/images/head.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">小朋友</h1>
@@ -160,6 +160,101 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-UniformBuffer设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/public/2019/06/23/UniformBuffer设计/">UniformBuffer设计</a>
+    </h1>
+  
+
+        
+        <a href="/public/2019/06/23/UniformBuffer设计/" class="archive-article-date">
+  	<time datetime="2019-06-23T03:51:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Vulkan-Uniform-Buffer设计"><a href="#Vulkan-Uniform-Buffer设计" class="headerlink" title="Vulkan Uniform Buffer设计"></a>Vulkan Uniform Buffer设计</h1><p>最近我一直在思考关于UniformBuffer的结构如何设计。由于工作太忙，只能断断续续的设计它的结构以便于能够更好的匹配绘制流程。对D3D12或者Vulkan有过了解的同学应该也会有这个疑问，就是它们的UniformBuffer如何才能使用起来更加方便。</p>
+        
+          <a class="article-more-a" href="/public/2019/06/23/UniformBuffer设计/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/public/2019/06/23/UniformBuffer设计/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-VulkanBuffer与内存" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -201,11 +296,11 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">内存</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">内存</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
         		</li>
       		
 		</ul>
@@ -296,11 +391,11 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
         		</li>
       		
 		</ul>
@@ -448,7 +543,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">物理设备</a>
+                <a href="javascript:void(0)" class="js-tag color3">内存</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -456,7 +551,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">内存</a>
+                <a href="javascript:void(0)" class="js-tag color5">物理设备</a>
               </li>
             
             <div class="clearfix"></div>
