@@ -38,7 +38,7 @@ categories:
 
 之所以使用左手系，是因为我之前做的关于引擎的工作使用的是左手系。。。另外Unity3D也是使用的左手系，后面有些算法什么的可以从Unity3D中扒。
 
-### 设备扩展
+### 扩展
 在这里大家不需要关心设备扩展是什么，后续会有说明。但是一定要记住，我们使用了左手系，但是呢NDC坐标系中的Y轴翻转了，矩阵通过线性运算又无法有效的解决这个问题(虽然可以一样翻转Y轴，但是会涉及到其它的一些列问题)。因此用上了Vulkan的一个扩展，这个扩展就是专门用来解决这个问题的，即将Y轴[-1, 1]翻转为[1, -1]。扩展名称为"VK_KHR_maintenance1"。
 
 ## 窗体
@@ -48,16 +48,16 @@ categories:
 
 ## Vulkan初始化
 
-### 创建Instance
+### Instance
 Instance可以理解与Vulkan交互的一个桥梁。创建Instance需要像驱动程序提供一些应用层信息。例如版本号，名称等等。
 ```C++
-    VkApplicationInfo appInfo;
-	ZeroVulkanStruct(appInfo, VK_STRUCTURE_TYPE_APPLICATION_INFO);
-	appInfo.pApplicationName   = Engine::Get()->GetTitle();
-	appInfo.applicationVersion = VK_MAKE_VERSION(0, 0, 0);
-	appInfo.pEngineName        = ENGINE_NAME;
-	appInfo.engineVersion      = VK_MAKE_VERSION(0, 0, 0);
-    appInfo.apiVersion         = VK_API_VERSION_1_0;
+VkApplicationInfo appInfo;
+ZeroVulkanStruct(appInfo, VK_STRUCTURE_TYPE_APPLICATION_INFO);
+appInfo.pApplicationName   = Engine::Get()->GetTitle();
+appInfo.applicationVersion = VK_MAKE_VERSION(0, 0, 0);
+appInfo.pEngineName        = ENGINE_NAME;
+appInfo.engineVersion      = VK_MAKE_VERSION(0, 0, 0);
+appInfo.apiVersion         = VK_API_VERSION_1_0;
 ```
 
 #### 扩展
@@ -88,3 +88,82 @@ LOG:  GetInstanceLayersAndExtensions          :303  * VK_EXT_debug_report
 LOG:  GetInstanceLayersAndExtensions          :303  * VK_KHR_surface
 LOG:  GetInstanceLayersAndExtensions          :303  * VK_MVK_macos_surface
 ```
+从名称中就可以看出，带Debug或者validation字样的都是用来调试程序的。带Surface字样的都是跟窗体相关的，因为Vulkan跟平台不相关，但是确又要跟窗体进行绑定，所以窗体相关的接口就落到了扩展的头上。
+
+#### 创建Instance
+有了扩展信息之后，我们就可以创建出Instance。需要注意的是，Vulkan系的各种实例的创建，很少有通过参数完成的，一般都是各种`Info`结构体，然后通过填充结构体，传递结构体指针给相关创建的API来完成创建的功能。
+```C++
+VkInstanceCreateInfo instanceCreateInfo;
+ZeroVulkanStruct(instanceCreateInfo, VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO);
+instanceCreateInfo.pApplicationInfo        = &appInfo;
+instanceCreateInfo.enabledExtensionCount   = uint32_t(m_InstanceExtensions.size());
+instanceCreateInfo.ppEnabledExtensionNames = m_InstanceExtensions.size() > 0 ? m_InstanceExtensions.data() : nullptr;
+instanceCreateInfo.enabledLayerCount       = uint32_t(m_InstanceLayers.size());
+instanceCreateInfo.ppEnabledLayerNames     = m_InstanceLayers.size() > 0 ? m_InstanceLayers.data() : nullptr;
+
+VkResult result = vkCreateInstance(&instanceCreateInfo, VULKAN_CPU_ALLOCATOR, &m_Instance);
+```
+
+#### DebugReportCallback设置
+之前提到，在创建Instance时需要配置扩展，如果我们配置了`VK_LAYER_LUNARG_standard_validation、VK_EXT_debug_utils、VK_EXT_debug_report`，那么我们就可以在Instance创建成功之后配置DebugReport。
+```C++
+#define VK_DESTORY_DEBUG_REPORT_CALLBACK_EXT_NAME "vkDestroyDebugReportCallbackEXT"
+#define VK_CREATE_DEBUG_REPORT_CALLBACK_EXT_NAME  "vkCreateDebugReportCallbackEXT"
+
+VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebugCallBack(
+    VkDebugReportFlagsEXT flags,
+    VkDebugReportObjectTypeEXT objType,
+    uint64_t obj,
+    size_t location,
+    int32_t code,
+    const char* layerPrefix,
+    const char* msg,
+    void* userData)
+{
+    std::string prefix("");
+    if (flags & VK_DEBUG_REPORT_ERROR_BIT_EXT) {
+        prefix += "ERROR:";
+    }
+    if (flags & VK_DEBUG_REPORT_WARNING_BIT_EXT) {
+        prefix += "WARNING:";
+    }
+    if (flags & VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT) {
+        prefix += "PERFORMANCE:";
+    }
+    if (flags & VK_DEBUG_REPORT_INFORMATION_BIT_EXT) {
+        prefix += "INFO:";
+    }
+    if (flags & VK_DEBUG_REPORT_DEBUG_BIT_EXT) {
+        prefix += "DEBUG:";
+    }
+    MLOG("%s [%s] Code %d : %s", prefix.c_str(), layerPrefix, code, msg);
+    return VK_FALSE;
+}
+
+VkDebugReportCallbackCreateInfoEXT debugInfo;
+ZeroVulkanStruct(debugInfo, VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT);
+debugInfo.flags       = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
+debugInfo.pfnCallback = VulkanDebugCallBack;
+debugInfo.pUserData   = this;
+
+auto func    = (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr(m_Instance, VK_CREATE_DEBUG_REPORT_CALLBACK_EXT_NAME);
+bool success = true;
+if (func != nullptr) {
+    success = func(m_Instance, &debugInfo, nullptr, &m_MsgCallback) == VK_SUCCESS;
+}
+else {
+    success = false;
+}
+```
+
+### 选择GPU物理设备并创建逻辑设备
+PC或者移动设备里面可能存在多个GPU，因此使用哪一个或者几个GPU需要我们自行决定。通过枚举设备列表，我们可以获取到当前平台拥有哪些GPU。
+```
+uint32 gpuCount = 0;
+VkResult result = vkEnumeratePhysicalDevices(m_Instance, &gpuCount, nullptr);
+std::vector<VkPhysicalDevice> physicalDevices(gpuCount);
+vkEnumeratePhysicalDevices(m_Instance, &gpuCount, physicalDevices.data());
+```
+在PC上，有些GPU可能是集成到主板或者CPU上的，有些GPU是独立的，一般来讲独立版本性能会比集成的好一点儿，一般来讲。。。
+
+### 创建逻辑设备
