@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
-  <title>Archives: 2019/7 | Hello World</title>
+  <title>5_OptimizeCommandBuffer | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我亦无他唯手熟尔">
-<meta name="keywords" content="3D Engine Opengl Stage3D DirectX Vulkan C++">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://boblchen.github.io/public/archives/2019/07/index.html">
+  <meta name="description" content="OptimizeCommandBuffer 项目Github地址请戳我 在4_OptimizeBuffer这个Demo里面，我们对Buffer进行了封装。封装过的Buffer使用起来非常方便，代码量急剧减少。但是在这个Demo里面，我们在优化CreateMeshBuffers时，我们会发现虽然Buffer的代码量减少了，但是CommandBuffer相关的代码任然非常庞大。为了减少代码量，我们需要">
+<meta name="keywords" content="Vulkan,物理设备,3D,Demo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5_OptimizeCommandBuffer">
+<meta property="og:url" content="https://boblchen.github.io/public/2019/08/01/5-OptimizeCommandBuffer/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="我亦无他唯手熟尔">
+<meta property="og:description" content="OptimizeCommandBuffer 项目Github地址请戳我 在4_OptimizeBuffer这个Demo里面，我们对Buffer进行了封装。封装过的Buffer使用起来非常方便，代码量急剧减少。但是在这个Demo里面，我们在优化CreateMeshBuffers时，我们会发现虽然Buffer的代码量减少了，但是CommandBuffer相关的代码任然非常庞大。为了减少代码量，我们需要">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-01T12:05:56.598Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="我亦无他唯手熟尔">
+<meta name="twitter:title" content="5_OptimizeCommandBuffer">
+<meta name="twitter:description" content="OptimizeCommandBuffer 项目Github地址请戳我 在4_OptimizeBuffer这个Demo里面，我们对Buffer进行了封装。封装过的Buffer使用起来非常方便，代码量急剧减少。但是在这个Demo里面，我们在优化CreateMeshBuffers时，我们会发现虽然Buffer的代码量减少了，但是CommandBuffer相关的代码任然非常庞大。为了减少代码量，我们需要">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
   
@@ -158,36 +159,59 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-5-OptimizeCommandBuffer" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/public/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/07/28/2-Triangle/" class="archive-article-date">
-  	<time datetime="2019-07-27T16:16:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-28</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/07/28/2-Triangle/">Vulkan Demo 02 Triangle</a>
+    <h1 class="article-title" itemprop="name">
+      5_OptimizeCommandBuffer
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/public/2019/08/01/5-OptimizeCommandBuffer/" class="archive-article-date">
+  	<time datetime="2019-08-01T11:45:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/5_OptimizeCommandBuffer" target="_blank" rel="noopener">OptimizeCommandBuffer</a></p>
+<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
+<p>在<a href="http://xiaopengyou.fun/public/2019/08/01/4_OptimizeBuffer/#more" target="_blank" rel="noopener">4_OptimizeBuffer</a>这个Demo里面，我们对<strong>Buffer</strong>进行了封装。封装过的<strong>Buffer</strong>使用起来非常方便，代码量急剧减少。但是在这个Demo里面，我们在优化<strong>CreateMeshBuffers</strong>时，我们会发现虽然<strong>Buffer</strong>的代码量减少了，但是<strong>CommandBuffer</strong>相关的代码任然非常庞大。为了减少代码量，我们需要对<strong>CommandBuffer</strong>也进行简单的封装。</p>
+<a id="more"></a>
+
+<h2 id="DVKCommandBuffer"><a href="#DVKCommandBuffer" class="headerlink" title="DVKCommandBuffer"></a>DVKCommandBuffer</h2><p>任然跟之前的Demo一样，我们单独建个文件保存CommandBuffer相关的功能。头文件如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DVKCommandBuffer</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		~DVKCommandBuffer();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		DVKCommandBuffer();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">Begin</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">End</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">Submit</span><span class="params">(VkSemaphore* signalSemaphore = <span class="literal">nullptr</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">static</span> DVKCommandBuffer* <span class="title">Create</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;VulkanDevice&gt; vulkanDevice, VkCommandPool commandPool, VkCommandBufferLevel level = VK_COMMAND_BUFFER_LEVEL_PRIMARY)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		VkCommandBuffer						cmdBuffer = VK_NULL_HANDLE;</span><br><span class="line">		VkFence								fence = VK_NULL_HANDLE;</span><br><span class="line">		VkCommandPool						commandPool = VK_NULL_HANDLE;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;VulkanDevice&gt;		vulkanDevice = <span class="literal">nullptr</span>;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;VkPipelineStageFlags&gt;	waitFlags;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;VkSemaphore&gt;			waitSemaphores;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">bool</span>								isBegun;</span><br><span class="line">	&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Begin"><a href="#Begin" class="headerlink" title="Begin"></a>Begin</h3><p>CommandBuffer在使用时需要显示的进行<strong>Begin</strong>以及<strong>End</strong>，但是<strong>Begin</strong>的时候需要<strong>VkCommandBufferBeginInfo</strong>参数，同时为了能够清楚的知道<strong>CommandBuffer</strong>的状态，我们也需要记录它是否开始以及结束，因此我们对<strong>Begin</strong>、<strong>End</strong>简单封装一下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> DVKCommandBuffer::Begin()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (isBegun) &#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		isBegun = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">		VkCommandBufferBeginInfo cmdBufBeginInfo;</span><br><span class="line">		ZeroVulkanStruct(cmdBufBeginInfo, VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO);</span><br><span class="line">		cmdBufBeginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;</span><br><span class="line"></span><br><span class="line">		vkBeginCommandBuffer(cmdBuffer, &amp;cmdBufBeginInfo);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="End"><a href="#End" class="headerlink" title="End"></a>End</h3><p>End则比较简单，我们重置一下状态即可。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> DVKCommandBuffer::End()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!isBegun) &#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		isBegun = <span class="literal">false</span>;</span><br><span class="line">		vkEndCommandBuffer(cmdBuffer);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Submit"><a href="#Submit" class="headerlink" title="Submit"></a>Submit</h3><p>比较重要的是提交功能，我们需要将录制好的命名提交到<strong>GPU</strong>进行执行。<strong>GPU</strong>的则需要<strong>Fence</strong>来进行同步状态，因此我们的CommandBuffer里面需要自带一个<strong>Fence</strong>。有了<strong>Fence</strong>之后，我们就可以设计我们的<strong>Submit</strong>接口。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> DVKCommandBuffer::Submit(VkSemaphore* signalSemaphore)</span><br><span class="line">	&#123;</span><br><span class="line">		End();</span><br><span class="line"></span><br><span class="line">		VkSubmitInfo submitInfo;</span><br><span class="line">		ZeroVulkanStruct(submitInfo, VK_STRUCTURE_TYPE_SUBMIT_INFO);</span><br><span class="line">		submitInfo.commandBufferCount   = <span class="number">1</span>;</span><br><span class="line">		submitInfo.pCommandBuffers      = &amp;cmdBuffer;</span><br><span class="line">		submitInfo.signalSemaphoreCount = signalSemaphore ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">		submitInfo.pSignalSemaphores    = signalSemaphore;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span> (waitFlags.size() &gt; <span class="number">0</span>) </span><br><span class="line">		&#123;</span><br><span class="line">			submitInfo.waitSemaphoreCount = waitSemaphores.size();</span><br><span class="line">			submitInfo.pWaitSemaphores    = waitSemaphores.data();</span><br><span class="line">			submitInfo.pWaitDstStageMask  = waitFlags.data();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		vkResetFences(vulkanDevice-&gt;GetInstanceHandle(), <span class="number">1</span>, &amp;fence);</span><br><span class="line">		vkQueueSubmit(vulkanDevice-&gt;GetGraphicsQueue()-&gt;GetHandle(), <span class="number">1</span>, &amp;submitInfo, fence);</span><br><span class="line">		vkWaitForFences(vulkanDevice-&gt;GetInstanceHandle(), <span class="number">1</span>, &amp;fence, <span class="literal">true</span>, MAX_uint64);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Submit提交时，自动进行End操作，防止未<strong>End</strong>的情况进行了提交。另外就是提交的时候，可以设置信号量<strong>VkSemaphore</strong>以便通知GPU的其它操作。</p>
+<h3 id="Create"><a href="#Create" class="headerlink" title="Create"></a>Create</h3><p>完成了上述的接口设计之后，我们就可以编写创建的函数。创建函数跟之前Demo里面的创建过程一样，我们把之前的Demo里面的代码拷贝过来即可。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">DVKCommandBuffer* DVKCommandBuffer::Create(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;VulkanDevice&gt; vulkanDevice, VkCommandPool commandPool, VkCommandBufferLevel level)</span><br><span class="line">	&#123;</span><br><span class="line">		VkDevice device = vulkanDevice-&gt;GetInstanceHandle();</span><br><span class="line"></span><br><span class="line">		DVKCommandBuffer* cmdBuffer = <span class="keyword">new</span> DVKCommandBuffer();</span><br><span class="line">		cmdBuffer-&gt;vulkanDevice = vulkanDevice;</span><br><span class="line">		cmdBuffer-&gt;commandPool  = commandPool;</span><br><span class="line">		cmdBuffer-&gt;isBegun      = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">		VkCommandBufferAllocateInfo cmdBufferAllocateInfo;</span><br><span class="line">		ZeroVulkanStruct(cmdBufferAllocateInfo, VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO);</span><br><span class="line">		cmdBufferAllocateInfo.commandPool = commandPool;</span><br><span class="line">		cmdBufferAllocateInfo.level       = level;</span><br><span class="line">		cmdBufferAllocateInfo.commandBufferCount = <span class="number">1</span>;</span><br><span class="line">		vkAllocateCommandBuffers(device, &amp;cmdBufferAllocateInfo, &amp;(cmdBuffer-&gt;cmdBuffer));</span><br><span class="line"></span><br><span class="line">		VkFenceCreateInfo fenceCreateInfo;</span><br><span class="line">		ZeroVulkanStruct(fenceCreateInfo, VK_STRUCTURE_TYPE_FENCE_CREATE_INFO);</span><br><span class="line">		fenceCreateInfo.flags = <span class="number">0</span>;</span><br><span class="line">		vkCreateFence(device, &amp;fenceCreateInfo, <span class="literal">nullptr</span>, &amp;(cmdBuffer-&gt;fence));</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> cmdBuffer;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><p>有了封装之后的<strong>DVKCommandBuffer</strong>之后，我们就可以修改上一个Demo的代码，对其中<strong>CreateMeshBuffers()</strong>函数进行优化。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CreateMeshBuffers</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Vertex&gt; vertices = &#123;</span><br><span class="line">			&#123; &#123;  <span class="number">1.0f</span>,  <span class="number">1.0f</span>, <span class="number">0.0f</span> &#125;, &#123; <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span> &#125; &#125;,</span><br><span class="line">			&#123; &#123; <span class="number">-1.0f</span>,  <span class="number">1.0f</span>, <span class="number">0.0f</span> &#125;, &#123; <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span> &#125; &#125;,</span><br><span class="line">			&#123; &#123;  <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span> &#125;, &#123; <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span> &#125; &#125;</span><br><span class="line">		&#125;;</span><br><span class="line">        </span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;uint16&gt; indices = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span> &#125;;</span><br><span class="line">		m_IndicesCount = (uint32)indices.size();</span><br><span class="line">        </span><br><span class="line">		<span class="comment">// staging buffer</span></span><br><span class="line">		vk_demo::DVKBuffer* vertStaging = vk_demo::DVKBuffer::CreateBuffer(</span><br><span class="line">			m_VulkanDevice, </span><br><span class="line">			VK_BUFFER_USAGE_TRANSFER_SRC_BIT, </span><br><span class="line">			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, </span><br><span class="line">			vertices.size() * <span class="keyword">sizeof</span>(Vertex), </span><br><span class="line">			vertices.data()</span><br><span class="line">		);</span><br><span class="line"></span><br><span class="line">		vk_demo::DVKBuffer* idexStaging = vk_demo::DVKBuffer::CreateBuffer(</span><br><span class="line">			m_VulkanDevice, </span><br><span class="line">			VK_BUFFER_USAGE_TRANSFER_SRC_BIT, </span><br><span class="line">			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, </span><br><span class="line">			indices.size() * <span class="keyword">sizeof</span>(uint16), </span><br><span class="line">			indices.data()</span><br><span class="line">		);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// reeal buffer</span></span><br><span class="line">		m_VertexBuffer = vk_demo::DVKBuffer::CreateBuffer(</span><br><span class="line">			m_VulkanDevice, </span><br><span class="line">			VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, </span><br><span class="line">			VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, </span><br><span class="line">			vertices.size() * <span class="keyword">sizeof</span>(Vertex)</span><br><span class="line">		);</span><br><span class="line"></span><br><span class="line">		m_IndexBuffer = vk_demo::DVKBuffer::CreateBuffer(</span><br><span class="line">			m_VulkanDevice, </span><br><span class="line">			VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, </span><br><span class="line">			VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, </span><br><span class="line">			indices.size() * <span class="keyword">sizeof</span>(uint16)</span><br><span class="line">		);</span><br><span class="line"></span><br><span class="line">		vk_demo::DVKCommandBuffer* cmdBuffer = vk_demo::DVKCommandBuffer::Create(m_VulkanDevice, m_CommandPool);</span><br><span class="line">		cmdBuffer-&gt;Begin();</span><br><span class="line"></span><br><span class="line">		VkBufferCopy copyRegion = &#123;&#125;;</span><br><span class="line">		copyRegion.size = vertices.size() * <span class="keyword">sizeof</span>(Vertex);</span><br><span class="line">		vkCmdCopyBuffer(cmdBuffer-&gt;cmdBuffer, vertStaging-&gt;buffer, m_VertexBuffer-&gt;buffer, <span class="number">1</span>, &amp;copyRegion);</span><br><span class="line"></span><br><span class="line">		copyRegion.size = indices.size() * <span class="keyword">sizeof</span>(uint16);</span><br><span class="line">		vkCmdCopyBuffer(cmdBuffer-&gt;cmdBuffer, idexStaging-&gt;buffer, m_IndexBuffer-&gt;buffer, <span class="number">1</span>, &amp;copyRegion);</span><br><span class="line">        </span><br><span class="line">		cmdBuffer-&gt;End();</span><br><span class="line">		cmdBuffer-&gt;Submit();</span><br><span class="line">        </span><br><span class="line">		<span class="keyword">delete</span> cmdBuffer;</span><br><span class="line">		<span class="keyword">delete</span> vertStaging;</span><br><span class="line">		<span class="keyword">delete</span> idexStaging;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优化之后我们就会发现相对之前代码量又减少了很多。<strong>CommandBuffer</strong>只需要<strong>Begin</strong>、<strong>录制</strong>、<strong>Sumit</strong>即可。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -211,7 +235,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -224,17 +248,104 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://boblchen.github.io/public/2019/08/01/5-OptimizeCommandBuffer/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/public/2019/08/01/4_OptimizeBuffer/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Vulkan Demo 4_OptimizeBuffer</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -257,8 +368,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
