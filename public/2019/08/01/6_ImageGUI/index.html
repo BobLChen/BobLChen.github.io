@@ -6,19 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
-  <title>Hello World</title>
+  <title>6_ImGUI | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我亦无他唯手熟尔">
-<meta name="keywords" content="3D Engine Opengl Stage3D DirectX Vulkan C++">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://boblchen.github.io/public/index.html">
+  <meta name="description" content="ImageGUI 项目Github地址请戳我  在之前的Demo里面，我对一些需要大量编码的供进行简单封装。为了方便后续Demo的进行，我们急需一个UI来进行参数或者功能相关的调节。幸运的是，Github上有现成的UI库可以使用，该项目叫做imgui。这个UI库有Vulkan的实现点我点我">
+<meta name="keywords" content="Vulkan,物理设备,3D,Demo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6_ImGUI">
+<meta property="og:url" content="https://boblchen.github.io/public/2019/08/01/6_ImageGUI/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="我亦无他唯手熟尔">
+<meta property="og:description" content="ImageGUI 项目Github地址请戳我  在之前的Demo里面，我对一些需要大量编码的供进行简单封装。为了方便后续Demo的进行，我们急需一个UI来进行参数或者功能相关的调节。幸运的是，Github上有现成的UI库可以使用，该项目叫做imgui。这个UI库有Vulkan的实现点我点我">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/6_ImageGUI.jpg">
+<meta property="og:updated_time" content="2019-08-01T15:40:45.969Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="我亦无他唯手熟尔">
+<meta name="twitter:title" content="6_ImGUI">
+<meta name="twitter:description" content="ImageGUI 项目Github地址请戳我  在之前的Demo里面，我对一些需要大量编码的供进行简单封装。为了方便后续Demo的进行，我们急需一个UI来进行参数或者功能相关的调节。幸运的是，Github上有现成的UI库可以使用，该项目叫做imgui。这个UI库有Vulkan的实现点我点我">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/6_ImageGUI.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
   
@@ -158,16 +161,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-6_ImageGUI" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-6_ImageGUI" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/01/6_ImageGUI/">6_ImGUI</a>
+    <h1 class="article-title" itemprop="name">
+      6_ImGUI
     </h1>
   
 
@@ -184,9 +185,22 @@
 <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
 <p><img src="https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/6_ImageGUI.jpg" alt="Preview"></p>
 <p>在之前的Demo里面，我对一些需要大量编码的供进行简单封装。为了方便后续<strong>Demo</strong>的进行，我们急需一个<strong>UI</strong>来进行参数或者功能相关的调节。幸运的是，<strong>Github</strong>上有现成的<strong>UI</strong>库可以使用，该项目叫做<a href="https://github.com/ocornut/imgui" target="_blank" rel="noopener"><strong>imgui</strong></a>。这个UI库有<strong>Vulkan</strong>的实现<a href="https://github.com/ocornut/imgui/blob/master/examples/imgui_impl_vulkan.cpp" target="_blank" rel="noopener">点我点我</a></p>
-        
-          <a class="article-more-a" href="/public/2019/08/01/6_ImageGUI/#more">more >></a>
-        
+<a id="more"></a>
+
+<h2 id="ImGUI"><a href="#ImGUI" class="headerlink" title="ImGUI"></a>ImGUI</h2><p>ImGUI的集成其实很简单，我们把它的实现抄过来即可。具体的实现我就不再赘述了，因为跟之前的Demo流程是一致的。这里只阐述一下需要注意的几个地方。</p>
+<h3 id="ShaderCode"><a href="#ShaderCode" class="headerlink" title="ShaderCode"></a>ShaderCode</h3><p>ImGUI需要使用到Vulkan的二进制Shader，为了方便起见，避免每次传入Shader路径，我们将Shader的二进制文件编码放到CPP文件里面。这样在创建ImGUI的时候直接从CPP中保存变量中获取。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">uint32_t</span> g__glsl_shader_vert_spv[] =</span><br><span class="line">&#123;</span><br><span class="line">    <span class="number">0x07230203</span>,<span class="number">0x00010000</span>,<span class="number">0x00080001</span>,<span class="number">0x0000002e</span>,<span class="number">0x00000000</span>,<span class="number">0x00020011</span>,<span class="number">0x00000001</span>,<span class="number">0x0006000b</span>,</span><br><span class="line">    <span class="number">0x00000001</span>,<span class="number">0x4c534c47</span>,<span class="number">0x6474732e</span>,<span class="number">0x3035342e</span>,<span class="number">0x00000000</span>,<span class="number">0x0003000e</span>,<span class="number">0x00000000</span>,<span class="number">0x00000001</span>,</span><br><span class="line">    <span class="number">0x000a000f</span>,<span class="number">0x00000000</span>,<span class="number">0x00000004</span>,<span class="number">0x6e69616d</span>,<span class="number">0x00000000</span>,<span class="number">0x0000000b</span>,<span class="number">0x0000000f</span>,<span class="number">0x00000015</span>,</span><br><span class="line">    <span class="number">0x0000001b</span>,<span class="number">0x0000001c</span>,<span class="number">0x00030003</span>,<span class="number">0x00000002</span>,<span class="number">0x000001c2</span>,<span class="number">0x00040005</span>,<span class="number">0x00000004</span>,<span class="number">0x6e69616d</span>,</span><br><span class="line">    <span class="number">0x00000000</span>,<span class="number">0x00030005</span>,<span class="number">0x00000009</span>,<span class="number">0x00000000</span>,<span class="number">0x00050006</span>,<span class="number">0x00000009</span>,<span class="number">0x00000000</span>,<span class="number">0x6f6c6f43</span>,</span><br><span class="line">    <span class="number">0x00000072</span>,<span class="number">0x00040006</span>,<span class="number">0x00000009</span>,<span class="number">0x00000001</span>,<span class="number">0x00005655</span>,<span class="number">0x00030005</span>,<span class="number">0x0000000b</span>,<span class="number">0x0074754f</span>,</span><br><span class="line">    <span class="number">0x00040005</span>,<span class="number">0x0000000f</span>,<span class="number">0x6c6f4361</span>,<span class="number">0x0000726f</span>,<span class="number">0x00030005</span>,<span class="number">0x00000015</span>,<span class="number">0x00565561</span>,<span class="number">0x00060005</span>,</span><br><span class="line">    <span class="number">0x00000019</span>,<span class="number">0x505f6c67</span>,<span class="number">0x65567265</span>,<span class="number">0x78657472</span>,<span class="number">0x00000000</span>,<span class="number">0x00060006</span>,<span class="number">0x00000019</span>,<span class="number">0x00000000</span>,</span><br><span class="line">    <span class="number">0x505f6c67</span>,<span class="number">0x7469736f</span>,<span class="number">0x006e6f69</span>,<span class="number">0x00030005</span>,<span class="number">0x0000001b</span>,<span class="number">0x00000000</span>,<span class="number">0x00040005</span>,<span class="number">0x0000001c</span>,</span><br><span class="line">    <span class="number">0x736f5061</span>,<span class="number">0x00000000</span>,<span class="number">0x00060005</span>,<span class="number">0x0000001e</span>,<span class="number">0x73755075</span>,<span class="number">0x6e6f4368</span>,<span class="number">0x6e617473</span>,<span class="number">0x00000074</span>,</span><br><span class="line">    <span class="number">0x00050006</span>,<span class="number">0x0000001e</span>,<span class="number">0x00000000</span>,<span class="number">0x61635375</span>,<span class="number">0x0000656c</span>,<span class="number">0x00060006</span>,<span class="number">0x0000001e</span>,<span class="number">0x00000001</span>,</span><br><span class="line">    <span class="number">0x61725475</span>,<span class="number">0x616c736e</span>,<span class="number">0x00006574</span>,<span class="number">0x00030005</span>,<span class="number">0x00000020</span>,<span class="number">0x00006370</span>,<span class="number">0x00040047</span>,<span class="number">0x0000000b</span>,</span><br><span class="line">    <span class="number">0x0000001e</span>,<span class="number">0x00000000</span>,<span class="number">0x00040047</span>,<span class="number">0x0000000f</span>,<span class="number">0x0000001e</span>,<span class="number">0x00000002</span>,<span class="number">0x00040047</span>,<span class="number">0x00000015</span>,</span><br><span class="line">    <span class="number">0x0000001e</span>,<span class="number">0x00000001</span>,<span class="number">0x00050048</span>,<span class="number">0x00000019</span>,<span class="number">0x00000000</span>,<span class="number">0x0000000b</span>,<span class="number">0x00000000</span>,<span class="number">0x00030047</span>,</span><br><span class="line">    <span class="number">0x00000019</span>,<span class="number">0x00000002</span>,<span class="number">0x00040047</span>,<span class="number">0x0000001c</span>,<span class="number">0x0000001e</span>,<span class="number">0x00000000</span>,<span class="number">0x00050048</span>,<span class="number">0x0000001e</span>,</span><br><span class="line">    <span class="number">0x00000000</span>,<span class="number">0x00000023</span>,<span class="number">0x00000000</span>,<span class="number">0x00050048</span>,<span class="number">0x0000001e</span>,<span class="number">0x00000001</span>,<span class="number">0x00000023</span>,<span class="number">0x00000008</span>,</span><br><span class="line">    <span class="number">0x00030047</span>,<span class="number">0x0000001e</span>,<span class="number">0x00000002</span>,<span class="number">0x00020013</span>,<span class="number">0x00000002</span>,<span class="number">0x00030021</span>,<span class="number">0x00000003</span>,<span class="number">0x00000002</span>,</span><br><span class="line">    <span class="number">0x00030016</span>,<span class="number">0x00000006</span>,<span class="number">0x00000020</span>,<span class="number">0x00040017</span>,<span class="number">0x00000007</span>,<span class="number">0x00000006</span>,<span class="number">0x00000004</span>,<span class="number">0x00040017</span>,</span><br><span class="line">    <span class="number">0x00000008</span>,<span class="number">0x00000006</span>,<span class="number">0x00000002</span>,<span class="number">0x0004001e</span>,<span class="number">0x00000009</span>,<span class="number">0x00000007</span>,<span class="number">0x00000008</span>,<span class="number">0x00040020</span>,</span><br><span class="line">    <span class="number">0x0000000a</span>,<span class="number">0x00000003</span>,<span class="number">0x00000009</span>,<span class="number">0x0004003b</span>,<span class="number">0x0000000a</span>,<span class="number">0x0000000b</span>,<span class="number">0x00000003</span>,<span class="number">0x00040015</span>,</span><br><span class="line">    <span class="number">0x0000000c</span>,<span class="number">0x00000020</span>,<span class="number">0x00000001</span>,<span class="number">0x0004002b</span>,<span class="number">0x0000000c</span>,<span class="number">0x0000000d</span>,<span class="number">0x00000000</span>,<span class="number">0x00040020</span>,</span><br><span class="line">    <span class="number">0x0000000e</span>,<span class="number">0x00000001</span>,<span class="number">0x00000007</span>,<span class="number">0x0004003b</span>,<span class="number">0x0000000e</span>,<span class="number">0x0000000f</span>,<span class="number">0x00000001</span>,<span class="number">0x00040020</span>,</span><br><span class="line">    <span class="number">0x00000011</span>,<span class="number">0x00000003</span>,<span class="number">0x00000007</span>,<span class="number">0x0004002b</span>,<span class="number">0x0000000c</span>,<span class="number">0x00000013</span>,<span class="number">0x00000001</span>,<span class="number">0x00040020</span>,</span><br><span class="line">    <span class="number">0x00000014</span>,<span class="number">0x00000001</span>,<span class="number">0x00000008</span>,<span class="number">0x0004003b</span>,<span class="number">0x00000014</span>,<span class="number">0x00000015</span>,<span class="number">0x00000001</span>,<span class="number">0x00040020</span>,</span><br><span class="line">    <span class="number">0x00000017</span>,<span class="number">0x00000003</span>,<span class="number">0x00000008</span>,<span class="number">0x0003001e</span>,<span class="number">0x00000019</span>,<span class="number">0x00000007</span>,<span class="number">0x00040020</span>,<span class="number">0x0000001a</span>,</span><br><span class="line">    <span class="number">0x00000003</span>,<span class="number">0x00000019</span>,<span class="number">0x0004003b</span>,<span class="number">0x0000001a</span>,<span class="number">0x0000001b</span>,<span class="number">0x00000003</span>,<span class="number">0x0004003b</span>,<span class="number">0x00000014</span>,</span><br><span class="line">    <span class="number">0x0000001c</span>,<span class="number">0x00000001</span>,<span class="number">0x0004001e</span>,<span class="number">0x0000001e</span>,<span class="number">0x00000008</span>,<span class="number">0x00000008</span>,<span class="number">0x00040020</span>,<span class="number">0x0000001f</span>,</span><br><span class="line">    <span class="number">0x00000009</span>,<span class="number">0x0000001e</span>,<span class="number">0x0004003b</span>,<span class="number">0x0000001f</span>,<span class="number">0x00000020</span>,<span class="number">0x00000009</span>,<span class="number">0x00040020</span>,<span class="number">0x00000021</span>,</span><br><span class="line">    <span class="number">0x00000009</span>,<span class="number">0x00000008</span>,<span class="number">0x0004002b</span>,<span class="number">0x00000006</span>,<span class="number">0x00000028</span>,<span class="number">0x00000000</span>,<span class="number">0x0004002b</span>,<span class="number">0x00000006</span>,</span><br><span class="line">    <span class="number">0x00000029</span>,<span class="number">0x3f800000</span>,<span class="number">0x00050036</span>,<span class="number">0x00000002</span>,<span class="number">0x00000004</span>,<span class="number">0x00000000</span>,<span class="number">0x00000003</span>,<span class="number">0x000200f8</span>,</span><br><span class="line">    <span class="number">0x00000005</span>,<span class="number">0x0004003d</span>,<span class="number">0x00000007</span>,<span class="number">0x00000010</span>,<span class="number">0x0000000f</span>,<span class="number">0x00050041</span>,<span class="number">0x00000011</span>,<span class="number">0x00000012</span>,</span><br><span class="line">    <span class="number">0x0000000b</span>,<span class="number">0x0000000d</span>,<span class="number">0x0003003e</span>,<span class="number">0x00000012</span>,<span class="number">0x00000010</span>,<span class="number">0x0004003d</span>,<span class="number">0x00000008</span>,<span class="number">0x00000016</span>,</span><br><span class="line">    <span class="number">0x00000015</span>,<span class="number">0x00050041</span>,<span class="number">0x00000017</span>,<span class="number">0x00000018</span>,<span class="number">0x0000000b</span>,<span class="number">0x00000013</span>,<span class="number">0x0003003e</span>,<span class="number">0x00000018</span>,</span><br><span class="line">    <span class="number">0x00000016</span>,<span class="number">0x0004003d</span>,<span class="number">0x00000008</span>,<span class="number">0x0000001d</span>,<span class="number">0x0000001c</span>,<span class="number">0x00050041</span>,<span class="number">0x00000021</span>,<span class="number">0x00000022</span>,</span><br><span class="line">    <span class="number">0x00000020</span>,<span class="number">0x0000000d</span>,<span class="number">0x0004003d</span>,<span class="number">0x00000008</span>,<span class="number">0x00000023</span>,<span class="number">0x00000022</span>,<span class="number">0x00050085</span>,<span class="number">0x00000008</span>,</span><br><span class="line">    <span class="number">0x00000024</span>,<span class="number">0x0000001d</span>,<span class="number">0x00000023</span>,<span class="number">0x00050041</span>,<span class="number">0x00000021</span>,<span class="number">0x00000025</span>,<span class="number">0x00000020</span>,<span class="number">0x00000013</span>,</span><br><span class="line">    <span class="number">0x0004003d</span>,<span class="number">0x00000008</span>,<span class="number">0x00000026</span>,<span class="number">0x00000025</span>,<span class="number">0x00050081</span>,<span class="number">0x00000008</span>,<span class="number">0x00000027</span>,<span class="number">0x00000024</span>,</span><br><span class="line">    <span class="number">0x00000026</span>,<span class="number">0x00050051</span>,<span class="number">0x00000006</span>,<span class="number">0x0000002a</span>,<span class="number">0x00000027</span>,<span class="number">0x00000000</span>,<span class="number">0x00050051</span>,<span class="number">0x00000006</span>,</span><br><span class="line">    <span class="number">0x0000002b</span>,<span class="number">0x00000027</span>,<span class="number">0x00000001</span>,<span class="number">0x00070050</span>,<span class="number">0x00000007</span>,<span class="number">0x0000002c</span>,<span class="number">0x0000002a</span>,<span class="number">0x0000002b</span>,</span><br><span class="line">    <span class="number">0x00000028</span>,<span class="number">0x00000029</span>,<span class="number">0x00050041</span>,<span class="number">0x00000011</span>,<span class="number">0x0000002d</span>,<span class="number">0x0000001b</span>,<span class="number">0x0000000d</span>,<span class="number">0x0003003e</span>,</span><br><span class="line">    <span class="number">0x0000002d</span>,<span class="number">0x0000002c</span>,<span class="number">0x000100fd</span>,<span class="number">0x00010038</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">uint32_t</span> g__glsl_shader_frag_spv[] =</span><br><span class="line">&#123;</span><br><span class="line">    <span class="number">0x07230203</span>,<span class="number">0x00010000</span>,<span class="number">0x00080001</span>,<span class="number">0x0000001e</span>,<span class="number">0x00000000</span>,<span class="number">0x00020011</span>,<span class="number">0x00000001</span>,<span class="number">0x0006000b</span>,</span><br><span class="line">    <span class="number">0x00000001</span>,<span class="number">0x4c534c47</span>,<span class="number">0x6474732e</span>,<span class="number">0x3035342e</span>,<span class="number">0x00000000</span>,<span class="number">0x0003000e</span>,<span class="number">0x00000000</span>,<span class="number">0x00000001</span>,</span><br><span class="line">    <span class="number">0x0007000f</span>,<span class="number">0x00000004</span>,<span class="number">0x00000004</span>,<span class="number">0x6e69616d</span>,<span class="number">0x00000000</span>,<span class="number">0x00000009</span>,<span class="number">0x0000000d</span>,<span class="number">0x00030010</span>,</span><br><span class="line">    <span class="number">0x00000004</span>,<span class="number">0x00000007</span>,<span class="number">0x00030003</span>,<span class="number">0x00000002</span>,<span class="number">0x000001c2</span>,<span class="number">0x00040005</span>,<span class="number">0x00000004</span>,<span class="number">0x6e69616d</span>,</span><br><span class="line">    <span class="number">0x00000000</span>,<span class="number">0x00040005</span>,<span class="number">0x00000009</span>,<span class="number">0x6c6f4366</span>,<span class="number">0x0000726f</span>,<span class="number">0x00030005</span>,<span class="number">0x0000000b</span>,<span class="number">0x00000000</span>,</span><br><span class="line">    <span class="number">0x00050006</span>,<span class="number">0x0000000b</span>,<span class="number">0x00000000</span>,<span class="number">0x6f6c6f43</span>,<span class="number">0x00000072</span>,<span class="number">0x00040006</span>,<span class="number">0x0000000b</span>,<span class="number">0x00000001</span>,</span><br><span class="line">    <span class="number">0x00005655</span>,<span class="number">0x00030005</span>,<span class="number">0x0000000d</span>,<span class="number">0x00006e49</span>,<span class="number">0x00050005</span>,<span class="number">0x00000016</span>,<span class="number">0x78655473</span>,<span class="number">0x65727574</span>,</span><br><span class="line">    <span class="number">0x00000000</span>,<span class="number">0x00040047</span>,<span class="number">0x00000009</span>,<span class="number">0x0000001e</span>,<span class="number">0x00000000</span>,<span class="number">0x00040047</span>,<span class="number">0x0000000d</span>,<span class="number">0x0000001e</span>,</span><br><span class="line">    <span class="number">0x00000000</span>,<span class="number">0x00040047</span>,<span class="number">0x00000016</span>,<span class="number">0x00000022</span>,<span class="number">0x00000000</span>,<span class="number">0x00040047</span>,<span class="number">0x00000016</span>,<span class="number">0x00000021</span>,</span><br><span class="line">    <span class="number">0x00000000</span>,<span class="number">0x00020013</span>,<span class="number">0x00000002</span>,<span class="number">0x00030021</span>,<span class="number">0x00000003</span>,<span class="number">0x00000002</span>,<span class="number">0x00030016</span>,<span class="number">0x00000006</span>,</span><br><span class="line">    <span class="number">0x00000020</span>,<span class="number">0x00040017</span>,<span class="number">0x00000007</span>,<span class="number">0x00000006</span>,<span class="number">0x00000004</span>,<span class="number">0x00040020</span>,<span class="number">0x00000008</span>,<span class="number">0x00000003</span>,</span><br><span class="line">    <span class="number">0x00000007</span>,<span class="number">0x0004003b</span>,<span class="number">0x00000008</span>,<span class="number">0x00000009</span>,<span class="number">0x00000003</span>,<span class="number">0x00040017</span>,<span class="number">0x0000000a</span>,<span class="number">0x00000006</span>,</span><br><span class="line">    <span class="number">0x00000002</span>,<span class="number">0x0004001e</span>,<span class="number">0x0000000b</span>,<span class="number">0x00000007</span>,<span class="number">0x0000000a</span>,<span class="number">0x00040020</span>,<span class="number">0x0000000c</span>,<span class="number">0x00000001</span>,</span><br><span class="line">    <span class="number">0x0000000b</span>,<span class="number">0x0004003b</span>,<span class="number">0x0000000c</span>,<span class="number">0x0000000d</span>,<span class="number">0x00000001</span>,<span class="number">0x00040015</span>,<span class="number">0x0000000e</span>,<span class="number">0x00000020</span>,</span><br><span class="line">    <span class="number">0x00000001</span>,<span class="number">0x0004002b</span>,<span class="number">0x0000000e</span>,<span class="number">0x0000000f</span>,<span class="number">0x00000000</span>,<span class="number">0x00040020</span>,<span class="number">0x00000010</span>,<span class="number">0x00000001</span>,</span><br><span class="line">    <span class="number">0x00000007</span>,<span class="number">0x00090019</span>,<span class="number">0x00000013</span>,<span class="number">0x00000006</span>,<span class="number">0x00000001</span>,<span class="number">0x00000000</span>,<span class="number">0x00000000</span>,<span class="number">0x00000000</span>,</span><br><span class="line">    <span class="number">0x00000001</span>,<span class="number">0x00000000</span>,<span class="number">0x0003001b</span>,<span class="number">0x00000014</span>,<span class="number">0x00000013</span>,<span class="number">0x00040020</span>,<span class="number">0x00000015</span>,<span class="number">0x00000000</span>,</span><br><span class="line">    <span class="number">0x00000014</span>,<span class="number">0x0004003b</span>,<span class="number">0x00000015</span>,<span class="number">0x00000016</span>,<span class="number">0x00000000</span>,<span class="number">0x0004002b</span>,<span class="number">0x0000000e</span>,<span class="number">0x00000018</span>,</span><br><span class="line">    <span class="number">0x00000001</span>,<span class="number">0x00040020</span>,<span class="number">0x00000019</span>,<span class="number">0x00000001</span>,<span class="number">0x0000000a</span>,<span class="number">0x00050036</span>,<span class="number">0x00000002</span>,<span class="number">0x00000004</span>,</span><br><span class="line">    <span class="number">0x00000000</span>,<span class="number">0x00000003</span>,<span class="number">0x000200f8</span>,<span class="number">0x00000005</span>,<span class="number">0x00050041</span>,<span class="number">0x00000010</span>,<span class="number">0x00000011</span>,<span class="number">0x0000000d</span>,</span><br><span class="line">    <span class="number">0x0000000f</span>,<span class="number">0x0004003d</span>,<span class="number">0x00000007</span>,<span class="number">0x00000012</span>,<span class="number">0x00000011</span>,<span class="number">0x0004003d</span>,<span class="number">0x00000014</span>,<span class="number">0x00000017</span>,</span><br><span class="line">    <span class="number">0x00000016</span>,<span class="number">0x00050041</span>,<span class="number">0x00000019</span>,<span class="number">0x0000001a</span>,<span class="number">0x0000000d</span>,<span class="number">0x00000018</span>,<span class="number">0x0004003d</span>,<span class="number">0x0000000a</span>,</span><br><span class="line">    <span class="number">0x0000001b</span>,<span class="number">0x0000001a</span>,<span class="number">0x00050057</span>,<span class="number">0x00000007</span>,<span class="number">0x0000001c</span>,<span class="number">0x00000017</span>,<span class="number">0x0000001b</span>,<span class="number">0x00050085</span>,</span><br><span class="line">    <span class="number">0x00000007</span>,<span class="number">0x0000001d</span>,<span class="number">0x00000012</span>,<span class="number">0x0000001c</span>,<span class="number">0x0003003e</span>,<span class="number">0x00000009</span>,<span class="number">0x0000001d</span>,<span class="number">0x000100fd</span>,</span><br><span class="line">    <span class="number">0x00010038</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Subpass"><a href="#Subpass" class="headerlink" title="Subpass"></a>Subpass</h3><p>Pipeline如果使用在<code>Subpass</code>中，需要指定<code>Subpass</code>的索引。所以我们需要将<code>Subpass</code>传递给ImGUI，告诉ImGUI当然渲染处于哪一个Subpass中。</p>
+<h3 id="RenderPass"><a href="#RenderPass" class="headerlink" title="RenderPass"></a>RenderPass</h3><p>考虑到RenderPass可能因为窗口Resize而重建，因此RenderPass我们也要通知到ImGUI。</p>
+<h3 id="事件绑定"><a href="#事件绑定" class="headerlink" title="事件绑定"></a>事件绑定</h3><p>ImGUI毕竟是一个UI库，那么我们的鼠标移动、点击、滚动等等事件也需要一并通知到ImGUI。如果不通知到ImGUI，它是无法处理这些行为的，ImGUI本身不会捕获每个平台的这些事件。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> ImageGUIContext::StartFrame()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">const</span> Vector2&amp; mousePos = InputManager::GetMousePosition();</span><br><span class="line">    ImGuiIO&amp; io = ImGui::GetIO();</span><br><span class="line">	io.MouseWheel  += InputManager::GetMouseDelta();</span><br><span class="line">    io.MousePos     = ImVec2(mousePos.x * io.DisplayFramebufferScale.x, mousePos.y * io.DisplayFramebufferScale.y);</span><br><span class="line">    io.MouseDown[<span class="number">0</span>] = InputManager::IsMouseDown(MouseType::MOUSE_BUTTON_LEFT);</span><br><span class="line">    io.MouseDown[<span class="number">1</span>] = InputManager::IsMouseDown(MouseType::MOUSE_BUTTON_RIGHT);</span><br><span class="line">    io.MouseDown[<span class="number">2</span>] = InputManager::IsMouseDown(MouseType::MOUSE_BUTTON_MIDDLE);</span><br><span class="line"></span><br><span class="line">	io.KeyCtrl  = InputManager::IsKeyDown(KeyboardType::KEY_LEFT_CONTROL) || InputManager::IsKeyDown(KeyboardType::KEY_RIGHT_CONTROL);</span><br><span class="line">	io.KeyShift = InputManager::IsKeyDown(KeyboardType::KEY_LEFT_SHIFT) || InputManager::IsKeyDown(KeyboardType::KEY_RIGHT_SHIFT);</span><br><span class="line">	io.KeyAlt   = InputManager::IsKeyDown(KeyboardType::KEY_LEFT_ALT) || InputManager::IsKeyDown(KeyboardType::KEY_RIGHT_ALT);</span><br><span class="line">	io.KeySuper = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">	ImGui::NewFrame();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h3><p>当我们使用ImGUI时，如果我们有对UI进行操作，例如点开一个下拉列表等，这个时候出现了新的UI，也就意味ImGUI产生新的数据。这些UI最终是以三角形组合拼凑而成，因此VertexBuffer和IndexBuffer势必也会产生新的。这个时候就需要我们按需创建出对应的Buffer数据以供ImGUI使用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> ImageGUIContext::Update()</span><br><span class="line">&#123;</span><br><span class="line">    ImDrawData* imDrawData = ImGui::GetDrawData();</span><br><span class="line">	<span class="keyword">bool</span> updateCmdBuffers  = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!imDrawData) &#123; </span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;;</span><br><span class="line">    </span><br><span class="line">	<span class="comment">// Note: Alignment is done inside buffer creation</span></span><br><span class="line">	VkDeviceSize vertexBufferSize = imDrawData-&gt;TotalVtxCount * <span class="keyword">sizeof</span>(ImDrawVert);</span><br><span class="line">	VkDeviceSize indexBufferSize  = imDrawData-&gt;TotalIdxCount * <span class="keyword">sizeof</span>(ImDrawIdx);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Update buffers only if vertex or index count has been changed compared to current buffer size</span></span><br><span class="line">	<span class="keyword">if</span> ((vertexBufferSize == <span class="number">0</span>) || (indexBufferSize == <span class="number">0</span>)) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// Vertex buffer</span></span><br><span class="line">	<span class="keyword">if</span> ((m_VertexBuffer.buffer == VK_NULL_HANDLE) || (m_VertexCount != imDrawData-&gt;TotalVtxCount)) &#123;</span><br><span class="line">		m_VertexCount = imDrawData-&gt;TotalVtxCount;</span><br><span class="line">		m_VertexBuffer.Unmap();</span><br><span class="line">		m_VertexBuffer.Destroy();</span><br><span class="line">		CreateBuffer(m_VertexBuffer, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, vertexBufferSize);</span><br><span class="line">		m_VertexBuffer.Map();</span><br><span class="line">		updateCmdBuffers = <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">	<span class="comment">// Index buffer</span></span><br><span class="line">	<span class="keyword">if</span> ((m_IndexBuffer.buffer == VK_NULL_HANDLE) || (m_IndexCount &lt; imDrawData-&gt;TotalIdxCount)) &#123;</span><br><span class="line">		m_IndexCount = imDrawData-&gt;TotalIdxCount;</span><br><span class="line">		m_IndexBuffer.Unmap();</span><br><span class="line">		m_IndexBuffer.Destroy();</span><br><span class="line">		CreateBuffer(m_IndexBuffer, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, indexBufferSize);</span><br><span class="line">		m_IndexBuffer.Map();</span><br><span class="line">		updateCmdBuffers = <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Upload data</span></span><br><span class="line">	ImDrawVert* vtxDst = (ImDrawVert*)m_VertexBuffer.mapped;</span><br><span class="line">	ImDrawIdx* idxDst  = (ImDrawIdx*)m_IndexBuffer.mapped;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">0</span>; n &lt; imDrawData-&gt;CmdListsCount; n++) &#123;</span><br><span class="line">		<span class="keyword">const</span> ImDrawList* cmdList = imDrawData-&gt;CmdLists[n];</span><br><span class="line">		<span class="built_in">memcpy</span>(vtxDst, cmdList-&gt;VtxBuffer.Data, cmdList-&gt;VtxBuffer.Size * <span class="keyword">sizeof</span>(ImDrawVert));</span><br><span class="line">		<span class="built_in">memcpy</span>(idxDst, cmdList-&gt;IdxBuffer.Data, cmdList-&gt;IdxBuffer.Size * <span class="keyword">sizeof</span>(ImDrawIdx));</span><br><span class="line">		vtxDst += cmdList-&gt;VtxBuffer.Size;</span><br><span class="line">		idxDst += cmdList-&gt;IdxBuffer.Size;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	m_VertexBuffer.Flush();</span><br><span class="line">	m_IndexBuffer.Flush();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> updateCmdBuffers || m_Updated;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="集成到Demo"><a href="#集成到Demo" class="headerlink" title="集成到Demo"></a>集成到Demo</h3><p>集成到Demo其实非常简单，我们在<code>Draw</code>函数内部增加一个<code>UpdateUI</code>函数，这个函数里面就负责进行UI逻辑处理。如果有发现修改了渲染数据，我们就重新录制一下渲染命令即可。<br>在录制渲染命令的时候，我们只需要把UI的绘制放到最后即可，如果我们放置到前面，可能会出现3D图像遮挡2D UI的情况。代码如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">VERIFYVULKANRESULT(vkBeginCommandBuffer(m_CommandBuffers[i], &amp;cmdBeginInfo));</span><br><span class="line">            </span><br><span class="line">vkCmdBeginRenderPass(m_CommandBuffers[i], &amp;renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);</span><br><span class="line">vkCmdSetViewport(m_CommandBuffers[i], <span class="number">0</span>, <span class="number">1</span>, &amp;viewport);</span><br><span class="line">vkCmdSetScissor(m_CommandBuffers[i], <span class="number">0</span>, <span class="number">1</span>, &amp;scissor);</span><br><span class="line"></span><br><span class="line">vkCmdBindDescriptorSets(m_CommandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineLayout, <span class="number">0</span>, <span class="number">1</span>, &amp;m_DescriptorSet, <span class="number">0</span>, <span class="literal">nullptr</span>);</span><br><span class="line">vkCmdBindPipeline(m_CommandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, m_Pipeline);</span><br><span class="line">vkCmdBindVertexBuffers(m_CommandBuffers[i], <span class="number">0</span>, <span class="number">1</span>, &amp;(m_VertexBuffer-&gt;buffer), offsets);</span><br><span class="line">vkCmdBindIndexBuffer(m_CommandBuffers[i], m_IndexBuffer-&gt;buffer, <span class="number">0</span>, VK_INDEX_TYPE_UINT16);</span><br><span class="line">vkCmdDrawIndexed(m_CommandBuffers[i], m_IndicesCount, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">m_GUI-&gt;BindDrawCmd(m_CommandBuffers[i], m_RenderPass);</span><br><span class="line"></span><br><span class="line">vkCmdEndRenderPass(m_CommandBuffers[i]);</span><br><span class="line"></span><br><span class="line">VERIFYVULKANRESULT(vkEndCommandBuffer(m_CommandBuffers[i]));</span><br></pre></td></tr></table></figure>
       
 
       
@@ -231,16 +245,75 @@
 
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/01/6_ImageGUI/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://boblchen.github.io/public/2019/08/01/6_ImageGUI/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/public/2019/08/01/5-OptimizeCommandBuffer/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">5_OptimizeCommandBuffer</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -260,696 +333,14 @@
 
 
 
-
   
-    <article id="post-5-OptimizeCommandBuffer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/01/5-OptimizeCommandBuffer/">5_OptimizeCommandBuffer</a>
-    </h1>
   
 
-        
-        <a href="/public/2019/08/01/5-OptimizeCommandBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T11:45:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/5_OptimizeCommandBuffer" target="_blank" rel="noopener">OptimizeCommandBuffer</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在<a href="http://xiaopengyou.fun/public/2019/08/01/4_OptimizeBuffer/#more" target="_blank" rel="noopener">4_OptimizeBuffer</a>这个Demo里面，我们对<strong>Buffer</strong>进行了封装。封装过的<strong>Buffer</strong>使用起来非常方便，代码量急剧减少。但是在这个Demo里面，我们在优化<strong>CreateMeshBuffers</strong>时，我们会发现虽然<strong>Buffer</strong>的代码量减少了，但是<strong>CommandBuffer</strong>相关的代码任然非常庞大。为了减少代码量，我们需要对<strong>CommandBuffer</strong>也进行简单的封装。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/01/5-OptimizeCommandBuffer/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/01/5-OptimizeCommandBuffer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-4_OptimizeBuffer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/01/4_OptimizeBuffer/">Vulkan Demo 4_OptimizeBuffer</a>
-    </h1>
   
 
-        
-        <a href="/public/2019/08/01/4_OptimizeBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T10:25:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/4_OptimizeBuffer" target="_blank" rel="noopener">OptimizeBuffer</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在<a href="http://xiaopengyou.fun/public/2019/08/01/3_DemoBase/#more" target="_blank" rel="noopener">3_DemoBase</a>这个Demo里面，我们对一些常用的功能和属性进行简单的封装，但是回过头来看一下，会发现整个创建流程还是异常的繁琐，特别是<strong>Buffer</strong>的创建、使用、销毁。仍然本着能偷懒就偷懒的原则，打着优化的旗号实则为了偷懒，我们有必要对<strong>Buffer</strong>也进行一下简单的封装。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/01/4_OptimizeBuffer/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/01/4_OptimizeBuffer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-3_DemoBase" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/01/3_DemoBase/">Vulkan Demo 03 DemoBase</a>
-    </h1>
   
 
-        
-        <a href="/public/2019/08/01/3_DemoBase/" class="archive-article-date">
-  	<time datetime="2019-07-31T16:16:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="DemoBase"><a href="#DemoBase" class="headerlink" title="DemoBase"></a><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/2_Triangle" target="_blank" rel="noopener">DemoBase</a></h1><p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在<a href="http://xiaopengyou.fun/public/2019/07/28/2-Triangle/#more" target="_blank" rel="noopener">2_Triangle</a>这个Demo里面，会发现为了绘制一个三角形做了太多的准备工作，后面还有大量的Demo，如果每个Demo都来搞一遍就有点儿费时费力了。为了偷懒以及稍微进行结构优化，才有了这个Demo。在这个Demo里面主要演示了如何将一些公用的功能进行简单封装。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/01/3_DemoBase/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/01/3_DemoBase/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-2-Triangle" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/07/28/2-Triangle/">Vulkan Demo 02 Triangle</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/07/28/2-Triangle/" class="archive-article-date">
-  	<time datetime="2019-07-27T16:16:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Triangle"><a href="#Triangle" class="headerlink" title="Triangle"></a><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/2_Triangle" target="_blank" rel="noopener">Triangle</a></h1><p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>在这之前有一些注意事项需要说明，这些注意事项非常关键，决定着之后一些东西的理解。</p>
-        
-          <a class="article-more-a" href="/public/2019/07/28/2-Triangle/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/07/28/2-Triangle/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-UniformBuffer设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/06/23/UniformBuffer设计/">UniformBuffer设计</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/06/23/UniformBuffer设计/" class="archive-article-date">
-  	<time datetime="2019-06-23T03:51:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Vulkan-Uniform-Buffer设计"><a href="#Vulkan-Uniform-Buffer设计" class="headerlink" title="Vulkan Uniform Buffer设计"></a>Vulkan Uniform Buffer设计</h1><p>最近我一直在思考关于UniformBuffer的结构如何设计。由于工作太忙，只能断断续续的设计它的结构以便于能够更好的匹配绘制流程。对D3D12或者Vulkan有过了解的同学应该也会有这个疑问，就是它们的UniformBuffer如何才能使用起来更加方便。</p>
-        
-          <a class="article-more-a" href="/public/2019/06/23/UniformBuffer设计/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/06/23/UniformBuffer设计/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-VulkanBuffer与内存" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/06/07/VulkanBuffer与内存/">Vulkan Buffer与内存</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/06/07/VulkanBuffer与内存/" class="archive-article-date">
-  	<time datetime="2019-06-07T15:43:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Vulkan-Buffer与内存"><a href="#Vulkan-Buffer与内存" class="headerlink" title="Vulkan Buffer与内存"></a>Vulkan Buffer与内存</h1><h3 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h3><p>在Vulkan里面，所有需要存储的资源都视为Buffer。其实这个不难理解，因为无论是Texture、VertexBuffer、IndexBuffer活着UniformBuffer等等，其实都最终都是一段内存，因此Vulkan将这些资源都视为Buffer。创建Buffer时就需要指定Buffer的大小、用途、共享模式等等。如下所示：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">VkBufferCreateInfo vertexBufferInfo;</span><br><span class="line">		ZeroVulkanStruct(vertexBufferInfo, VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO);</span><br><span class="line">		vertexBufferInfo.size  = vertices.size() * <span class="keyword">sizeof</span>(Vertex);</span><br><span class="line">		vertexBufferInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;</span><br><span class="line">		VERIFYVULKANRESULT(vkCreateBuffer(m_Device, &amp;vertexBufferInfo, VULKAN_CPU_ALLOCATOR, &amp;tempVertexBuffer.buffer));</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/public/2019/06/07/VulkanBuffer与内存/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">内存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/06/07/VulkanBuffer与内存/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-物理设备与簇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/06/03/物理设备与簇/">物理设备与簇</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/06/03/物理设备与簇/" class="archive-article-date">
-  	<time datetime="2019-06-03T13:53:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="物理设备与簇"><a href="#物理设备与簇" class="headerlink" title="物理设备与簇"></a>物理设备与簇</h1><h2 id="物理设备"><a href="#物理设备" class="headerlink" title="物理设备"></a>物理设备</h2><p>物理设备可以简单的将它与设备上的GPU对应起来。例如集成显卡对应一个物理设备，独立显卡RTX2080TI对应一个物理设备。那么就有可能出现一台设备上面出现多个物理设备，例如：集成显卡<code>Intel(R) HD Graphics 630</code>、独立显卡<code>RTX2080TI</code>、计算卡<code>NVIDIA P106</code>。</p>
-        
-          <a class="article-more-a" href="/public/2019/06/03/物理设备与簇/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/06/03/物理设备与簇/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -972,8 +363,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
