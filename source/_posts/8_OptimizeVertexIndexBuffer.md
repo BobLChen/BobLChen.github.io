@@ -290,8 +290,6 @@ std::vector<VkVertexInputAttributeDescription> DVKVertexBuffer::GetInputAttribut
 
 ### VkVertexInputBindingDescription
 
-### VkVertexInputBindingDescription
-
 虽然我们提供了VertexBuffer的数据结构信息，上面也提到顶点数据可以分别存储到不同的Buffer。那么每个Buffer上面存储的数据信息也需要进行描述。
 
 ```c++
