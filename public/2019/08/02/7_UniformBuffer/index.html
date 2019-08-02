@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
   <title>7_UniformBuffer | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Github项目 Demo源码地址  在之前的几个Demo里面，我们都是在为后续的Demo做准备，包括封装CommandBuffer、封装Buffer、集成ImGUI等等。做了这么久的准备工作，暂时不想再进行相关的封装工作，现在迫切的需要一个新的Demo来验证之前的封装是否合理。在这个Demo里面，我们将传递一些参数给Shader，通过控制不同的参数来达到一些需要的效果。">
+  <meta name="description" content="Github项目 Demo源码地址 在之前的几个Demo里面，我们都是在为后续的Demo做准备，包括封装CommandBuffer、封装Buffer、集成ImGUI等等。做了这么久的准备工作，暂时不想再进行相关的封装工作，现在迫切的需要一个新的Demo来验证之前的封装是否合理。在这个Demo里面，我们将传递一些参数给Shader，通过控制不同的参数来达到一些需要的效果。">
 <meta name="keywords" content="Vulkan,物理设备,3D,Demo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="7_UniformBuffer">
 <meta property="og:url" content="https://boblchen.github.io/public/2019/08/02/7_UniformBuffer/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="Github项目 Demo源码地址  在之前的几个Demo里面，我们都是在为后续的Demo做准备，包括封装CommandBuffer、封装Buffer、集成ImGUI等等。做了这么久的准备工作，暂时不想再进行相关的封装工作，现在迫切的需要一个新的Demo来验证之前的封装是否合理。在这个Demo里面，我们将传递一些参数给Shader，通过控制不同的参数来达到一些需要的效果。">
+<meta property="og:description" content="Github项目 Demo源码地址 在之前的几个Demo里面，我们都是在为后续的Demo做准备，包括封装CommandBuffer、封装Buffer、集成ImGUI等等。做了这么久的准备工作，暂时不想再进行相关的封装工作，现在迫切的需要一个新的Demo来验证之前的封装是否合理。在这个Demo里面，我们将传递一些参数给Shader，通过控制不同的参数来达到一些需要的效果。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/7_UniformBuffer.jpg">
-<meta property="og:updated_time" content="2019-08-02T01:28:40.487Z">
+<meta property="og:updated_time" content="2019-08-02T04:12:31.354Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="7_UniformBuffer">
-<meta name="twitter:description" content="Github项目 Demo源码地址  在之前的几个Demo里面，我们都是在为后续的Demo做准备，包括封装CommandBuffer、封装Buffer、集成ImGUI等等。做了这么久的准备工作，暂时不想再进行相关的封装工作，现在迫切的需要一个新的Demo来验证之前的封装是否合理。在这个Demo里面，我们将传递一些参数给Shader，通过控制不同的参数来达到一些需要的效果。">
+<meta name="twitter:description" content="Github项目 Demo源码地址 在之前的几个Demo里面，我们都是在为后续的Demo做准备，包括封装CommandBuffer、封装Buffer、集成ImGUI等等。做了这么久的准备工作，暂时不想再进行相关的封装工作，现在迫切的需要一个新的Demo来验证之前的封装是否合理。在这个Demo里面，我们将传递一些参数给Shader，通过控制不同的参数来达到一些需要的效果。">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/7_UniformBuffer.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
@@ -183,10 +183,10 @@
       
         <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">Github项目</a></p>
 <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/7_UniformBuffer" target="_blank" rel="noopener">Demo源码地址</a></p>
-<p><img src="https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/7_UniformBuffer.jpg" alt="Preview"></p>
 <p>在之前的几个Demo里面，我们都是在为后续的Demo做准备，包括封装CommandBuffer、封装Buffer、集成ImGUI等等。做了这么久的准备工作，暂时不想再进行相关的封装工作，现在迫切的需要一个新的Demo来验证之前的封装是否合理。在这个Demo里面，我们将传递一些参数给Shader，通过控制不同的参数来达到一些需要的效果。</p>
 <a id="more"></a>
 
+<p><img src="https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/7_UniformBuffer.jpg" alt="Preview"></p>
 <h3 id="Pre-Integrated-Skin-Shading"><a href="#Pre-Integrated-Skin-Shading" class="headerlink" title="Pre-Integrated Skin Shading"></a><a href="https://zhuanlan.zhihu.com/p/56052015" target="_blank" rel="noopener">Pre-Integrated Skin Shading</a></h3><p>皮肤材质是大家都比较关心，也希望解决的一个问题。常规的模拟方法是需要大量的计算，然后才能得到一个比较近似的结果。然后就出现了众多大佬经过多年的潜心研究，发明了一种计算量少但是效果还不错的方法。主要的原理还请参考这篇文章<a href="https://zhuanlan.zhihu.com/p/56052015" target="_blank" rel="noopener">Pre-Integrated Skin Shading</a>。在这篇文章里面，大佬将一些计算预先计算好，然后存储到一张贴图里面，然后在Shader里面通过这张查询图+曲率贴图以低成本的方式实现一个不成的效果。</p>
 <p>在这里我们不细说它是如何实现的，我们也不在这个Demo里面实现这个皮肤效果。我们另辟蹊径，在Shader里面通过函数来简单的拟合这张<code>LUT</code>查询图。当然我们只是拟合，并不能保证一模一样，但是也不要认为这个没有任何作用。1、首先我们节省了一张贴图，一张贴图无论是内存显存亦或者寄存器的占用，这些资源都是宝贵的；2、其次我们可以通过参数调节，来深层次的丰富效果。需要明确的是，有时候在做一些效果的时候，其实并不需要保证物理正确，反而只要保证<code>看起来非常不错</code>即可。</p>
 <h3 id="创建UniformBuffer"><a href="#创建UniformBuffer" class="headerlink" title="创建UniformBuffer"></a>创建UniformBuffer</h3><p>Shader参数一般是通过UniformBuffer来进行传递，由于UniformBuffer可变，因此一般将UniformBuffer放置到<code>Host</code>端对GPU可见。虽然访问速度慢了一点儿，但是更新速度变快了。由于我们之前封装过Buffer，因此UniformBuffer的创建变得极为简单。</p>
@@ -327,6 +327,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          8_OptimizeVertexIndexBuffer
+        
+      </div>
+    </a>
   
   
     <a href="/public/2019/08/01/6_ImageGUI/" id="article-nav-older" class="article-nav-link-wrap">

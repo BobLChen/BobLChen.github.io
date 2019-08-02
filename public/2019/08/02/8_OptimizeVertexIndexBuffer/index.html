@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
-  <title>Tag: Vulkan | Hello World</title>
+  <title>8_OptimizeVertexIndexBuffer | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我亦无他唯手熟尔">
-<meta name="keywords" content="3D Engine Opengl Stage3D DirectX Vulkan C++">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://boblchen.github.io/public/tags/Vulkan/index.html">
+  <meta name="description" content="Github项目 Demo源码地址 在前面的Demo里面，模型数据的创建全是靠手工编写。对于非常复杂模型，例如上万面上万顶点，我们不太可能也进行手工编写。后续的Demo里面势必会需要从外部加载模型文件。为了后续Demo在加载外部模型文件时更加方便快捷，我们在这个Demo里面，对VertexBuffer以及IndexBuffer进行封装。">
+<meta name="keywords" content="Vulkan,物理设备,3D,Demo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8_OptimizeVertexIndexBuffer">
+<meta property="og:url" content="https://boblchen.github.io/public/2019/08/02/8_OptimizeVertexIndexBuffer/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="我亦无他唯手熟尔">
+<meta property="og:description" content="Github项目 Demo源码地址 在前面的Demo里面，模型数据的创建全是靠手工编写。对于非常复杂模型，例如上万面上万顶点，我们不太可能也进行手工编写。后续的Demo里面势必会需要从外部加载模型文件。为了后续Demo在加载外部模型文件时更加方便快捷，我们在这个Demo里面，对VertexBuffer以及IndexBuffer进行封装。">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-02T05:16:34.376Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="我亦无他唯手熟尔">
+<meta name="twitter:title" content="8_OptimizeVertexIndexBuffer">
+<meta name="twitter:description" content="Github项目 Demo源码地址 在前面的Demo里面，模型数据的创建全是靠手工编写。对于非常复杂模型，例如上万面上万顶点，我们不太可能也进行手工编写。后续的Demo里面势必会需要从外部加载模型文件。为了后续Demo在加载外部模型文件时更加方便快捷，我们在这个Demo里面，对VertexBuffer以及IndexBuffer进行封装。">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
   
@@ -158,36 +159,84 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-8_OptimizeVertexIndexBuffer" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      8_OptimizeVertexIndexBuffer
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/public/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/" class="archive-article-date">
+
+        
+        <a href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/" class="archive-article-date">
   	<time datetime="2019-08-01T17:02:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/">8_OptimizeVertexIndexBuffer</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">Github项目</a></p>
+<p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/8_OptimizeVertexIndexBuffer" target="_blank" rel="noopener">Demo源码地址</a></p>
+<p>在前面的Demo里面，模型数据的创建全是靠手工编写。对于非常复杂模型，例如上万面上万顶点，我们不太可能也进行手工编写。后续的Demo里面势必会需要从外部加载模型文件。为了后续Demo在加载外部模型文件时更加方便快捷，我们在这个Demo里面，对<strong>VertexBuffer</strong>以及<strong>IndexBuffer</strong>进行封装。</p>
+<a id="more"></a>
 
-        <div class="article-info info-on-right">
-          
+<h2 id="IndexBuffer"><a href="#IndexBuffer" class="headerlink" title="IndexBuffer"></a>IndexBuffer</h2><p><strong>IndexBuffer</strong>非常简单，我们只需要简单封装一下索引的数量、类型、Buffer即可。头文件如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DVKIndexBuffer</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    DVKIndexBuffer()</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    ~DVKIndexBuffer()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (dvkBuffer) &#123;</span><br><span class="line">            <span class="keyword">delete</span> dvkBuffer;</span><br><span class="line">        &#125;</span><br><span class="line">        dvkBuffer = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">BindDraw</span><span class="params">(VkCommandBuffer cmdBuffer)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        vkCmdBindIndexBuffer(cmdBuffer, dvkBuffer-&gt;buffer, <span class="number">0</span>, indexType);</span><br><span class="line">        vkCmdDrawIndexed(cmdBuffer, indexCount, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> DVKIndexBuffer* <span class="title">Create</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;VulkanDevice&gt; vulkanDevice, DVKCommandBuffer* cmdBuffer, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;uint16&gt; indices, VkIndexType type = VK_INDEX_TYPE_UINT16)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    VkDevice		device = VK_NULL_HANDLE;</span><br><span class="line">    DVKBuffer*		dvkBuffer = <span class="literal">nullptr</span>;</span><br><span class="line">    int32			indexCount = <span class="number">0</span>;</span><br><span class="line">    VkIndexType		indexType = VK_INDEX_TYPE_UINT16;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是<strong>VkIndexType</strong>我们需要封装进来，因为并不是索引的设备都支持32位的索引类型的。低端设备会支持<strong>VK_INDEX_TYPE_UINT16</strong>，无符号的16位索引最大可以支持到65535个索引，也就是65535/3个三角形。IndexBuffer封装完成了之后，创建的代码我从前面的Demo里面拷贝过来。如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">DVKIndexBuffer* DVKIndexBuffer::Create(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;VulkanDevice&gt; vulkanDevice, DVKCommandBuffer* cmdBuffer, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;uint16&gt; indices, VkIndexType type)</span><br><span class="line">&#123;</span><br><span class="line">    VkDevice device = vulkanDevice-&gt;GetInstanceHandle();</span><br><span class="line"></span><br><span class="line">    DVKIndexBuffer* indexBuffer = <span class="keyword">new</span> DVKIndexBuffer();</span><br><span class="line">    indexBuffer-&gt;device = device;</span><br><span class="line">    indexBuffer-&gt;indexCount = indices.size();</span><br><span class="line"></span><br><span class="line">    vk_demo::DVKBuffer* indexStaging = vk_demo::DVKBuffer::CreateBuffer(</span><br><span class="line">        vulkanDevice, </span><br><span class="line">        VK_BUFFER_USAGE_TRANSFER_SRC_BIT, </span><br><span class="line">        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, </span><br><span class="line">        indices.size() * <span class="keyword">sizeof</span>(uint16), </span><br><span class="line">        indices.data()</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    indexBuffer-&gt;dvkBuffer = vk_demo::DVKBuffer::CreateBuffer(</span><br><span class="line">        vulkanDevice, </span><br><span class="line">        VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, </span><br><span class="line">        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, </span><br><span class="line">        indices.size() * <span class="keyword">sizeof</span>(uint16)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    cmdBuffer-&gt;Begin();</span><br><span class="line"></span><br><span class="line">    VkBufferCopy copyRegion = &#123;&#125;;</span><br><span class="line">    copyRegion.size = indices.size() * <span class="keyword">sizeof</span>(uint16);</span><br><span class="line"></span><br><span class="line">    vkCmdCopyBuffer(cmdBuffer-&gt;cmdBuffer, indexStaging-&gt;buffer, indexBuffer-&gt;dvkBuffer-&gt;buffer, <span class="number">1</span>, &amp;copyRegion);</span><br><span class="line"></span><br><span class="line">    cmdBuffer-&gt;End();</span><br><span class="line">    cmdBuffer-&gt;Submit();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">delete</span> indexStaging;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> indexBuffer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>索引Buffer的封装比较简单。</p>
+<h2 id="VertexBuffer"><a href="#VertexBuffer" class="headerlink" title="VertexBuffer"></a>VertexBuffer</h2><p>VertexBuffer需要提供的功能会比较多一些，在创建<strong>Pipeline</strong>的时候，我们会发现有这样一段代码用来描述<strong>顶点</strong>数据结构。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// (triangle.vert):</span></span><br><span class="line"><span class="comment">// layout (location = 0) in vec3 inPos;</span></span><br><span class="line"><span class="comment">// layout (location = 1) in vec3 inColor;</span></span><br><span class="line"><span class="comment">// Attribute location 0: Position</span></span><br><span class="line"><span class="comment">// Attribute location 1: Color</span></span><br><span class="line"><span class="comment">// vertex input bindding</span></span><br><span class="line">VkVertexInputBindingDescription vertexInputBinding = &#123;&#125;;</span><br><span class="line">vertexInputBinding.binding   = <span class="number">0</span>; <span class="comment">// Vertex Buffer 0</span></span><br><span class="line">vertexInputBinding.stride    = <span class="keyword">sizeof</span>(Vertex); <span class="comment">// Position + uv</span></span><br><span class="line">vertexInputBinding.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;VkVertexInputAttributeDescription&gt; vertexInputAttributs(<span class="number">2</span>);</span><br><span class="line"><span class="comment">// position</span></span><br><span class="line">vertexInputAttributs[<span class="number">0</span>].binding  = <span class="number">0</span>;</span><br><span class="line">vertexInputAttributs[<span class="number">0</span>].location = <span class="number">0</span>; <span class="comment">// diffuse.vert : layout (location = 0)</span></span><br><span class="line">vertexInputAttributs[<span class="number">0</span>].format   = VK_FORMAT_R32G32B32_SFLOAT;</span><br><span class="line">vertexInputAttributs[<span class="number">0</span>].offset   = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// uv</span></span><br><span class="line">vertexInputAttributs[<span class="number">1</span>].binding  = <span class="number">0</span>;</span><br><span class="line">vertexInputAttributs[<span class="number">1</span>].location = <span class="number">1</span>; <span class="comment">// diffuse.vert : layout (location = 1)</span></span><br><span class="line">vertexInputAttributs[<span class="number">1</span>].format   = VK_FORMAT_R32G32_SFLOAT;</span><br><span class="line">vertexInputAttributs[<span class="number">1</span>].offset   = <span class="number">12</span>;</span><br><span class="line"></span><br><span class="line">VkPipelineVertexInputStateCreateInfo vertexInputState;</span><br><span class="line">ZeroVulkanStruct(vertexInputState, VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO);</span><br><span class="line">vertexInputState.vertexBindingDescriptionCount   = <span class="number">1</span>;</span><br><span class="line">vertexInputState.pVertexBindingDescriptions      = &amp;vertexInputBinding;</span><br><span class="line">vertexInputState.vertexAttributeDescriptionCount = <span class="number">2</span>;</span><br><span class="line">vertexInputState.pVertexAttributeDescriptions    = vertexInputAttributs.data();</span><br></pre></td></tr></table></figure>
+
+<p>那么在封装<strong>VertexBuffer</strong>的时候，我们就要考虑到<strong>VertexBuffer</strong>定义了顶点的数据结构，那么它就有必要提供顶点数据结构。</p>
+<h3 id="顶点数据类型"><a href="#顶点数据类型" class="headerlink" title="顶点数据类型"></a>顶点数据类型</h3><p>为了方便处理顶点数据结构，我们先定义好一套顶点数据结构的标准出来。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> VertexAttribute</span><br><span class="line">&#123;</span><br><span class="line">	VA_None = <span class="number">0</span>,</span><br><span class="line">	VA_Position,</span><br><span class="line">	VA_UV0,</span><br><span class="line">	VA_UV1,</span><br><span class="line">	VA_Normal,</span><br><span class="line">	VA_Tangent,</span><br><span class="line">	VA_Color,</span><br><span class="line">	VA_SkinWeight,</span><br><span class="line">	VA_SkinIndex,</span><br><span class="line">	VA_Custom0,</span><br><span class="line">	VA_Custom1,</span><br><span class="line">	VA_Custom2,</span><br><span class="line">	VA_Custom3,</span><br><span class="line">	VA_Count,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>定义好顶点数据类型之后，我们就可以提供相关的工具函数，例如获取顶点数据的长度、顶点数据的类型等等。如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> int32 <span class="title">VertexAttributeToSize</span><span class="params">(VertexAttribute attribute)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// count * sizeof(float)</span></span><br><span class="line">		<span class="keyword">if</span> (attribute == VertexAttribute::VA_Position) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">3</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_UV0) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">2</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_UV1) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">2</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_Normal) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">3</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_Tangent) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">4</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_Color) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">3</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_SkinWeight) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">4</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_SkinIndex) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">4</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>);</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_Custom0 ||</span><br><span class="line">                 attribute == VertexAttribute::VA_Custom1 ||</span><br><span class="line">                 attribute == VertexAttribute::VA_Custom2 ||</span><br><span class="line">                 attribute == VertexAttribute::VA_Custom3</span><br><span class="line">        )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">4</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>);</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">	<span class="function"><span class="keyword">inline</span> VkFormat <span class="title">VertexAttributeToVkFormat</span><span class="params">(VertexAttribute attribute)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		VkFormat format = VK_FORMAT_R32G32B32_SFLOAT;</span><br><span class="line">		<span class="keyword">if</span> (attribute == VertexAttribute::VA_Position) &#123;</span><br><span class="line">			format = VK_FORMAT_R32G32B32_SFLOAT;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_UV0) &#123;</span><br><span class="line">			format = VK_FORMAT_R32G32_SFLOAT;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_UV1) &#123;</span><br><span class="line">			format = VK_FORMAT_R32G32_SFLOAT;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_Normal) &#123;</span><br><span class="line">			format = VK_FORMAT_R32G32B32_SFLOAT;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_Tangent) &#123;</span><br><span class="line">			format = VK_FORMAT_R32G32B32A32_SFLOAT;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_Color) &#123;</span><br><span class="line">			format = VK_FORMAT_R32G32B32_SFLOAT;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_SkinWeight) &#123;</span><br><span class="line">			format = VK_FORMAT_R32G32B32A32_SFLOAT;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_SkinIndex) &#123;</span><br><span class="line">			format = VK_FORMAT_R32G32B32A32_SFLOAT;</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (attribute == VertexAttribute::VA_Custom0 ||</span><br><span class="line">                 attribute == VertexAttribute::VA_Custom1 ||</span><br><span class="line">                 attribute == VertexAttribute::VA_Custom2 ||</span><br><span class="line">                 attribute == VertexAttribute::VA_Custom3</span><br><span class="line">        )</span><br><span class="line">        &#123;</span><br><span class="line">            format = VK_FORMAT_R32G32B32A32_SFLOAT;</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="keyword">return</span> format;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="顶点数据结构"><a href="#顶点数据结构" class="headerlink" title="顶点数据结构"></a>顶点数据结构</h3><p>顶点的数据可以任意排列，并不影响我们的使用，只要我们提供正确的<strong>VkVertexInputBindingDescription</strong>即可。例如顶点数据可以排列成：<strong>VA_Position</strong>+<strong>VA_Normal</strong>+<strong>VA_UV0</strong>；也可以排列成：<strong>VA_Position</strong>+<strong>VA_UV0</strong>+<strong>VA_Normal</strong>。为了完成这个需求，我们使用一个数组来存储顶点数据类型，数组的顺序就是它们的排列方式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;VertexAttribute&gt;	attributes;</span><br></pre></td></tr></table></figure>
+
+<h3 id="VkVertexInputAttributeDescription"><a href="#VkVertexInputAttributeDescription" class="headerlink" title="VkVertexInputAttributeDescription"></a>VkVertexInputAttributeDescription</h3><p>既然有了数据类型的信息，那么我们就可以根据数据类型来产生顶点的描述配置信息。先看一下<strong>VkVertexInputAttributeDescription</strong>的数据结构：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">VkVertexInputAttributeDescription</span> &#123;</span></span><br><span class="line">    <span class="keyword">uint32_t</span>    location;</span><br><span class="line">    <span class="keyword">uint32_t</span>    binding;</span><br><span class="line">    VkFormat    format;</span><br><span class="line">    <span class="keyword">uint32_t</span>    offset;</span><br><span class="line">&#125; VkVertexInputAttributeDescription;</span><br></pre></td></tr></table></figure>
+
+<p>我们会发现，其中有<strong>location</strong>和<strong>binding</strong>信息，那么它们指代的是什么意思呢？这里其实隐含了另外一个信息，那就是顶点数据没有要求必须存储到一个<strong>Buffer</strong>里面，它们可以分开存储到多个Buffer之上。例如<strong>VA_Position</strong>存储到<strong>Buffer0</strong>，<strong>VA_Normal</strong>存储到Buffer1，这样也是可以的。由于可以存储到不同的Buffer，所以就需要有信息来指定顶点数据位于哪一个Buffer。<strong>location</strong>其实就是用来干这事的。<strong>binding</strong>很好理解，跟Shader里面的顶点输入数据一一对应。</p>
+<p>在我们的Demo里面，我们为了方便，不会将数据存储到多个<strong>Buffer</strong>之上。因此<strong>attributes</strong>就描述了一个<strong>Buffer</strong>的结构。那么我们的VkVertexInputAttributeDescription信息也比较好产生了：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;VkVertexInputAttributeDescription&gt; DVKVertexBuffer::GetInputAttributes(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;VertexAttribute&gt;&amp; shaderInputs)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;VkVertexInputAttributeDescription&gt; vertexInputAttributs;</span><br><span class="line">    int32 offset = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; shaderInputs.size(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        VkVertexInputAttributeDescription inputAttribute = &#123;&#125;;</span><br><span class="line">        inputAttribute.binding  = <span class="number">0</span>;</span><br><span class="line">        inputAttribute.location = i;</span><br><span class="line">        inputAttribute.format   = VertexAttributeToVkFormat(shaderInputs[i]);</span><br><span class="line">        inputAttribute.offset   = offset;</span><br><span class="line">        offset += VertexAttributeToSize(shaderInputs[i]);</span><br><span class="line">        vertexInputAttributs.push_back(inputAttribute);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> vertexInputAttributs;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里还有一个需要注意的地方是，我们默认<strong>shaderInputs</strong>与<strong>VertexBuffer</strong>中<strong>attributes</strong>一一对应。</p>
+<h3 id="VkVertexInputBindingDescription"><a href="#VkVertexInputBindingDescription" class="headerlink" title="VkVertexInputBindingDescription"></a>VkVertexInputBindingDescription</h3><h3 id="VkVertexInputBindingDescription-1"><a href="#VkVertexInputBindingDescription-1" class="headerlink" title="VkVertexInputBindingDescription"></a>VkVertexInputBindingDescription</h3><p>虽然我们提供了VertexBuffer的数据结构信息，上面也提到顶点数据可以分别存储到不同的Buffer。那么每个Buffer上面存储的数据信息也需要进行描述。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">VkVertexInputBindingDescription DVKVertexBuffer::GetInputBinding()</span><br><span class="line">&#123;</span><br><span class="line">    int32 stride = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; attributes.size(); ++i) &#123;</span><br><span class="line">        stride += VertexAttributeToSize(attributes[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    VkVertexInputBindingDescription vertexInputBinding = &#123;&#125;;</span><br><span class="line">    vertexInputBinding.binding   = <span class="number">0</span>;</span><br><span class="line">    vertexInputBinding.stride    = stride;</span><br><span class="line">    vertexInputBinding.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> vertexInputBinding;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于我们限制了只是有一个Buffer，并且attributes属性对Shader中的输入数据对应，那么这个的信息也就可以简单的生成了。</p>
+<h3 id="创建VertexBuffer"><a href="#创建VertexBuffer" class="headerlink" title="创建VertexBuffer"></a>创建VertexBuffer</h3><p>创建VertexBuffer的函数没有特别之处，我们从之前的Demo里面拷贝过来即可。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">DVKVertexBuffer* DVKVertexBuffer::Create(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;VulkanDevice&gt; vulkanDevice, DVKCommandBuffer* cmdBuffer, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt; vertices, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;VertexAttribute&gt;&amp; attributes)</span><br><span class="line">&#123;</span><br><span class="line">    VkDevice device = vulkanDevice-&gt;GetInstanceHandle();</span><br><span class="line"></span><br><span class="line">    DVKVertexBuffer* vertexBuffer = <span class="keyword">new</span> DVKVertexBuffer();</span><br><span class="line">    vertexBuffer-&gt;device	 = device;</span><br><span class="line">    vertexBuffer-&gt;attributes = attributes;</span><br><span class="line"></span><br><span class="line">    vk_demo::DVKBuffer* vertexStaging = vk_demo::DVKBuffer::CreateBuffer(</span><br><span class="line">        vulkanDevice, </span><br><span class="line">        VK_BUFFER_USAGE_TRANSFER_SRC_BIT, </span><br><span class="line">        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, </span><br><span class="line">        vertices.size() * <span class="keyword">sizeof</span>(<span class="keyword">float</span>), </span><br><span class="line">        vertices.data()</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    vertexBuffer-&gt;dvkBuffer = vk_demo::DVKBuffer::CreateBuffer(</span><br><span class="line">        vulkanDevice, </span><br><span class="line">        VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, </span><br><span class="line">        VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, </span><br><span class="line">        vertices.size() * <span class="keyword">sizeof</span>(<span class="keyword">float</span>)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    cmdBuffer-&gt;Begin();</span><br><span class="line"></span><br><span class="line">    VkBufferCopy copyRegion = &#123;&#125;;</span><br><span class="line">    copyRegion.size = vertices.size() * <span class="keyword">sizeof</span>(<span class="keyword">float</span>);</span><br><span class="line">    vkCmdCopyBuffer(cmdBuffer-&gt;cmdBuffer, vertexStaging-&gt;buffer, vertexBuffer-&gt;dvkBuffer-&gt;buffer, <span class="number">1</span>, &amp;copyRegion);</span><br><span class="line"></span><br><span class="line">    cmdBuffer-&gt;End();</span><br><span class="line">    cmdBuffer-&gt;Submit();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">delete</span> vertexStaging;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> vertexBuffer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><p>经过了封装之后，我们就可以改动之前Demo中<strong>CreateMeshBuffer</strong>函数，如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CreateMeshBuffers</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt; vertices = &#123;</span><br><span class="line">        <span class="number">1.0f</span>,   <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>,</span><br><span class="line">        <span class="number">-1.0f</span>,  <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>,</span><br><span class="line">        <span class="number">0.0f</span>,  <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;uint16&gt; indices = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span> &#125;;</span><br><span class="line"></span><br><span class="line">    vk_demo::DVKCommandBuffer* cmdBuffer = vk_demo::DVKCommandBuffer::Create(m_VulkanDevice, m_CommandPool);</span><br><span class="line"></span><br><span class="line">    m_VertexBuffer = vk_demo::DVKVertexBuffer::Create(m_VulkanDevice, cmdBuffer, vertices, &#123; VertexAttribute::VA_Position, VertexAttribute::VA_Color &#125;);</span><br><span class="line">    m_IndexBuffer  = vk_demo::DVKIndexBuffer::Create(m_VulkanDevice, cmdBuffer, indices);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">delete</span> cmdBuffer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Pipeline</strong>创建代码中关于顶点数据的说明也可以从之前的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// (triangle.vert):</span></span><br><span class="line">		<span class="comment">// layout (location = 0) in vec3 inPos;</span></span><br><span class="line">		<span class="comment">// layout (location = 1) in vec3 inColor;</span></span><br><span class="line">		<span class="comment">// Attribute location 0: Position</span></span><br><span class="line">		<span class="comment">// Attribute location 1: Color</span></span><br><span class="line">		<span class="comment">// vertex input bindding</span></span><br><span class="line">		VkVertexInputBindingDescription vertexInputBinding = &#123;&#125;;</span><br><span class="line">		vertexInputBinding.binding   = <span class="number">0</span>; <span class="comment">// Vertex Buffer 0</span></span><br><span class="line">		vertexInputBinding.stride    = <span class="keyword">sizeof</span>(Vertex); <span class="comment">// Position + uv</span></span><br><span class="line">		vertexInputBinding.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;</span><br><span class="line">        </span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;VkVertexInputAttributeDescription&gt; vertexInputAttributs(<span class="number">2</span>);</span><br><span class="line">		<span class="comment">// position</span></span><br><span class="line">		vertexInputAttributs[<span class="number">0</span>].binding  = <span class="number">0</span>;</span><br><span class="line">        vertexInputAttributs[<span class="number">0</span>].location = <span class="number">0</span>; <span class="comment">// diffuse.vert : layout (location = 0)</span></span><br><span class="line">		vertexInputAttributs[<span class="number">0</span>].format   = VK_FORMAT_R32G32B32_SFLOAT;</span><br><span class="line">		vertexInputAttributs[<span class="number">0</span>].offset   = <span class="number">0</span>;</span><br><span class="line">		<span class="comment">// uv</span></span><br><span class="line">		vertexInputAttributs[<span class="number">1</span>].binding  = <span class="number">0</span>;</span><br><span class="line">		vertexInputAttributs[<span class="number">1</span>].location = <span class="number">1</span>; <span class="comment">// diffuse.vert : layout (location = 1)</span></span><br><span class="line">		vertexInputAttributs[<span class="number">1</span>].format   = VK_FORMAT_R32G32_SFLOAT;</span><br><span class="line">		vertexInputAttributs[<span class="number">1</span>].offset   = <span class="number">12</span>;</span><br><span class="line">		</span><br><span class="line">		VkPipelineVertexInputStateCreateInfo vertexInputState;</span><br><span class="line">		ZeroVulkanStruct(vertexInputState, VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO);</span><br><span class="line">		vertexInputState.vertexBindingDescriptionCount   = <span class="number">1</span>;</span><br><span class="line">		vertexInputState.pVertexBindingDescriptions      = &amp;vertexInputBinding;</span><br><span class="line">		vertexInputState.vertexAttributeDescriptionCount = <span class="number">2</span>;</span><br><span class="line">		vertexInputState.pVertexAttributeDescriptions    = vertexInputAttributs.data();</span><br></pre></td></tr></table></figure>
+
+<p>优化成如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">VkVertexInputBindingDescription vertexInputBinding = m_VertexBuffer-&gt;GetInputBinding();</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;VkVertexInputAttributeDescription&gt; vertexInputAttributs = m_VertexBuffer-&gt;GetInputAttributes(&#123; VertexAttribute::VA_Position, VertexAttribute::VA_Color &#125;);</span><br><span class="line">		</span><br><span class="line">		VkPipelineVertexInputStateCreateInfo vertexInputState;</span><br><span class="line">		ZeroVulkanStruct(vertexInputState, VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO);</span><br><span class="line">		vertexInputState.vertexBindingDescriptionCount   = <span class="number">1</span>;</span><br><span class="line">		vertexInputState.pVertexBindingDescriptions      = &amp;vertexInputBinding;</span><br><span class="line">		vertexInputState.vertexAttributeDescriptionCount = <span class="number">2</span>;</span><br><span class="line">		vertexInputState.pVertexAttributeDescriptions    = vertexInputAttributs.data();</span><br></pre></td></tr></table></figure>
+
+<p>总体来说，代码量进一步减少。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -211,7 +260,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -224,554 +273,104 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://boblchen.github.io/public/2019/08/02/8_OptimizeVertexIndexBuffer/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/08/02/7_UniformBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T16:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/public/2019/08/02/7_UniformBuffer/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">7_UniformBuffer</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/08/02/7_UniformBuffer/">7_UniformBuffer</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/08/01/6_ImageGUI/" class="archive-article-date">
-  	<time datetime="2019-08-01T12:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/08/01/6_ImageGUI/">6_ImGUI</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/08/01/5_OptimizeCommandBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T11:45:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/08/01/5_OptimizeCommandBuffer/">5_OptimizeCommandBuffer</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/08/01/4_OptimizeBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T10:25:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/08/01/4_OptimizeBuffer/">Vulkan Demo 4_OptimizeBuffer</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/08/01/3_DemoBase/" class="archive-article-date">
-  	<time datetime="2019-07-31T16:16:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/08/01/3_DemoBase/">Vulkan Demo 03 DemoBase</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/07/28/2_Triangle/" class="archive-article-date">
-  	<time datetime="2019-07-27T16:16:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/07/28/2_Triangle/">Vulkan Demo 02 Triangle</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/06/23/UniformBuffer设计/" class="archive-article-date">
-  	<time datetime="2019-06-23T03:51:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/06/23/UniformBuffer设计/">UniformBuffer设计</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/06/07/VulkanBuffer与内存/" class="archive-article-date">
-  	<time datetime="2019-06-07T15:43:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/06/07/VulkanBuffer与内存/">Vulkan Buffer与内存</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">内存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/06/03/物理设备与簇/" class="archive-article-date">
-  	<time datetime="2019-06-03T13:53:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/06/03/物理设备与簇/">物理设备与簇</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -794,9 +393,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

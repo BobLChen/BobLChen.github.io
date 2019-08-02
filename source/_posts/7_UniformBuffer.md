@@ -14,11 +14,11 @@ categories:
 
 [Demo源码地址](https://github.com/BobLChen/VulkanDemos/tree/master/examples/7_UniformBuffer)
 
-![Preview](https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/7_UniformBuffer.jpg)
-
 在之前的几个Demo里面，我们都是在为后续的Demo做准备，包括封装CommandBuffer、封装Buffer、集成ImGUI等等。做了这么久的准备工作，暂时不想再进行相关的封装工作，现在迫切的需要一个新的Demo来验证之前的封装是否合理。在这个Demo里面，我们将传递一些参数给Shader，通过控制不同的参数来达到一些需要的效果。
 
 <!-- more -->
+
+![Preview](https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/7_UniformBuffer.jpg)
 
 ### [Pre-Integrated Skin Shading](https://zhuanlan.zhihu.com/p/56052015)
 
