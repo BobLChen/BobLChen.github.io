@@ -16,7 +16,7 @@ categories:
 
 ![Preview](https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/6_ImageGUI.jpg)
 
-在之前的Demo里面，我对一些需要大量编码的供进行简单封装。为了方便后续**Demo**的进行，我们急需一个**UI**来进行参数或者功能相关的调节。幸运的是，**Github**上有现成的**UI**库可以使用，该项目叫做[**imgui**](https://github.com/ocornut/imgui)。这个UI库有**Vulkan**的实现[点我点我](https://github.com/ocornut/imgui/blob/master/examples/imgui_impl_vulkan.cpp)
+在之前的Demo里面，我们对一些需要大量编码的供进行简单封装。为了方便后续**Demo**的进行，我们急需一个**UI**来进行参数或者功能相关的调节。幸运的是，**Github**上有现成的**UI**库可以使用，该项目叫做[**imgui**](https://github.com/ocornut/imgui)。这个UI库有**Vulkan**的实现**[点我点我](https://github.com/ocornut/imgui/blob/master/examples/imgui_impl_vulkan.cpp)**
 
 <!-- more -->
 

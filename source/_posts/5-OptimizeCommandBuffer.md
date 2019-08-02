@@ -20,7 +20,7 @@ categories:
 
 ## DVKCommandBuffer
 
-任然跟之前的Demo一样，我们单独建个文件保存CommandBuffer相关的功能。头文件如下所示：
+仍然跟之前的Demo一样，我们单独建个文件保存CommandBuffer相关的功能。头文件如下所示：
 
 ```c++
 class DVKCommandBuffer
@@ -54,7 +54,7 @@ class DVKCommandBuffer
 
 ### Begin
 
-CommandBuffer在使用时需要显示的进行**Begin**以及**End**，但是**Begin**的时候需要**VkCommandBufferBeginInfo**参数，同时为了能够清楚的知道**CommandBuffer**的状态，我们也需要记录它是否开始以及结束，因此我们对**Begin**、**End**简单封装一下。
+CommandBuffer在使用时需要显示的进行**Begin**以及**End**，但是**Begin**的时候需要**VkCommandBufferBeginInfo**参数，同时为了能够清楚的知道**CommandBuffer**的状态，我们也需要记录它是否开始以及结束状态，因此我们对**Begin**、**End**简单封装一下。
 
 ```c++
 void DVKCommandBuffer::Begin()

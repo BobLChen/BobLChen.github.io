@@ -24,7 +24,7 @@ categories:
 
 皮肤材质是大家都比较关心，也希望解决的一个问题。常规的模拟方法是需要大量的计算，然后才能得到一个比较近似的结果。然后就出现了众多大佬经过多年的潜心研究，发明了一种计算量少但是效果还不错的方法。主要的原理还请参考这篇文章[Pre-Integrated Skin Shading](https://zhuanlan.zhihu.com/p/56052015)。在这篇文章里面，大佬将一些计算预先计算好，然后存储到一张贴图里面，然后在Shader里面通过这张查询图+曲率贴图以低成本的方式实现一个不成的效果。
 
-在这里我们不细说它是如何实现的，我们也不在这个Demo里面实现这个皮肤效果。我们另辟蹊径，在Shader里面通过函数来简单的拟合这张`LUT`查询图。当然我们只是拟合，并不能保证一模一样，但是也不要认为这个没有任何作用。1、首先我们节省了一张贴图，一张贴图无论是内存显存亦或者寄存器的占用，这些资源都是宝贵的；2、其次我们可以通过参数调节，来深层次的丰富效果。需要明确的是，有时候在做一些效果的时候，其实并不需要保证物理正确，反而只有保证`看起来非常不错`即可。
+在这里我们不细说它是如何实现的，我们也不在这个Demo里面实现这个皮肤效果。我们另辟蹊径，在Shader里面通过函数来简单的拟合这张`LUT`查询图。当然我们只是拟合，并不能保证一模一样，但是也不要认为这个没有任何作用。1、首先我们节省了一张贴图，一张贴图无论是内存显存亦或者寄存器的占用，这些资源都是宝贵的；2、其次我们可以通过参数调节，来深层次的丰富效果。需要明确的是，有时候在做一些效果的时候，其实并不需要保证物理正确，反而只要保证`看起来非常不错`即可。
 
 ### 创建UniformBuffer
 
@@ -47,7 +47,7 @@ m_ParamsBuffer->Map();
 
 ### 设置VkDescriptorPoolSize
 
-之前的Demo中可以发现，`DescriptorSet`是用来关联资源到Shader。而`DescriptorSet`的创建时通过Pool来分配的。现在我们多了一个UniformBuffer，那么我们也需要扩充我们的Pool的容量。
+之前的Demo中可以发现，`DescriptorSet`是用来关联资源到Shader。而`DescriptorSet`的创建是通过Pool来分配的。现在我们多了一个UniformBuffer，那么我们也需要扩充我们的Pool的容量。
 ```c++
 void CreateDescriptorPool()
 {
@@ -63,7 +63,7 @@ void CreateDescriptorPool()
     VERIFYVULKANRESULT(vkCreateDescriptorPool(m_Device, &descriptorPoolInfo, VULKAN_CPU_ALLOCATOR, &m_DescriptorPool));
 }
 ```
-在这里我们制定`PoolSize`的类型为`VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER`，它的数量有两个(1个ModelViewProject矩阵+1个参数)。设置好Size之后我们即可创建出对应的Pool。
+在这里我们指定`PoolSize`的类型为`VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER`，它的数量有两个(1个ModelViewProject矩阵+1个参数)。设置好Size之后我们即可创建出对应的Pool。
 
 ### 创建DescriptorSetLayout
 
