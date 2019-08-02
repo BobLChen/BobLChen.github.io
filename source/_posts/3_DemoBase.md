@@ -329,7 +329,7 @@ void DemoBase::CreatePipelineCache()
 
 ## 封装AcquireBackbufferIndex
 
-Backbuffer的索引获取时通过Swapchain请求到的，为了避免写起了麻烦，对它也简单封装一下。
+Backbuffer的索引获取是通过Swapchain请求到的，为了避免写起了麻烦，对它也简单封装一下。
 
 ```c++
 int32 DemoBase::AcquireBackbufferIndex()

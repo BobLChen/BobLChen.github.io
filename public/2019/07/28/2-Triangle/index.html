@@ -17,7 +17,7 @@
 <meta property="og:description" content="Triangle项目Github地址请戳我 注意事项在这之前有一些注意事项需要说明，这些注意事项非常关键，决定着之后一些东西的理解。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://boblchen.github.io/public/2019/07/28/2-Triangle/0.png">
-<meta property="og:updated_time" content="2019-08-01T15:21:18.520Z">
+<meta property="og:updated_time" content="2019-08-02T00:04:35.275Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vulkan Demo 02 Triangle">
 <meta name="twitter:description" content="Triangle项目Github地址请戳我 注意事项在这之前有一些注意事项需要说明，这些注意事项非常关键，决定着之后一些东西的理解。">
@@ -234,7 +234,7 @@
 <h3 id="创建SwapChain"><a href="#创建SwapChain" class="headerlink" title="创建SwapChain"></a>创建SwapChain</h3><p>Swapchain的创建跟平台相关，因为Swapchain需要跟窗口绑定，需要将图像数据输出到窗体。例如在Mac下的创建代码如下</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">VkMacOSSurfaceCreateInfoMVK createInfo;</span><br><span class="line">ZeroVulkanStruct(createInfo, VK_STRUCTURE_TYPE_MACOS_SURFACE_CREATE_INFO_MVK);</span><br><span class="line">createInfo.pView = m_View;</span><br><span class="line">VERIFYVULKANRESULT(vkCreateMacOSSurfaceMVK(instance, &amp;createInfo, VULKAN_CPU_ALLOCATOR, outSurface));</span><br></pre></td></tr></table></figure>
 
-<h3 id="创建DepthStencil"><a href="#创建DepthStencil" class="headerlink" title="创建DepthStencil"></a>创建DepthStencil</h3><p>Depth是用来优化渲染以及确定图像遮挡关系的，Stencil一般用来做一些高级的功能。绘制2D UI可能不需要Depth，因为靠着绘制顺序可以确定遮挡关系，但是3D拥有深度信息，紧靠绘制顺序无法确定遮挡关系，因此一般需要深度信息。创建DepthStencil其实很简单，它们其实就是一个Texture。创建过程大致如下：</p>
+<h3 id="创建DepthStencil"><a href="#创建DepthStencil" class="headerlink" title="创建DepthStencil"></a>创建DepthStencil</h3><p>Depth是用来优化渲染以及确定图像遮挡关系的，Stencil一般用来做一些高级的功能。绘制2D UI可能不需要Depth，因为靠着绘制顺序可以确定遮挡关系，但是3D拥有深度信息，仅靠绘制顺序无法确定遮挡关系，因此一般需要深度信息。创建DepthStencil其实很简单，它们其实就是一个Texture。创建过程大致如下：</p>
 <ul>
 <li>创建Image</li>
 <li>分配内存或显存</li>

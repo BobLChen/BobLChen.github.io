@@ -244,7 +244,7 @@ VERIFYVULKANRESULT(vkCreateMacOSSurfaceMVK(instance, &createInfo, VULKAN_CPU_ALL
 
 ### 创建DepthStencil
 
-Depth是用来优化渲染以及确定图像遮挡关系的，Stencil一般用来做一些高级的功能。绘制2D UI可能不需要Depth，因为靠着绘制顺序可以确定遮挡关系，但是3D拥有深度信息，紧靠绘制顺序无法确定遮挡关系，因此一般需要深度信息。创建DepthStencil其实很简单，它们其实就是一个Texture。创建过程大致如下：
+Depth是用来优化渲染以及确定图像遮挡关系的，Stencil一般用来做一些高级的功能。绘制2D UI可能不需要Depth，因为靠着绘制顺序可以确定遮挡关系，但是3D拥有深度信息，仅靠绘制顺序无法确定遮挡关系，因此一般需要深度信息。创建DepthStencil其实很简单，它们其实就是一个Texture。创建过程大致如下：
 - 创建Image
 - 分配内存或显存
 - Image跟内存或显存绑定
