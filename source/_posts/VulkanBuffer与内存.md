@@ -13,7 +13,7 @@ categories:
 
 ### Buffer
 
-在Vulkan里面，所有需要存储的资源都视为Buffer。其实这个不难理解，因为无论是Texture、VertexBuffer、IndexBuffer活着UniformBuffer等等，其实都最终都是一段内存，因此Vulkan将这些资源都视为Buffer。创建Buffer时就需要指定Buffer的大小、用途、共享模式等等。如下所示：
+在Vulkan里面，所有需要存储的资源都视为Buffer。其实这个不难理解，因为无论是Texture、VertexBuffer、IndexBuffer或者UniformBuffer等等，其实都最终都是一段内存，因此Vulkan将这些资源都视为Buffer。创建Buffer时就需要指定Buffer的大小、用途、共享模式等等。如下所示：
 
 ```c++
 VkBufferCreateInfo vertexBufferInfo;

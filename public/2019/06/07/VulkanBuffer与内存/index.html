@@ -8,21 +8,21 @@
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
   <title>Vulkan Buffer与内存 | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Vulkan Buffer与内存Buffer在Vulkan里面，所有需要存储的资源都视为Buffer。其实这个不难理解，因为无论是Texture、VertexBuffer、IndexBuffer活着UniformBuffer等等，其实都最终都是一段内存，因此Vulkan将这些资源都视为Buffer。创建Buffer时就需要指定Buffer的大小、用途、共享模式等等。如下所示： 12345VkBuf">
+  <meta name="description" content="Vulkan Buffer与内存Buffer在Vulkan里面，所有需要存储的资源都视为Buffer。其实这个不难理解，因为无论是Texture、VertexBuffer、IndexBuffer或者UniformBuffer等等，其实都最终都是一段内存，因此Vulkan将这些资源都视为Buffer。创建Buffer时就需要指定Buffer的大小、用途、共享模式等等。如下所示： 12345VkBuf">
 <meta name="keywords" content="Vulkan,3D,内存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vulkan Buffer与内存">
 <meta property="og:url" content="https://boblchen.github.io/public/2019/06/07/VulkanBuffer与内存/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="Vulkan Buffer与内存Buffer在Vulkan里面，所有需要存储的资源都视为Buffer。其实这个不难理解，因为无论是Texture、VertexBuffer、IndexBuffer活着UniformBuffer等等，其实都最终都是一段内存，因此Vulkan将这些资源都视为Buffer。创建Buffer时就需要指定Buffer的大小、用途、共享模式等等。如下所示： 12345VkBuf">
+<meta property="og:description" content="Vulkan Buffer与内存Buffer在Vulkan里面，所有需要存储的资源都视为Buffer。其实这个不难理解，因为无论是Texture、VertexBuffer、IndexBuffer或者UniformBuffer等等，其实都最终都是一段内存，因此Vulkan将这些资源都视为Buffer。创建Buffer时就需要指定Buffer的大小、用途、共享模式等等。如下所示： 12345VkBuf">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://boblchen.github.io/public/2019/06/07/VulkanBuffer与内存/smp_0.png">
 <meta property="og:image" content="https://boblchen.github.io/public/2019/06/07/VulkanBuffer与内存/smp_1.png">
 <meta property="og:image" content="https://boblchen.github.io/public/2019/06/07/VulkanBuffer与内存/smp_2.png">
-<meta property="og:updated_time" content="2019-06-24T04:12:09.158Z">
+<meta property="og:updated_time" content="2019-08-12T15:38:40.618Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vulkan Buffer与内存">
-<meta name="twitter:description" content="Vulkan Buffer与内存Buffer在Vulkan里面，所有需要存储的资源都视为Buffer。其实这个不难理解，因为无论是Texture、VertexBuffer、IndexBuffer活着UniformBuffer等等，其实都最终都是一段内存，因此Vulkan将这些资源都视为Buffer。创建Buffer时就需要指定Buffer的大小、用途、共享模式等等。如下所示： 12345VkBuf">
+<meta name="twitter:description" content="Vulkan Buffer与内存Buffer在Vulkan里面，所有需要存储的资源都视为Buffer。其实这个不难理解，因为无论是Texture、VertexBuffer、IndexBuffer或者UniformBuffer等等，其实都最终都是一段内存，因此Vulkan将这些资源都视为Buffer。创建Buffer时就需要指定Buffer的大小、用途、共享模式等等。如下所示： 12345VkBuf">
 <meta name="twitter:image" content="https://boblchen.github.io/public/2019/06/07/VulkanBuffer与内存/smp_0.png">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
@@ -183,7 +183,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Vulkan-Buffer与内存"><a href="#Vulkan-Buffer与内存" class="headerlink" title="Vulkan Buffer与内存"></a>Vulkan Buffer与内存</h1><h3 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h3><p>在Vulkan里面，所有需要存储的资源都视为Buffer。其实这个不难理解，因为无论是Texture、VertexBuffer、IndexBuffer活着UniformBuffer等等，其实都最终都是一段内存，因此Vulkan将这些资源都视为Buffer。创建Buffer时就需要指定Buffer的大小、用途、共享模式等等。如下所示：</p>
+        <h1 id="Vulkan-Buffer与内存"><a href="#Vulkan-Buffer与内存" class="headerlink" title="Vulkan Buffer与内存"></a>Vulkan Buffer与内存</h1><h3 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h3><p>在Vulkan里面，所有需要存储的资源都视为Buffer。其实这个不难理解，因为无论是Texture、VertexBuffer、IndexBuffer或者UniformBuffer等等，其实都最终都是一段内存，因此Vulkan将这些资源都视为Buffer。创建Buffer时就需要指定Buffer的大小、用途、共享模式等等。如下所示：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">VkBufferCreateInfo vertexBufferInfo;</span><br><span class="line">		ZeroVulkanStruct(vertexBufferInfo, VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO);</span><br><span class="line">		vertexBufferInfo.size  = vertices.size() * <span class="keyword">sizeof</span>(Vertex);</span><br><span class="line">		vertexBufferInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;</span><br><span class="line">		VERIFYVULKANRESULT(vkCreateBuffer(m_Device, &amp;vertexBufferInfo, VULKAN_CPU_ALLOCATOR, &amp;tempVertexBuffer.buffer));</span><br></pre></td></tr></table></figure>
 
 <a id="more"></a>

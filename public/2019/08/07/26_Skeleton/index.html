@@ -6,20 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
-  <title>tags | Hello World</title>
+  <title>骨骼动画简介 | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我亦无他唯手熟尔">
-<meta name="keywords" content="3D Engine Opengl Stage3D DirectX Vulkan C++">
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="https://boblchen.github.io/public/tags/index.html">
+  <meta name="description" content="项目Github地址请戳我 1、骨架骨架由一系列具有层次关系的关节(骨骼)组成，是一种树结构。可以通过平移和旋转根关节来确定整个骨架在模型空间中的位置和方向。父关节运动能影响子关节运动，但子关节运动对父关节不产生影响。因此平移、旋转、缩放父关节时，也会同时平移、旋转、缩放其所有子关节。">
+<meta name="keywords" content="Vulkan,物理设备,3D,Demo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="骨骼动画简介">
+<meta property="og:url" content="https://boblchen.github.io/public/2019/08/07/26_Skeleton/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="我亦无他唯手熟尔">
+<meta property="og:description" content="项目Github地址请戳我 1、骨架骨架由一系列具有层次关系的关节(骨骼)组成，是一种树结构。可以通过平移和旋转根关节来确定整个骨架在模型空间中的位置和方向。父关节运动能影响子关节运动，但子关节运动对父关节不产生影响。因此平移、旋转、缩放父关节时，也会同时平移、旋转、缩放其所有子关节。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-01T15:21:18.521Z">
+<meta property="og:image" content="https://boblchen.github.io/public/2019/08/07/26_Skeleton/0.png">
+<meta property="og:image" content="https://boblchen.github.io/public/2019/08/07/26_Skeleton/1.png">
+<meta property="og:image" content="https://boblchen.github.io/public/2019/08/07/26_Skeleton/2.png">
+<meta property="og:updated_time" content="2019-08-07T00:18:47.611Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tags">
-<meta name="twitter:description" content="我亦无他唯手熟尔">
+<meta name="twitter:title" content="骨骼动画简介">
+<meta name="twitter:description" content="项目Github地址请戳我 1、骨架骨架由一系列具有层次关系的关节(骨骼)组成，是一种树结构。可以通过平移和旋转根关节来确定整个骨架在模型空间中的位置和方向。父关节运动能影响子关节运动，但子关节运动对父关节不产生影响。因此平移、旋转、缩放父关节时，也会同时平移、旋转、缩放其所有子关节。">
+<meta name="twitter:image" content="https://boblchen.github.io/public/2019/08/07/26_Skeleton/0.png">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
   
@@ -159,27 +163,53 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="page-" class="article article-type-page " itemscope itemprop="blogPost">
+            <article id="post-26_Skeleton" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      tags
+      骨骼动画简介
     </h1>
   
 
         
-        <a href="/public/tags/index.html" class="archive-article-date">
-  	<time datetime="2019-08-01T09:29:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
+        <a href="/public/2019/08/07/26_Skeleton/" class="archive-article-date">
+  	<time datetime="2019-08-06T23:52:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-07</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
+<h2 id="1、骨架"><a href="#1、骨架" class="headerlink" title="1、骨架"></a>1、骨架</h2><p>骨架由一系列具有层次关系的关节(骨骼)组成，是一种树结构。可以通过平移和旋转根关节来确定整个骨架在模型空间中的位置和方向。父关节运动能影响子关节运动，但子关节运动对父关节不产生影响。因此平移、旋转、缩放父关节时，也会同时平移、旋转、缩放其所有子关节。</p>
+<a id="more"></a>
+
+<p><img src="0.png" alt="0.png"></p>
+<h2 id="2、骨骼的表示"><a href="#2、骨骼的表示" class="headerlink" title="2、骨骼的表示"></a>2、骨骼的表示</h2><p>通常会将骨骼进行编号[0,N−1],编号也是关节索引。一个骨骼包含以下信息:</p>
+<ul>
+<li>名称</li>
+<li>索引</li>
+<li>父骨骼索引</li>
+<li>BindPose(可能是逆变换，后面再说)</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Joint</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span>  name;</span><br><span class="line">    int32        index;</span><br><span class="line">    int32        parent;</span><br><span class="line">    Matrix4x4    bindPose;</span><br><span class="line">    <span class="comment">// Matrix4x4 inverseBindPose;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="姿态"><a href="#姿态" class="headerlink" title="姿态"></a>姿态</h2><p>把关节旋转、平移、缩放，就能为骨架摆出各种姿势。关节的姿势被定义为关节相对于某坐标系的位置、朝向、缩放。通常骨架存在绑定姿势、局部姿势、全局姿势。</p>
+<h3 id="绑定姿势"><a href="#绑定姿势" class="headerlink" title="绑定姿势"></a>绑定姿势</h3><p>绑定姿势是网格绑定到骨骼之前的姿势，也就是将网格当作正常<code>没有蒙皮</code>的姿势，通常是美术绑定模型时预设的。下图左边是绑定姿势，右图是某个运动状态的姿势：</p>
+<p><img src="1.png" alt="1.png"></p>
+<h3 id="局部姿势"><a href="#局部姿势" class="headerlink" title="局部姿势"></a>局部姿势</h3><p>局部姿势是关节相对于父关节的位置、缩放、旋转状态。局部姿势存储为TQS的格式，表示相对与父关节的位置、朝向、缩放。</p>
+<h3 id="全局姿势"><a href="#全局姿势" class="headerlink" title="全局姿势"></a>全局姿势</h3><p>全局姿势是相对于局部姿势而言的，它是关节相对于模型空间的姿势（局部姿势是相对于父关节的姿势）。假设某个关节<code>J</code>坐标空间的点<code>q</code>需要转换到全局空间，那么可以通过从该关节<code>J</code>开始一直遍历到根关节，即可将<code>q</code>变换到<code>世界坐标系(模型空间)</code>中表示的坐标形式。</p>
+<p><img src="2.png" alt="2.png"></p>
+<p>如上图所示，左边是人体骨架名称，右边是对应的标号。现在假我们将关节<code>rfemur</code>空间的点<code>q</code>变换到<code>世界坐标系(模型空间)</code>中,<code>rfemur</code>关节编号是8，我们用P8表示它的局部姿势矩阵，以此类推，那么<code>q</code>在世界坐标系中<code>q′</code>的坐标可以表示为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">q′ = P1 x P7 x P8 x q</span><br></pre></td></tr></table></figure>
+
+<p>对应的变换矩阵是<code>P1P7P8</code>,该变换矩阵便是关节<code>8</code>的<code>全局姿势矩阵</code>。它直接将关节<code>8坐标系下</code>的<code>点</code>变换到世界坐标系中。变换矩阵的<code>逆</code>表示<code>逆变换</code>，那么<code>全局姿势矩阵</code>的<code>逆矩阵</code>可以将<code>世界空间</code>的点变换到<code>关节空间中</code>。那么在世界坐标系中<code>q′</code>的坐标可以通过逆变换转化到关节<code>rfemur</code>空间的点<code>q</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">q = inverse(P1 x P7 x P8) x q′</span><br></pre></td></tr></table></figure>
+
+
       
 
       
@@ -187,7 +217,41 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -237,7 +301,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://boblchen.github.io/public/tags/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://boblchen.github.io/public/2019/08/07/26_Skeleton/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -249,6 +313,25 @@
 </article>
 
   
+<nav id="article-nav">
+  
+    <a href="/public/2019/08/12/12_PushConstants/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          12_PushConstants
+        
+      </div>
+    </a>
+  
+  
+    <a href="/public/2019/08/02/11_Texture/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">11_Texture</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -299,7 +382,7 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
