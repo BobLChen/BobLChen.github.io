@@ -28,7 +28,7 @@ PushConstants可以解决一部分上述的问题，但是它也有一些缺陷�
 
 ### Shader
 首先我们需要修改我们的**Shader**，在Vertex Shader里面指定数据结构为PushConstants。
-``glsl
+```glsl
 #version 450
 
 layout (location = 0) in vec3 inPosition;
