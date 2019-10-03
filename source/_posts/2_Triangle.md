@@ -25,7 +25,7 @@ categories:
 - Y轴：[-1, 1]
 - Z轴：[ 0, 1]
 
-需要注意的是Y轴是跟DirectX或者OpenGL的相反，因此一些在DirectX或者OpenGL适用的方法在Vulkan里面不适合。另外需要注意的是深度值跟OpenGL不一致，OpenGL是[-1, 1]，但是跟DirectX一样，因此在OpenGL中关于深度处理的算法无法适用于Vulkan。
+需要注意的是Y轴是跟DirectX或者OpenGL的相反，因此一些在DirectX或者OpenGL适用的方法在Vulkan里面不适合。另外需要注意的是Z轴的范围跟OpenGL不一致，OpenGL是[-1, 1]，但是跟DirectX一样，因此在OpenGL中关于深度处理的算法无法适用于Vulkan。
 
 ### 3D坐标系
 这个Demo今后将会使用左手系，如下图所示：

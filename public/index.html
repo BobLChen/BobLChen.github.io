@@ -160,6 +160,208 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-16_OptimizeShaderAndLayout" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/public/2019/08/27/16_OptimizeShaderAndLayout/">16_OptimizeShaderAndLayout</a>
+    </h1>
+  
+
+        
+        <a href="/public/2019/08/27/16_OptimizeShaderAndLayout/" class="archive-article-date">
+  	<time datetime="2019-08-27T14:49:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/16_OptimizeShaderAndLayout" target="_blank" rel="noopener">16_OptimizeShaderAndLayout</a></p>
+<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
+<p>在前面的几个Demo里面，我们在频繁的创建<strong>DescriptorLayout</strong>，到目前为此我已经对这个事情比较厌烦，在后续的Demo里面，我们不可能为了一些特效写个几百行的DescriptorLayout的创建代码，而一旦Shader发生了变化又要回来来改这些代码。我觉得因为Shader里面的Layout发生了改变而导致我要来改Demo的代码，这个事情会显得比较蠢。在这个Demo里面，我们势必要基本解决这个问题，即要能够根据Shader自动产生出DescriptorLayout出来。</p>
+        
+          <a class="article-more-a" href="/public/2019/08/27/16_OptimizeShaderAndLayout/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/public/2019/08/27/16_OptimizeShaderAndLayout/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-15_Texture3D" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/public/2019/08/23/15_Texture3D/">15_Texture3D</a>
+    </h1>
+  
+
+        
+        <a href="/public/2019/08/23/15_Texture3D/" class="archive-article-date">
+  	<time datetime="2019-08-23T15:50:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/15_Texture3D" target="_blank" rel="noopener">15_Texture3D</a></p>
+<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
+<p>在<a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/14_TextureArray" target="_blank" rel="noopener">14_TextureArray</a>这个Demo里面，我们了解了如何通过TextureArray技术来实现一个非常简易的地形。如果我们从另外一个维度来想象TextureArray，把<strong>Array</strong>想象成一个新的维度，那之前的TextureArray也就是一个Textue3D的功能。Vulkan API确实给我们提供了Texture3D的功能，在创建Texture3D的时候我们只需要把深度指定上即可。</p>
+        
+          <a class="article-more-a" href="/public/2019/08/23/15_Texture3D/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/public/2019/08/23/15_Texture3D/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-14_TextureArray" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -938,208 +1140,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-7_UniformBuffer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/02/7_UniformBuffer/">7_UniformBuffer</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/02/7_UniformBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T16:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">Github项目</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/7_UniformBuffer" target="_blank" rel="noopener">Demo源码地址</a></p>
-<p>在之前的几个Demo里面，我们都是在为后续的Demo做准备，包括封装CommandBuffer、封装Buffer、集成ImGUI等等。做了这么久的准备工作，暂时不想再进行相关的封装工作，现在迫切的需要一个新的Demo来验证之前的封装是否合理。在这个Demo里面，我们将传递一些参数给Shader，通过控制不同的参数来达到一些需要的效果。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/02/7_UniformBuffer/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/02/7_UniformBuffer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-6_ImageGUI" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/01/6_ImageGUI/">6_ImGUI</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/01/6_ImageGUI/" class="archive-article-date">
-  	<time datetime="2019-08-01T12:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/6_ImageGUI" target="_blank" rel="noopener">ImageGUI</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在之前的Demo里面，我们对一些需要大量编码的供进行简单封装。为了方便后续<strong>Demo</strong>的进行，我们急需一个<strong>UI</strong>来进行参数或者功能相关的调节。幸运的是，<strong>Github</strong>上有现成的<strong>UI</strong>库可以使用，该项目叫做<a href="https://github.com/ocornut/imgui" target="_blank" rel="noopener"><strong>imgui</strong></a>。这个UI库有<strong>Vulkan</strong>的实现<strong><a href="https://github.com/ocornut/imgui/blob/master/examples/imgui_impl_vulkan.cpp" target="_blank" rel="noopener">点我点我</a></strong></p>
-        
-          <a class="article-more-a" href="/public/2019/08/01/6_ImageGUI/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/01/6_ImageGUI/">展开全文 >></a>
         </p>
       
 
