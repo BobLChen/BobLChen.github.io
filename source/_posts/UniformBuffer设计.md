@@ -48,7 +48,7 @@ VK_CHECK_RESULT(vkBindBufferMemory(device, uniformBufferVS.buffer, uniformBuffer
 - 多个动态创建的Mesh
 
 ## 多个Mesh共用一个材质
-这种情况在引擎里面非常非常常见，其它人员会制作好一个材质，调节好参数以及Shader，然后赋予给多个相同或者不同的Mesh。在渲染的时候，**常规**情况下除了Mesh的**World矩阵**会发生变化，其它材质参数在**当前批次**里面是不会发生变化的。
+这种情况在引擎里面非常非常常见，美术制作好一个材质，调节好参数，然后赋予给多个相同或者不同的Mesh。在渲染的时候，**常规**情况下除了Mesh的**World矩阵**会发生变化，其它材质参数在**当前批次**里面是不会发生变化的。
 
 我之前设想的是，针对**World矩阵**创建出多个UniformBuffer或者创建一个Dynamic属性的UniformBuffer。但是这种方式不易于管理，因为我们要针对不同的材质、不同的**Backbuffer**分别创建出UniformBuffer或者DynamicUniformBuffer，并且这种方式会导致碎片化非常严重。
 
@@ -59,9 +59,9 @@ VK_CHECK_RESULT(vkBindBufferMemory(device, uniformBufferVS.buffer, uniformBuffer
 
 [0, 0, 0] [1, 1, 1, 1] [2, 2]
 
-一共有3 + 4 + 2个Mesh需要渲染，它们的材质ID分别为0，1，2。按照这样的方式，我们就可以在渲染ID为0的材质的时候，为它分配3个**Matrix4x4 UniformBuffer**用于存放**World矩阵**数据，为它分配**1**个**Material Param UniformBuffer**用于存放其它材质参数。
+一共有3 + 4 + 2个Mesh需要渲染，它们的材质ID分别为0，1，2。按照这样的方式，我们就可以在渲染ID为0的材质的时候，为它分配3个**Matrix4x4 UniformBuffer**用于存放**World矩阵**数据，为它分配**1**个**Material Param UniformBuffer**用于存放其材质参数。
 
-这种方式其实需要依托于我们有一个健壮强大动态分配器以及回收器，同时还要能够规避碎片化问题。最终我放弃了这种方式，觉得实在难以管理以及实现。
+这种方式其实需要我们有一个健壮强大动态的分配器以及回收器，同时还要能够规避碎片化问题。最终我放弃了这种方式，觉得难以管理以及实现。
 
 ## 利用Dynamic属性的UniformBuffer
 
@@ -131,11 +131,11 @@ protected:
 
 ## SingleDraw 
 
-SingleDraw意味着Uniform数据只在当次DrawCall中有效，例如**World**矩阵数据（骨骼数据等等），每一个渲染对象它对于的**World**都是不同的，不能共享。因此我把这种数据类型称之为**SingleDraw**。
+SingleDraw意味着Uniform数据只在当次DrawCall中有效，例如**World**矩阵数据（骨骼数据等等），每一个渲染对象对应的**World**都是不同的，不能共享。因此我把这种数据类型称之为**SingleDraw**。
 
 ## MultiDraw
 
-能够多个渲染对象共享的Uniform数据类型，我称之为**MultiDraw**。例如**Material**参数，虽然参数是作用到Shader上的，但是没有必要为每一个渲染对象都分配Uniform数据，可以为**Material**分配**Uniform**数据，使用到这个材质的渲染对象都共享**Uniform**数据。例如**Scene**的数据**ViewMatrix**、**ProjectionMatrix**、**CurrentTime**、**DeltaTime**、**Light**等数据，这些数据不仅可以在多个Material之间共享，还能贯穿当前帧。简单点对于**Material**，我们可以前10个物体时红色，后10个物体时绿色。它们的VkPipeline都是相同的，唯一不同的就是Color。如下代码：
+能够多个渲染对象共享的Uniform数据类型，我称之为**MultiDraw**。例如**Material**参数，虽然参数是作用到Shader上的，但是没有必要为每一个渲染对象都分配Uniform数据，可以为**Material**分配**Uniform**数据，使用到这个材质的渲染对象都共享**Uniform**数据。例如**Scene**的数据**ViewMatrix**、**ProjectionMatrix**、**CurrentTime**、**DeltaTime**、**Light**等数据，这些数据不仅可以在多个Material之间共享，还能贯穿当前帧。简单点对于**Material**，我们可以前10个物体是红色，后10个物体是绿色。它们的VkPipeline都是相同的，唯一不同的就是Color。如下代码：
 
 [Github直达](<https://github.com/BobLChen/VulkanTutorials/blob/master/examples/6_DynamicUniformBuffer/DynamicUniformBuffer.cpp#L409>)
 

@@ -206,7 +206,7 @@ virtual void CreateFrameBuffers()
 
 ### 封装常用属性
 
-**AppModuleBase**只提供RenderPass、FrameBuffer、DepthStencil的封装，我不打算在**AppModuleBase**里面进行过度的封装，因为随着这个教程的不断演化，最终我是打算演化成为一个渲染功能比较健全的引擎。所以**Demo**功能我们专门在封装一个类**DemoBase**。
+**AppModuleBase**只提供RenderPass、FrameBuffer、DepthStencil的封装，我不打算在**AppModuleBase**里面进行过度的封装，因为随着这个教程的不断演化，最终我是打算演化成为一个渲染功能比较健全的引擎。所以**Demo**功能我们专门封装到一个类**DemoBase**。
 
 有一些常用属性是需要经常访问的，例如**Device**、**FrameBuffer尺寸**、**Queue**等等。我们为**DemoBase**提供一个**Setup**函数，用于获取保存这些属性。即只要在**Demo**中调用了**Setup**函数，我们就可以直接获取这些参数。
 

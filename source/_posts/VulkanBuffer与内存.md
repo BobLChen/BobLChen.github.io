@@ -17,10 +17,10 @@ categories:
 
 ```c++
 VkBufferCreateInfo vertexBufferInfo;
-		ZeroVulkanStruct(vertexBufferInfo, VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO);
-		vertexBufferInfo.size  = vertices.size() * sizeof(Vertex);
-		vertexBufferInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
-		VERIFYVULKANRESULT(vkCreateBuffer(m_Device, &vertexBufferInfo, VULKAN_CPU_ALLOCATOR, &tempVertexBuffer.buffer));
+ZeroVulkanStruct(vertexBufferInfo, VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO);
+vertexBufferInfo.size  = vertices.size() * sizeof(Vertex);
+vertexBufferInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+VERIFYVULKANRESULT(vkCreateBuffer(m_Device, &vertexBufferInfo, VULKAN_CPU_ALLOCATOR, &tempVertexBuffer.buffer));
 ```
 
 <!-- more -->
@@ -31,16 +31,16 @@ VkBufferCreateInfo vertexBufferInfo;
 
 ```c++
 vkGetBufferMemoryRequirements(m_Device, tempVertexBuffer.buffer, &memReqInfo);
-		uint32 memoryTypeIndex = 0;
-		GetVulkanRHI()->GetDevice()->GetMemoryManager().GetMemoryTypeFromProperties(memReqInfo.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, &memoryTypeIndex);
-		memAllocInfo.allocationSize  = memReqInfo.size;
-		memAllocInfo.memoryTypeIndex = memoryTypeIndex;
-		VERIFYVULKANRESULT(vkAllocateMemory(m_Device, &memAllocInfo, VULKAN_CPU_ALLOCATOR, &tempVertexBuffer.memory));
+uint32 memoryTypeIndex = 0;
+GetVulkanRHI()->GetDevice()->GetMemoryManager().GetMemoryTypeFromProperties(memReqInfo.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, &memoryTypeIndex);
+memAllocInfo.allocationSize  = memReqInfo.size;
+memAllocInfo.memoryTypeIndex = memoryTypeIndex;
+VERIFYVULKANRESULT(vkAllocateMemory(m_Device, &memAllocInfo, VULKAN_CPU_ALLOCATOR, &tempVertexBuffer.memory));
 ```
 
 ### Buffer与内存绑定
 
-分配好内存之后，就可以将Buffer于内存绑定到一起。
+分配好内存之后，就可以将Buffer与内存绑定到一起。
 
 ```c++
 VERIFYVULKANRESULT(vkBindBufferMemory(m_Device, tempVertexBuffer.buffer, tempVertexBuffer.memory, 0));
