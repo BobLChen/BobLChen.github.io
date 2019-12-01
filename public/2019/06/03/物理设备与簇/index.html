@@ -17,7 +17,7 @@
 <meta property="og:description" content="物理设备与簇物理设备物理设备可以简单的将它与设备上的GPU对应起来。例如集成显卡对应一个物理设备，独立显卡RTX2080TI对应一个物理设备。那么就有可能出现一台设备上面出现多个物理设备，例如：集成显卡Intel(R) HD Graphics 630、独立显卡RTX2080TI、计算卡NVIDIA P106。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://boblchen.github.io/public/2019/06/03/物理设备与簇/Device2QueueFamilies.png">
-<meta property="og:updated_time" content="2019-06-24T04:12:09.163Z">
+<meta property="og:updated_time" content="2019-12-01T14:49:38.108Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="物理设备与簇">
 <meta name="twitter:description" content="物理设备与簇物理设备物理设备可以简单的将它与设备上的GPU对应起来。例如集成显卡对应一个物理设备，独立显卡RTX2080TI对应一个物理设备。那么就有可能出现一台设备上面出现多个物理设备，例如：集成显卡Intel(R) HD Graphics 630、独立显卡RTX2080TI、计算卡NVIDIA P106。">
@@ -184,7 +184,7 @@
         <h1 id="物理设备与簇"><a href="#物理设备与簇" class="headerlink" title="物理设备与簇"></a>物理设备与簇</h1><h2 id="物理设备"><a href="#物理设备" class="headerlink" title="物理设备"></a>物理设备</h2><p>物理设备可以简单的将它与设备上的GPU对应起来。例如集成显卡对应一个物理设备，独立显卡RTX2080TI对应一个物理设备。那么就有可能出现一台设备上面出现多个物理设备，例如：集成显卡<code>Intel(R) HD Graphics 630</code>、独立显卡<code>RTX2080TI</code>、计算卡<code>NVIDIA P106</code>。</p>
 <a id="more"></a>
 
-<h2 id="簇"><a href="#簇" class="headerlink" title="簇"></a>簇</h2><p>以<code>RTX2080TI</code>为例，该显卡功能强大，是2018民用最强的旗舰款，将它类比CPU的核心(方便理解，原理不一样)，那么该显卡就具有多核能力，在Vulkan中它映射为队列。例如：<code>RTX2080TI</code>有16个队列专门用于绘图(Gfx)、8个队列专门用于计算(Compute)、1个队列(Xfer)用于CPU-GPU-GPU之间的数据传输。Vulkan将这些专有的功能队列称之为<code>簇</code>，每一<code>簇</code>里面又分别有不同数量的队列。</p>
+<h2 id="簇"><a href="#簇" class="headerlink" title="簇"></a>簇</h2><p>以<code>RTX2080TI</code>为例，该显卡功能强大，是2018民用最强的旗舰款，将它类比CPU的核心(方便理解，原理不一样)，那么该显卡就具有多核能力，在Vulkan中它映射为队列。例如：<code>RTX2080TI</code>有16个队列专门用于绘图(Gfx)、8个队列专门用于计算(Compute)、1个队列(Xfer)用于CPU-GPU之间的数据传输。Vulkan将这些专有的功能队列称之为<code>簇</code>，每一<code>簇</code>里面又分别有不同数量的队列。</p>
 <p><img src="Device2QueueFamilies.png" alt="Device2QueueFamilies"></p>
 <h3 id="获取物理设备信息"><a href="#获取物理设备信息" class="headerlink" title="获取物理设备信息"></a>获取物理设备信息</h3><ul>
 <li><code>vkEnumeratePhysicalDevices</code>：检索出当前设备的所有物理设备。</li>
