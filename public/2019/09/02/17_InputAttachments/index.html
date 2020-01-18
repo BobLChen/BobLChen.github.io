@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
   <title>17_InputAttachments | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="17_InputAttachments 项目Github地址请戳我 在这个Demo里面我们来了解如何使用InputAttachment(附件)以及如何在一个Pass里面实现简易的延迟光照。InputAttachment我们会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，因此在这个Demo里面我们顺便了解一下如何在一个Pass里面进行对附件的读取操作。">
+  <meta name="description" content="17_InputAttachments 项目Github地址请戳我 在这个Demo里面我们来了解如何使用InputAttachment(附件)。InputAttachment我们会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，我们将这个Demo里面了解如何在一个Pass里面进行对附件的读取操作。">
 <meta name="keywords" content="Vulkan,物理设备,3D,Demo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="17_InputAttachments">
 <meta property="og:url" content="https://boblchen.github.io/public/2019/09/02/17_InputAttachments/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="17_InputAttachments 项目Github地址请戳我 在这个Demo里面我们来了解如何使用InputAttachment(附件)以及如何在一个Pass里面实现简易的延迟光照。InputAttachment我们会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，因此在这个Demo里面我们顺便了解一下如何在一个Pass里面进行对附件的读取操作。">
+<meta property="og:description" content="17_InputAttachments 项目Github地址请戳我 在这个Demo里面我们来了解如何使用InputAttachment(附件)。InputAttachment我们会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，我们将这个Demo里面了解如何在一个Pass里面进行对附件的读取操作。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/17_InputAttachments.jpg">
-<meta property="og:updated_time" content="2019-12-01T13:45:01.370Z">
+<meta property="og:updated_time" content="2020-01-17T15:16:53.419Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="17_InputAttachments">
-<meta name="twitter:description" content="17_InputAttachments 项目Github地址请戳我 在这个Demo里面我们来了解如何使用InputAttachment(附件)以及如何在一个Pass里面实现简易的延迟光照。InputAttachment我们会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，因此在这个Demo里面我们顺便了解一下如何在一个Pass里面进行对附件的读取操作。">
+<meta name="twitter:description" content="17_InputAttachments 项目Github地址请戳我 在这个Demo里面我们来了解如何使用InputAttachment(附件)。InputAttachment我们会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，我们将这个Demo里面了解如何在一个Pass里面进行对附件的读取操作。">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/17_InputAttachments.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
@@ -183,7 +183,7 @@
       
         <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/17_InputAttachments" target="_blank" rel="noopener">17_InputAttachments</a></p>
 <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在这个Demo里面我们来了解如何使用InputAttachment(附件)以及如何在一个Pass里面实现简易的延迟光照。InputAttachment我们会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，因此在这个Demo里面我们顺便了解一下如何在一个Pass里面进行对附件的读取操作。</p>
+<p>在这个Demo里面我们来了解如何使用InputAttachment(附件)。InputAttachment我们会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，我们将这个Demo里面了解如何在一个Pass里面进行对附件的读取操作。</p>
 <a id="more"></a>
 
 <p><img src="https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/17_InputAttachments.jpg" alt="17_InputAttachments"></p>
@@ -372,6 +372,15 @@
   
 <nav id="article-nav">
   
+    <a href="/public/2019/09/09/18_DeferredShading/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          18_DeferredShading
+        
+      </div>
+    </a>
+  
   
     <a href="/public/2019/08/27/16_OptimizeShaderAndLayout/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">16_OptimizeShaderAndLayout</div>
@@ -417,7 +426,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 小朋友
+    		&copy; 2020 小朋友
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

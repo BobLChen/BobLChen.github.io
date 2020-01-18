@@ -14,7 +14,7 @@ categories:
 
 [项目Github地址请戳我](https://github.com/BobLChen/VulkanDemos)
 
-在这个Demo里面我们来了解如何使用InputAttachment(附件)以及如何在一个Pass里面实现简易的延迟光照。InputAttachment我们会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，因此在这个Demo里面我们顺便了解一下如何在一个Pass里面进行对附件的读取操作。
+在这个Demo里面我们来了解如何使用InputAttachment(附件)。InputAttachment我们会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，我们将这个Demo里面了解如何在一个Pass里面进行对附件的读取操作。
 
 <!-- more -->
 
