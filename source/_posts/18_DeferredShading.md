@@ -14,7 +14,7 @@ categories:
 
 [项目Github地址请戳我](https://github.com/BobLChen/VulkanDemos)
 
-基于上一个Demo的知识，在这个Demo里面简单的进阶一下，实现一个建议的延迟渲染效果。
+基于上一个Demo的知识，在这个Demo里面简单的进阶一下，实现一个简易的延迟渲染效果。
 
 <!-- more -->
 
@@ -22,7 +22,7 @@ categories:
 
 ## 18_DeferredShading
 
-### 输出位置数据
+### 输出位置数据
 在上一节Demo里面，我们输出了Color、Depth、Normal数据，在这一节Demo里面我们增加一项位置数据的输出。
 采用VK_FORMAT_R16G16B16A16_SFLOAT格式存储即可，如果位置数据范围非常大，可以考虑用32位浮点数来进行存储。
 ```c++
@@ -116,7 +116,7 @@ void UpdateUniform(float time, float delta)
 
 ### 准备Pipeline相关的数据
 
-这里我就不在赘述，这个步骤在之前已经设置了很多次，这里只是简单提一下。因为我们增加了位置的附件数据，那么在输出的地方以及使用的地方都需要增加与之相关的描述或资源。
+这里我就不在赘述，这个步骤在之前已经设置了很多次，这里只是简单提一下。因为我们增加了位置的附件数据，那么在输出的地方以及使用的地方都需要增加与之相关的描述或资源。
 
 ### Shader
 
@@ -177,4 +177,4 @@ void main()
 
 ```
 
-在Fragment shader里面，我们写了一个`for`循环进行逐Light计算光照，根据Light的位置与顶点的位置可以计算出Light与顶点的数据，根据Light的`radius`属性可以计算出Light的衰减。其它的按照常规的方式计算diffuse颜色即可，然后应用衰减就可以得到一个建议的`Point Light`的形态。最终我们将所有灯光的颜色累加起来，得到了最终的效果，也就是预览图的效果。
+在Fragment shader里面，我们写了一个`for`循环进行逐Light计算光照，根据Light的位置与顶点的位置可以计算出Light与顶点的数据，根据Light的`radius`属性可以计算出Light的衰减。其它的按照常规的方式计算diffuse颜色即可，然后应用衰减就可以得到一个简易的`Point Light`的形态。最终我们将所有灯光的颜色累加起来，得到了最终的效果，也就是预览图的效果。
