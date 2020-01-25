@@ -14,39 +14,39 @@ categories:
 
 [项目Github地址请戳我](https://github.com/BobLChen/VulkanDemos)
 
-在前面的几个Demo里面，我们在频繁的创建**DescriptorLayout**，到目前为此我已经对这个事情比较厌烦，在后续的Demo里面，我们不可能为了一些特效写个几百行的DescriptorLayout的创建代码，而一旦Shader发生了变化又要回来来改这些代码。我觉得因为Shader里面的Layout发生了改变而导致我要来改Demo的代码，这个事情会显得比较蠢。在这个Demo里面，我们势必要基本解决这个问题，即要能够根据Shader自动产生出DescriptorLayout出来。
+在前面的Demo里面，我们都在频繁的创建**DescriptorLayout**，我开始对这个过程感到厌烦，在后续的Demo里面，不可能为了一些特效写个几百行的DescriptorLayout的创建代码，并且一旦Shader发生了变化又要回来改这些代码。我觉得因为Shader里面的Layout发生了改变而导致我要来改Demo的代码，这个事情会显得比较蠢。在这个Demo里面，我们势必要基本解决这个问题，即要能够根据Shader自动产生出DescriptorLayout出来。
 
 <!-- more -->
 
 ## 16_OptimizeShaderAndLayout
 
-目前我采样的方式比较直接粗暴，但是我希望可以通过这种方式来启发大家采样更加稳健的方案。在这个Demo里面，我采用了一个SPIRV反编译器来反编译我的二进制Shader，通过反编译器获得相关的DescriptorLayout信息。在真实的生成环境中，我建议大家利用SPIRV编译器在Editor中对Shader进行编译，然后获得相关的信息，最后存储到Shader中，最后加载Shader数据通过一次反序列化获得所有的数据。
+目前我采用的方式比较直接粗暴，但是我希望可以通过这种方式来启发大家采用更加稳健的方案。在这个Demo里面，我采用了一个**SPIRV**反编译器来反编译二进制Shader，通过反编译器获得相关的DescriptorLayout信息。在生成环境中，我建议大家利用SPIRV编译器在Editor中对Shader进行编译，然后获得相关的信息，存储到Shader中，最后加载Shader数据通过一次反序列化获得所有的数据。
 
-SPIRV反编译库用到了**SPIRV_CROSS**这个库，我已经通过CMake集成到了Demo里面。下面我们来设想一下自动产生DescriptorLayout的流程。
+SPIRV反编译用到了**SPIRV_CROSS**这个库，我已经通过CMake集成到了Demo里面。下面我们来设计一下自动产生DescriptorLayout的流程。
 
 我们新建一个**DVKShader.h**和**DVKShader.cpp**用于存放相关的代码。
 
 ### 产生流程
 
 #### 1、加载Shader二进制数据
-这个不用多说，我们肯定要载入对应的二进制数据，才能完成后续的功能。目前我们知道的Shader类型有以下几种：
+这个不用多说，我们肯定要载入对应的二进制数据，才能完成后续的功能。目前知道的Shader类型有以下几种：
 - Vertex shader
 - Geometry shdaer
 - Tessellation control shader
 - Tessellation evaluation shader
 - Compute shader
 - Fragment shader
-目前只有这几种Shader，但是新出的**RTX**系列增加了**Mesh Shader**，**Mesh Shader**我们暂时不考虑。
+目前只有这几种Shader，但是新出的**RTX**系列增加了**Mesh Shader**、**Raytracing**系列Shader，这些我们暂时不考虑。
 
 #### 2、创建ShaderModule
-在Vulkan里面，Pipeline需要多种Shader配合使用，每一种Shader对应一个Shader Module。在这个Demo系列里面，我们把**多种Shader Module**的组合当成一个**Shader**。但是我们任然需要对Shader Module进行一个简单的封装。代码如下：
+在Vulkan里面，Pipeline需要多种Shader配合使用，每一种Shader对应一个Shader Module。在这个Demo系列里面，我把**多种Shader Module**的组合当成一个**Shader**。但是任然需要对Shader Module进行一个简单的封装。代码如下：
 ```c++
 class DVKShaderModule
 {
 private:
     DVKShaderModule()
     {
-
+        
     }
 
 public:
@@ -108,7 +108,7 @@ DVKShaderModule* DVKShaderModule::Create(std::shared_ptr<VulkanDevice> vulkanDev
 }
 
 ```
-通过**DVKShaderModule**我们可以获取到对应的二进制数据、ShaderModule、ShaderStage。
+通过**DVKShaderModule**可以获取到对应的二进制数据、ShaderModule、ShaderStage。
 
 #### 4、解析DescriptorLayout
 在这个Demo里面，我将解析过程称为编译，编译的时候就是对每个Shader Module进行一次解析，获取到对应的Layout信息。代码如下：
@@ -152,7 +152,7 @@ void DVKShader::Compile()
 
 ```
 
-**Compile**函数主要就是在解析每个ShaderModule，然后获取Vertex Shader的输入信息，产生Layout信息。接下来我们着重看一下**ProcessShaderModule**函数，代码如下：
+**Compile**函数主要就是在解析每个ShaderModule，然后获取Vertex Shader的输入信息，产生Layout信息。接下来着重看一下**ProcessShaderModule**函数，代码如下：
 
 ```c++
 void DVKShader::ProcessShaderModule(DVKShaderModule* shaderModule)
@@ -180,13 +180,13 @@ void DVKShader::ProcessShaderModule(DVKShaderModule* shaderModule)
 
 ```
 
-**spirv_cross**就是我们使用到的反编译器，我们传入Shader对应的二进制数据，然后通过**spirv_cross::Compiler**反编译ShaderModule，获取到反编译之后的数据。
+**spirv_cross**就是使用到的反编译器，传入Shader对应的二进制数据，然后通过**spirv_cross::Compiler**反编译ShaderModule，获取到反编译之后的数据。
 ```c++
 spirv_cross::Compiler compiler((uint32*)shaderModule->data, shaderModule->size / sizeof(uint32));
 spirv_cross::ShaderResources resources = compiler.get_shader_resources();
 ```
 
-反编译完成之后，我们目前掌握的Demo知识里面，只有Uniform、Texture以及Input数据。因此我们针对这三个类型进行解析存储。
+反编译完成之后，根据目前掌握知识，只需要用到Uniform、Texture以及Input数据。因此针对这三个类型进行解析存储。
 ```c++
 void DVKShader::ProcessUniformBuffers(spirv_cross::Compiler& compiler, spirv_cross::ShaderResources& resources, VkShaderStageFlags stageFlags)
 {
@@ -314,10 +314,10 @@ void DVKShader::ProcessInput(spirv_cross::Compiler& compiler, spirv_cross::Shade
 
 ```
 
-需要注意的一个地方是，不同的ShaderModule可以共享数据，即可以共享Layout，例如一个Uniform数据即可以被Vertex Shader使用，也可以被Fragment Shader使用，只需要保证他们的Layout一致，就可以避免创建多份Uniform数据。
+需要注意的一个地方是，不同的ShaderModule可以共享数据，即可以共享Layout，例如一个Uniform数据即可以被Vertex Shader使用，也可以被Fragment Shader使用，只需要保证它们的Layout一致，就可以避免创建多份Uniform数据。
 
 #### 5、Vertex Input
-Vertex Shader是包含了Input的Layout的，我们解析完Vertex Shader之后既可以产生出对应的Input Layout数据。目前我们对Input的数据处理比较粗暴，只设计了一个Buffer用来存储所有的数据，对顺序和格式也有特别的要求，这种方式自由度不高，但是目前我们Demo是足够使用。
+Vertex Shader是包含了Input的Layout的，解析完Vertex Shader之后既可以产生出对应的Input Layout数据。目前对Input的数据处理比较粗暴，只设计了一个Buffer用来存储所有的数据，对顺序和格式也有特别的要求，这种方式自由度不高，但是足够Demo使用。
 ```c++
 void DVKShader::GenerateInputInfo()
 {
@@ -414,9 +414,9 @@ void DVKShader::GenerateLayout()
 
 #### DVKDescriptorSetPool
 
-之前的Demo里面也了解到**DescriptorSet**是资源与Shader的桥梁，DescriptorSet通过DescriptorLayout创建。既然我们在DVKShader里面有了**DescriptorLayout**，那么我们创建**DescriptorSet**也就轻而易举了。
+之前的Demo里面也了解到**DescriptorSet**是资源与Shader的桥梁，DescriptorSet通过DescriptorLayout创建。既然在DVKShader里面有了**DescriptorLayout**，那么创建**DescriptorSet**也就轻而易举了。
 
-在生产环境中，我们一般会制作出Shader，然后制作出非常非常多的Material，这些Material都是用到的同一个Shader，只是参数不同而已，例如Texture不同。那么反应到我们现在的系统里面，也就是**DescriptorSet**不同。由此可见，我们的**DVKShader**需要有能力产生出非常多的**DescriptorSet**，这些**DescriptorSet**负责沟通不同的资源。
+在生产环境中，一般会制作出Shader，然后制作出非常非常多的Material，这些Material都是用到的同一个Shader，只是参数不同而已，例如Texture不同。那么反应到我们现在的系统里面，也就是**DescriptorSet**不同。由此可见，**DVKShader**需要有能力产生出非常多的**DescriptorSet**，这些**DescriptorSet**负责沟通不同的资源。
 
 为了更好的创建维护**DescriptorSet**，在这个Demo里面，我设计了一个简单的**DVKDescriptorSetPool**，用来维护这些**DescriptorSet**。代码如下：
 ```c++
@@ -495,7 +495,7 @@ public:
 
 #### DVKDescriptorSet
 
-有了**DescriptorSetPool**之后，我们再对**DescriptorSet**进行一下简单的封装，让它能够快速方便的对UniformBuffer和Texture进行Update操作。在前面通过反编译器获取了所有的Layout信息，通过Layout信息我们就可以查询**变量名称**对应的Layout类型，然后进行相关的Update操作。
+有了**DescriptorSetPool**之后，再对**DescriptorSet**进行一下简单的封装，让它能够快速方便的对UniformBuffer和Texture进行Update操作。在前面通过反编译器获取了所有的Layout信息，通过Layout信息可以查询**变量名称**对应的Layout类型，然后进行相关的Update操作。
 
 ```c++
 class DVKDescriptorSet
@@ -586,7 +586,7 @@ public:
 
 ```
 
-经过了上述的一些列操作之后，我们的整个DescriptorLayout就可以初步的自动化起来。最后我们来改造一下上一个Demo的代码。
+经过了上述的一些列操作之后，我们的整个DescriptorLayout就可以初步的自动化起来。最后来改造一下上一个Demo的代码。
 **LoadAssets**代码如下：
 ```c++
 void LoadAssets()
@@ -658,7 +658,7 @@ void LoadAssets()
 }
 
 ```
-LoadAssets就开始负责Shader的创建。然后DescriptorLayout的创建代码我们就可以整个去掉。最后在调整一下**CreateDescriptorSet**函数，代码如下：
+LoadAssets就开始负责Shader的创建。然后DescriptorLayout的创建代码就可以整个去掉。最后在调整一下**CreateDescriptorSet**函数，代码如下：
 ```c++
 void CreateDescriptorSet()
 {

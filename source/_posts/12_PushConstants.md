@@ -10,24 +10,26 @@ categories:
 - Vulkan
 ---
 
-[Texture](https://github.com/BobLChen/VulkanDemos/tree/master/examples/12_PushConstants)
+[PushConstants](https://github.com/BobLChen/VulkanDemos/tree/master/examples/12_PushConstants)
 
 [项目Github地址请戳我](https://github.com/BobLChen/VulkanDemos)
 
-上一个Demo里面我们了解到如何将贴图与模型结合起来显示，再通过一些复杂的Shader。我们已经可以实现许多特殊的效果，但是存在一个问题，不知道大家有没有想过，那就是如何显示多个模型，并且这些模型在位于不同的坐标。在之前的Demo中，我们处理的都是一个模型，一个模型的显示非常方便，但是多个模型的显示可能就会有一种束手束脚的感觉。
+上一个Demo里面我们了解到如何将贴图与模型结合起来显示，通过一些复杂的Shader可以实现许多特殊的效果，但是存在一个问题，不知道大家有没有想过，那就是如何显示多个模型，并且这些模型位于不同的位置。在之前的Demo中，我们处理的都是一个模型，一个模型的显示非常方便，但是多个模型的显示可能就会有一种束手束脚的感觉。
 
 <!-- more -->
 
 ![PushConstants](https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/12_PushConstants.jpg)
 
-结合之前我们学到UniformBuffer，我们其实也可以实现这个功能，那就是为每一个模型都创建一个UniformBuffer用来存放**MVP**矩阵数据。这种方法也不是不可以，但是有一些缺点，比如我们必须为每一个**Backbuffer**都创建一个UniformBuffer。注意这里我指的是每一个**Backbuffer**，之前的Demo里面，我们只创建了一个UniformBuffer来供两个或者三个**Backbuffer**使用，这种方式其实是不对的。例如：在第一帧画面的时候，坐标在原点；在第二帧画面的时候坐标在(1, 0, 0)点；但是我们的UniformBuffer只有一个，只能存一份数据。还有一些其它缺陷比如会造成内存和显存不连续等等。
+结合之前Deme的UniformBuffer知识，我们其实可以实现显示多个模型的功能：为每一个模型都创建一个UniformBuffer用来存放**MVP**矩阵数据。这种方法也不是不可以，但是有一些缺点，比如必须为每一个**Backbuffer**都创建一个UniformBuffer。注意这里我指的是每一个**Backbuffer**，之前的Demo里面，都只创建了一个UniformBuffer来供两个或者三个**Backbuffer**使用，这种方式其实是不对的。例如：在第一帧画面的时候，坐标在原点；在第二帧画面的时候坐标在(1, 0, 0)点；但是UniformBuffer只有一个，只能存一份数据；还有一些其它缺陷比如会造成内存和显存不连续等等。
 
 ## PushConstants
 
-PushConstants可以解决一部分上述的问题，但是它也有一些缺陷。例如容量一般只有256字节，存储的数据量较少。虽然有缺陷，但是目前我们可以使用这个技术来实现我们的需求。
+PushConstants可以解决一部分上述的问题，但是它也有一些缺陷。例如容量一般只有256字节，存储的数据量较少。虽然有缺陷，但是目前我们可以使用这个技术来解决需求。
 
 ### Shader
-首先我们需要修改我们的**Shader**，在Vertex Shader里面指定数据结构为PushConstants。
+
+首先需要修改**Shader**，在Vertex Shader里面指定数据结构为PushConstants。
+
 ```glsl
 #version 450
 
@@ -83,7 +85,8 @@ gl_Position = uboMVP.projectionMatrix * uboMVP.viewMatrix * pushConsts.modelMatr
 
 ### DescriptorSetLayout
 
-既然我们的Shader的数据结构发生了变化，那么我们的**DescriptorSetLayout**也要随着进行修改以匹配**Shader**的数据结构。
+既然Shader的数据结构发生了变化，那么**DescriptorSetLayout**也要随着进行修改以匹配**Shader**的数据结构。
+
 ```c++
 void CreateDescriptorSetLayout()
 {
@@ -114,7 +117,9 @@ void CreateDescriptorSetLayout()
     VERIFYVULKANRESULT(vkCreatePipelineLayout(m_Device, &pipeLayoutInfo, VULKAN_CPU_ALLOCATOR, &m_PipelineLayout));
 }
 ```
+
 多了一个关于PushConstantRange的描述。
+
 ```c++
 VkPushConstantRange pushConstantRange = {};
 pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
@@ -124,16 +129,19 @@ pushConstantRange.size       = sizeof(ModelPushConstantBlock);
 
 ### Draw
 
-我们只是修改了Shader的数据结构，随后我们也相应正确的修改了Layout，其它的地方不需要修改。我们只需要在录制绘制命令的时候，在录制Draw命令之前将相应的数据给到即可。我们可以通过`vkCmdPushConstants`来完成。
+修改了Shader的数据结构之后也需要修改Layout，其它的地方不需要修改。在录制绘制命令的时候，在录制Draw命令之前将相应的数据给到即可。通过`vkCmdPushConstants`来完成。
+
 ```c++
 vkCmdPushConstants(
     m_CommandBuffers[i], m_PipelineLayout, VK_SHADER_STAGE_VERTEX_BIT,
     0, sizeof(ModelPushConstantBlock), &globalMatrix
 );
 ```
-第一个参数是CommandBuffer，第二个参数指定我们的PipelineLayout，第三个参数说明我们的PushConstants作用到哪一个**Stage**，最后几个参数则指定我们需要关联的具体数据。
+
+第一个参数是CommandBuffer，第二个参数指定PipelineLayout，第三个参数指定PushConstants作用到哪一个**Stage**，最后几个参数则指定需要关联的具体数据。
 
 完整代码如下：
+
 ```c++
 void SetupCommandBuffers()
 {
@@ -199,5 +207,5 @@ void SetupCommandBuffers()
 }
 ```
 
-由于我们之前封装了很多功能，今天这个Demo到现在为此我们都只需要改动简单的几行代码即可，之前封装的优势已经开始逐步体现出来。最终效果就如封面图所示，大家也可以尝试用一些复杂的场景来体会Demo中的场景。如果大家使用的是一个比较标准的场景，那么当去掉Pushconstants这个功能之后，大家可能会发现所有的物体都处于原点位置，只有加入Pushconstants这个功能，物体才会正确的摆放。
+之前的Demo里面封装了很多功能，在本Demo里面到现在为此只改动了几处地方，之前封装的优势已经开始逐步体现出来。最终效果就如封面图所示，大家也可以尝试用一些复杂的场景来替换Demo中的场景。如果大家使用的是一个比较标准的场景，那么当去掉Pushconstants这个功能之后，大家可能会发现所有的物体都处于原点位置，只有加入Pushconstants这个功能，物体才会正确的摆放。
 

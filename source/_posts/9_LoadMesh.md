@@ -14,7 +14,7 @@ categories:
 
 [项目Github地址请戳我](https://github.com/BobLChen/VulkanDemos)
 
-在上一个Demo里面，我们封装了**VertexBuffer**以及**IndexBuffer**。封装的目的就是为了方便加载外部模型文件显示。这个Demo里面将展示如何加载外部模型并显示。
+在上一个Demo里面，封装了**VertexBuffer**以及**IndexBuffer**。封装的目的就是为了方便加载外部模型文件显示。这个Demo里面将展示如何加载外部模型并显示。
 
 <!-- more -->
 
@@ -22,15 +22,15 @@ categories:
 
 ## [Assimp](https://github.com/assimp/assimp)
 
-Assimp是一个模型加载库，它支持的模型格式非常多，在以后的Demo里面我们都会使用这个库来加载模型文件。需要注意的是，虽然Assimp能够加载40多种模型格式，但是我们真正用到的格式不会太多，一般只有几种。例如：**OBJ**、**FBX**、**GLB**、**DAE**、**X**等常规格式。所以。。。我把Assimp的**CMakeLists**配置文件修改了，让它只编译这几种格式的代码。具体详情查看我的提交记录[**点我查看**](https://github.com/BobLChen/VulkanDemos/commit/ecc0254bda2376bd1fa3fb007ad9a619ba4ed310#diff-95dc3f2906f0c1362930db2cc8ddff30)。
+Assimp是一个模型加载库，它支持的模型格式非常多，在以后的Demo里面我们都会使用这个库来加载模型文件。需要注意的是，虽然Assimp能够加载40多种模型格式，但是真正用到的格式不会太多，一般只有几种。例如：**OBJ**、**FBX**、**GLB**、**DAE**、**X**等常规格式。所以。。。我把Assimp的**CMakeLists**配置文件修改了，让它只编译这几种格式的代码。具体详情查看我的提交记录[**点我查看**](https://github.com/BobLChen/VulkanDemos/commit/ecc0254bda2376bd1fa3fb007ad9a619ba4ed310#diff-95dc3f2906f0c1362930db2cc8ddff30)。
 
 ## DVKModel封装
 
-在之前的Demo种，我们都是使用**VertexBuffer**、**IndexBuffer**的形式。虽然可以渲染，但是表示起来比较麻烦，加上我们需要集成**Assimp**，使用**Assimp**来加载。那么我们仍然有必要封装出一个**DVKModel**用来加载外部模型、同时存储模型的相关信息。
+在之前的Demo种，使用的是**VertexBuffer**、**IndexBuffer**形式。虽然可以渲染，但是表示起来比较麻烦，加上现在需要集成**Assimp**，使用**Assimp**来加载。那么就有必要封装出一个**DVKModel**用来加载外部模型、同时存储模型的相关信息。
 
 ### DVKBoundingBox
 
-我们首先封装一个Bounds出来，用来表示模型的尺寸，这个有助于我们加载完模型之后适配相机。
+我们首先封装一个Bounds出来，用来表示模型的尺寸，这个有助于加载完模型之后适配相机。
 
 ```c++
 struct DVKBoundingBox
@@ -56,7 +56,7 @@ struct DVKBoundingBox
 
 ### DVKPrimitive
 
-在上一节里面，我们封装过**IndexBuffer**，其实我有提到过一些低端设备的索引只支持**UInt16**，也就是**65535**个索引数据，也就是**21,845‬**个三角形。但是一个模型的面数不可能只低于21845，是极有可能超过21845的。当遇到模型面数超过21845的时候，我们需要拆分它们。为了这个功能，我们设计出**DVKPrimitive**，用来表示一个网格，多个网格组成一个模型。
+在上一节里面，我们封装过**IndexBuffer**，其实我有提到过一些低端设备的索引只支持**UInt16**，也就是**65535**个索引数据，也就是**21,845‬**个三角形。但是一个模型的面数不可能只低于21845，是极有可能超过21845的。当遇到模型面数超过21845的时候，需要拆分它们。为了这个功能，设计出**DVKPrimitive**，用来表示一个网格，多个网格组成一个模型。
 
 ```c++
 struct DVKPrimitive
@@ -95,11 +95,11 @@ struct DVKPrimitive
 	};
 ```
 
-在这个网格里面，我们存储了真正的IndexBuffer以及VertexBuffer。
+在这个网格里面，存储了真正的IndexBuffer以及VertexBuffer。
 
 ### DVKMesh
 
-有了**DVKPrimitive**之后，我们就可以非常方便的设计出Mesh的结构。Mesh的结构就没有很特殊，它包含了一组**DVKPrimitive**数据。另外有一个地方需要注意的是，外部模型文件可能是代表的一个完整的场景，这个场景里面是通过众多的节点及其子集组合而成。这些节点可能代表的含义不同，例如有**Camera**、**Light**、**Mesh**、**Bone**等等。
+有了**DVKPrimitive**之后，就可以非常方便的设计出Mesh的结构。Mesh的结构没有很特殊，它包含了一组**DVKPrimitive**数据。另外有一个地方需要注意的是，外部模型文件可能是代表的一个完整的场景，这个场景里面是通过众多的节点及其子集组合而成。这些节点可能代表的含义不同，例如有**Camera**、**Light**、**Mesh**、**Bone**等等。
 
 其实表示它们最清晰的结构应该是：
 
@@ -120,7 +120,7 @@ class Light : public Object3D
 };
 ```
 
-但是呢，在我们的Demo里面，我不准备把这些信息也导入进来，我们只关心模型数据，其它的在我们Demo内部创建。所以我把Mesh的设计成了如下结构。让Mesh去关联一个**Node**，**Node**存储一些基本信息，例如位移、缩放、旋转、名称、子父集关系等。
+但是呢，在这个Demo里面，我不准备把这些信息也导入进来，只关心模型数据，其它的在Demo内部创建。所以我把Mesh的设计成了如下结构。让Mesh去关联一个**Node**，**Node**存储一些基本信息，例如位移、缩放、旋转、名称、子父集关系等。
 
 ```c++
 struct DVKMesh
@@ -164,7 +164,7 @@ struct DVKMesh
 
 ### DVKNode
 
-综上所述，我们需要一个Node用来保存节点的一些基本信息。Node的设计如下：
+综上所述，还需要一个Node用来保存节点的一些基本信息。Node的设计如下：
 
 ```c++
 struct DVKNode
@@ -262,7 +262,7 @@ struct DVKNode
 
 ## DVKModel
 
-有了基本的信息之后，我们就可以在Model中把它们组合起来。
+有了基本的信息之后，在Model中把它们组合起来。
 
 ```c++
 class DVKModel
@@ -370,22 +370,22 @@ DVKModel* DVKModel::LoadFromFile(const std::string& filename, std::shared_ptr<Vu
 
 这里需要注意的是**assimpFlags**的配置
 
-- **aiProcess_Triangulate**：表示我们需要将模型三角化，因为模型可能是由四边形组成的。
-- **aiProcess_MakeLeftHanded**：表示我们需要左手坐标系（第一个Demo就已经声明了我们的坐标系）。
-- **aiProcess_FlipUVs**：表示我们希望翻转UV坐标中的Y轴，因为**Vulkan**的UV坐标系中的Y轴范围自上而下是[1,0]，但是我们更习惯使用[0,1]。
-- **aiProcess_FlipWindingOrder**：表示我们需要翻转索引顺序，默认是逆时针，但是我们需要顺时针。索引顺序决定着三角形的方向。这里的顺序跟**Pipeline**的**CullMode**密切相关。
+- **aiProcess_Triangulate**：表示需要将模型三角化，因为模型可能是由四边形组成的。
+- **aiProcess_MakeLeftHanded**：表示需要左手坐标系。
+- **aiProcess_FlipUVs**：表示希望翻转UV坐标中的Y轴。
+- **aiProcess_FlipWindingOrder**：表示需要翻转索引顺序。
 
-千万千万不要加**aiProcess_PreTransformVertices**这个属性，这个属性的功能是把你的顶点数据转化到世界空间。转化到了世界空间之后，相当于所有的Mesh都是在坐标原点，且没有缩放，没有旋转。这个不利于我们学习，我们需要的是Mesh是被摆放到世界空间中的。
+千万千万不要加**aiProcess_PreTransformVertices**这个属性，这个属性的功能是把你的顶点数据转化到世界空间。转化到了世界空间之后，相当于所有的Mesh都是在坐标原点，且没有缩放，没有旋转。这个不利于我们学习，我们需要的是Mesh被摆放到世界空间中。
 
-另外就是，我们需要遍历一下我们传入的顶点数据类型，如果有**Normal**、**Tangent**、**UV**，我们需要把**aiProcess_GenXXX**加上，因为模型里面可能不包含这些数据，**Assimp**库可以帮我们自动生成这些数据。
+另外就是，我们需要遍历一下传入的顶点数据类型，如果有**Normal**、**Tangent**、**UV**，需要把**aiProcess_GenXXX**加上，因为模型里面可能不包含这些数据，**Assimp**库是可以自动生成这些数据的。
 
-我们最好使用**Assimp**的**ReadFileFromMemory**接口，尽量不要使用**LoadFromFile**接口。考虑到我们后面可能会在**Android**等平台上面使用，但是这些平台的文件读取是有特有的接口，为了支持这些平台我们本身都需要实现平台相关的文件操作功能。所以使用它的**ReadFileFromMemory**接口即可。
+我们最好使用**Assimp**的**ReadFileFromMemory**接口，尽量不要使用**LoadFromFile**接口。考虑到后面可能会在**Android**等平台上面使用，但是这些平台的文件读取是有特有的接口，为了支持这些平台需要实现平台相关的文件操作功能。所以使用它的**ReadFileFromMemory**接口即可。
 
 至于后面的就很简单了，读取文件，通过Assimp解析。。。
 
 ### LoadNode
 
-有了**Assimp**加载好的数据之后，我们从Root节点开始递归遍历，逐个解析即可。
+有了**Assimp**加载好的数据之后，从Root节点开始递归遍历，逐个解析即可。
 
 ```c++
 DVKNode* DVKModel::LoadNode(const aiNode* aiNode, const aiScene* aiScene)
@@ -442,7 +442,7 @@ DVKNode* DVKModel::LoadNode(const aiNode* aiNode, const aiScene* aiScene)
 
 ### LoadMesh
 
-LoadMesh是在访问**Node**节点时触发的，如果Node节点含有Mesh，我们就是有LoadMesh函数从中读取出Mesh数据。LoadMesh需要注意几个地方：1、数据的存储格式要跟我们的定义保持一致；2、遇到面数过多的Mesh我们要进行拆分。
+LoadMesh是在访问**Node**节点时触发的，如果Node节点含有Mesh，就通过LoadMesh函数从中读取出Mesh数据。LoadMesh需要注意几个地方：1、数据的存储格式要跟定义的格式保持一致；2、遇到面数过多的Mesh需要进行拆分。
 
 ```c++
 DVKMesh* DVKModel::LoadMesh(const aiMesh* aiMesh, const aiScene* aiScene)
@@ -624,11 +624,11 @@ DVKMesh* DVKModel::LoadMesh(const aiMesh* aiMesh, const aiScene* aiScene)
 	}
 ```
 
-自此我们就完成了模型的解析工作。
+自此就完成了模型的解析工作。
 
 ## Usage
 
-有了封装之后的DVKModel之后，我们就可以着手修改Demo，把之前的三角形替换为外部的模型。如下所示：
+有了封装之后的DVKModel之后，就可以着手修改Demo，把之前的三角形替换为外部的模型。如下所示：
 
 ```c++
 void LoadAssets()
@@ -683,7 +683,7 @@ void CreateUniformBuffers()
 	}
 ```
 
-既然**UniformBuffer**有了多个，那么回想之前的Demo，我们的**UniformBuffer**是通过**DescriptorSet**进行关联的，显然一个**DescriptorSet**无法关联这么多**Buffer**(DescriptorSet的更新不能发生在CommandBuffer录制期间)。那么**DescriptorSet**我们也需要创建多个。
+既然**UniformBuffer**有了多个，那么回想之前的Demo，**UniformBuffer**是通过**DescriptorSet**进行关联的，显然一个**DescriptorSet**无法关联这么多**Buffer**(DescriptorSet的更新不能发生在CommandBuffer录制期间)。那么**DescriptorSet**也需要创建多个。
 
 先扩充Pool的尺寸。
 
@@ -734,7 +734,7 @@ void CreateDescriptorSet()
 	}
 ```
 
-最好我们稍微修改一下录制命令的代码：
+最好稍微修改一下录制命令的代码：
 
 ```c++
 void SetupCommandBuffers()
@@ -797,4 +797,4 @@ void SetupCommandBuffers()
 	}
 ```
 
-自此我们就完成了加载外部模型文件并显示的需求。无论是当模型亦或者说一个非常复杂的场景，在这个Demo里面我们可以正确的加载并显示出来。
+自此我们就完成了加载外部模型文件并显示的需求。无论是当模型亦或者说一个非常复杂的场景，在这个Demo里面都可以正确的加载并显示出来。

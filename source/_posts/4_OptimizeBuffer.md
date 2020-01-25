@@ -14,7 +14,7 @@ categories:
 
 [项目Github地址请戳我](https://github.com/BobLChen/VulkanDemos)
 
-在[3_DemoBase](http://xiaopengyou.fun/public/2019/08/01/3_DemoBase/#more)这个Demo里面，我们对一些常用的功能和属性进行简单的封装，但是回过头来看一下，会发现整个创建流程还是异常的繁琐，特别是**Buffer**的创建、使用、销毁。仍然本着能偷懒就偷懒的原则，打着优化的旗号实则为了偷懒，我们有必要对**Buffer**也进行一下简单的封装。
+在[3_DemoBase](http://xiaopengyou.fun/public/2019/08/01/3_DemoBase/#more)这个Demo里面，我们对一些常用的功能和属性进行简单的封装，但是回过头来看一下，会发现整个创建流程还是异常的繁琐，特别是**Buffer**的创建、使用、销毁。仍然本着能偷懒就偷懒的原则，打着优化的旗号实则为了偷懒，有必要对**Buffer**也进行一下简单的封装。
 
 <!-- more -->
 
@@ -81,11 +81,11 @@ class DVKBuffer
 
 ### 屏蔽构造函数
 
-屏蔽构造函数的目的就是为了防止使用者自行的**new**进行创建，要求使用我们提供的**Create**函数进行创建，我们会在这个函数里面做大量的工作。
+屏蔽构造函数的目的就是为了防止使用者自行的**new**进行创建，要求使用我们提供的**Create**函数进行创建，因为会在这个函数里面做大量的工作。
 
 ### 析构时释放资源
 
-既然我们创建了**Buffer**相关的资源，那么我们也要有义务释放相应的资源，释放的工作我们就放到析构函数里面。
+既然创建了**Buffer**相关的资源，那么也有义务释放相应的资源，释放的工作就放到析构函数里面。
 
 ```c++
 ~DVKBuffer()
@@ -103,7 +103,7 @@ class DVKBuffer
 
 ### Map
 
-如果我们的**Buffer**是在**Host**端且对**GPU**可见，那么我们就有将数据拷贝到**Buffer**以供GPU使用的需求，在拷贝之前需要将**Buffer**的指针获取到，以便我们能够将数据拷贝进去。
+如果**Buffer**是在**Host**端且对**GPU**可见，那么就有将数据拷贝到**Buffer**以供GPU使用的需求，在拷贝之前需要将**Buffer**的指针获取到，以便我们能够将数据拷贝进去。
 
 ```c++
 VkResult DVKBuffer::Map(VkDeviceSize size, VkDeviceSize offset)
@@ -132,7 +132,7 @@ void DVKBuffer::UnMap()
 
 ### CopyFrom
 
-既然有了**Map**操作之后，那么我们也应该提供一个能够拷贝数据的接口。
+既然有了**Map**操作之后，那么也应该提供一个能够拷贝数据的接口。
 
 ```C++
 void DVKBuffer::CopyFrom(void* data, VkDeviceSize size)
@@ -146,7 +146,7 @@ void DVKBuffer::CopyFrom(void* data, VkDeviceSize size)
 
 ### Create
 
-关键的接口我们已经封装完成，现在需要干的事情就是把前面Demo里面创建Buffer的代码复制粘贴过来。创建Buffer我们需要**VkDevice**、**VkBufferUsageFlags**、**VkMemoryPropertyFlags**以及**VkDeviceSize**信息。这些信息我们通过参数传递进来。
+关键的接口已经封装完成，现在需要干的事情就是把前面Demo里面创建Buffer的代码复制粘贴过来。创建Buffer需要**VkDevice**、**VkBufferUsageFlags**、**VkMemoryPropertyFlags**以及**VkDeviceSize**信息。这些信息通过参数传递进来。
 
 ```c++
 DVKBuffer* DVKBuffer::CreateBuffer(std::shared_ptr<VulkanDevice> vulkanDevice, VkBufferUsageFlags usageFlags, VkMemoryPropertyFlags memoryPropertyFlags, VkDeviceSize size, void *data)
@@ -198,7 +198,7 @@ DVKBuffer* DVKBuffer::CreateBuffer(std::shared_ptr<VulkanDevice> vulkanDevice, V
 
 ## Usage
 
-我们有了封装之后的**DVKBuffer**之后，我们就可以去掉之前大段重复性的代码。比如**UniformBuffer**的创建就可以优化为:
+有了封装之后的**DVKBuffer**之后，就可以去掉之前大段重复性的代码。比如**UniformBuffer**的创建就可以优化为:
 
 ```c++
 void CreateUniformBuffers()

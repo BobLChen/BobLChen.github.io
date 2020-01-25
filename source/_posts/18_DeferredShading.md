@@ -23,7 +23,7 @@ categories:
 ## 18_DeferredShading
 
 ### 输出位置数据
-在上一节Demo里面，我们输出了Color、Depth、Normal数据，在这一节Demo里面我们增加一项位置数据的输出。
+在上一节Demo里面，我们输出了Color、Depth、Normal数据，在这一节Demo里面增加一项位置数据的输出。
 采用VK_FORMAT_R16G16B16A16_SFLOAT格式存储即可，如果位置数据范围非常大，可以考虑用32位浮点数来进行存储。
 ```c++
 for (int32 i = 0; i < m_AttachsPosition.size(); ++i)
@@ -39,7 +39,7 @@ for (int32 i = 0; i < m_AttachsPosition.size(); ++i)
 ```
 
 ### 准备Light数据
-既然是简易的延迟渲染，那我们就需要准备一些Light的数据，在这个Demo里面我只准备了简单的点光数据。然后将点光的数据存储在UniformBuffer里面，传递给Shader。
+既然是简易的延迟渲染，那就需要准备一些Light的数据，在这个Demo里面我只准备了简单的点光数据。然后将点光的数据存储在UniformBuffer里面，传递给Shader。
 Light的数据结构如下：
 ```c++
 struct PointLight
@@ -62,7 +62,7 @@ struct LightDataBlock
 };
 ```
 
-定义好数据结构之后，我们就在`CreateUniformBuffers`函数里面准备一下Light的数据。其中Light的位置根据场景大小进行随机，Light的颜色则是完全的随机，Light的范围从50-200。为了让Light动起来，还额外存储了Light的初始位置、方向、速度等数据。
+定义好数据结构之后，在`CreateUniformBuffers`函数里面准备一下Light的数据。其中Light的位置根据场景大小进行随机，Light的颜色则是完全的随机，Light的范围从50-200。为了让Light动起来，还额外存储了Light的初始位置、方向、速度等数据。
 ```c++
 // light datas
 for (int32 i = 0; i < NUM_LIGHTS; ++i)
@@ -94,7 +94,7 @@ m_LightBuffer->Map();
 
 ### 更新Light
 
-准备好了Light的数据之后，我们即可在Draw之前更新Light的数据，让它动起来。为了让运动的速度不受到帧率的影响，我们需要用时间作为参数来调节Light的最终坐标。
+准备好了Light的数据之后，即可在Draw之前更新Light的数据，让它动起来。为了让运动的速度不受到帧率的影响，我们需要用时间作为参数来调节Light的最终坐标。
 在UpdateUniform函数里面增加更新Light的代码，如下所示：
 ```c++
 void UpdateUniform(float time, float delta)
@@ -116,13 +116,13 @@ void UpdateUniform(float time, float delta)
 
 ### 准备Pipeline相关的数据
 
-这里我就不在赘述，这个步骤在之前已经设置了很多次，这里只是简单提一下。因为我们增加了位置的附件数据，那么在输出的地方以及使用的地方都需要增加与之相关的描述或资源。
+这里我就不在赘述，这个步骤在之前已经设置了很多次，这里只是简单提一下。因为增加了位置的附件数据，那么在输出的地方以及使用的地方都需要增加与之相关的描述或资源。
 
 ### Shader
 
-由于增加了位置数据的输出，我们需要修改我们的Shader以输出相应的数据，这个过程跟上一个Demo一样，只是额外多了一个位置的数据。既然上个Demo都能输出法线的数据，那么依样画葫芦输出位置数据不难。
+由于增加了位置数据的输出，就需要修改Shader以输出相应的数据，这个过程跟上一个Demo一样，只是额外多了一个位置的数据。既然上个Demo都能输出法线的数据，那么依样画葫芦输出位置数据不难。
 
-其实重点的地方在于我们的后处理`Fragment Shader`，我们需要在Fragment shader里面进行光照的操作。先来看看fragment shader代码：
+其实重点的地方在于后处理`Fragment Shader`，需要在Fragment shader里面进行光照的操作。先来看看fragment shader代码：
 ```glsl
 #version 450
 
@@ -177,4 +177,4 @@ void main()
 
 ```
 
-在Fragment shader里面，我们写了一个`for`循环进行逐Light计算光照，根据Light的位置与顶点的位置可以计算出Light与顶点的数据，根据Light的`radius`属性可以计算出Light的衰减。其它的按照常规的方式计算diffuse颜色即可，然后应用衰减就可以得到一个简易的`Point Light`的形态。最终我们将所有灯光的颜色累加起来，得到了最终的效果，也就是预览图的效果。
+在Fragment shader里面，写了一个`for`循环进行逐Light计算光照，根据Light的位置与顶点的位置可以计算出Light与顶点的数据，根据Light的`radius`属性可以计算出Light的衰减。其它的按照常规的方式计算diffuse颜色即可，然后应用衰减就可以得到一个简易的`Point Light`的形态。最终将所有灯光的颜色累加起来，得到了最终的效果，也就是预览图的效果。

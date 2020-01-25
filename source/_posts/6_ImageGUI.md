@@ -14,7 +14,7 @@ categories:
 
 [项目Github地址请戳我](https://github.com/BobLChen/VulkanDemos)
 
-在之前的Demo里面，我们对一些需要大量编码的供进行简单封装。为了方便后续**Demo**的进行，我们急需一个**UI**来进行参数或者功能相关的调节。幸运的是，**Github**上有现成的**UI**库可以使用，该项目叫做[**imgui**](https://github.com/ocornut/imgui)。这个UI库有**Vulkan**的实现**[点我点我](https://github.com/ocornut/imgui/blob/master/examples/imgui_impl_vulkan.cpp)**
+在之前的Demo里面，我们对一些需要大量编码的工作进行了简单封装。为了方便后续**Demo**的进行，现在急需一个**UI**来进行参数或者功能相关的调节。幸运的是，**Github**上有现成的**UI**库可以使用，该项目叫做[**imgui**](https://github.com/ocornut/imgui)。这个UI库有**Vulkan**的实现**[点我查看](https://github.com/ocornut/imgui/blob/master/examples/imgui_impl_vulkan.cpp)**
 
 <!-- more -->
 
@@ -26,7 +26,7 @@ ImGUI的集成其实很简单，我们把它的实现抄过来即可。具体的
 
 ### ShaderCode
 
-ImGUI需要使用到Vulkan的二进制Shader，为了方便起见，避免每次传入Shader路径，我们将Shader的二进制文件编码放到CPP文件里面。这样在创建ImGUI的时候直接从CPP中保存变量中获取。
+ImGUI需要使用到Vulkan的二进制Shader，为了方便起见，避免每次传入Shader路径，可以将Shader的二进制文件编码放到CPP文件里面。这样在创建ImGUI的时候直接从CPP中保存变量中获取。
 ```c++
 static uint32_t g__glsl_shader_vert_spv[] =
 {
@@ -104,13 +104,14 @@ static uint32_t g__glsl_shader_frag_spv[] =
 ```
 
 ### Subpass
-Pipeline如果使用在`Subpass`中，需要指定`Subpass`的索引。所以我们需要将`Subpass`传递给ImGUI，告诉ImGUI当然渲染处于哪一个Subpass中。
+Pipeline如果使用在`Subpass`中，需要指定`Subpass`的索引。所以也需要将`Subpass`传递给ImGUI，告诉ImGUI当前渲染处于哪一个Subpass中。
 
 ### RenderPass
-考虑到RenderPass可能因为窗口Resize而重建，因此RenderPass我们也要通知到ImGUI。
+考虑到RenderPass可能因为窗口Resize而重建，因此RenderPass也要通知到ImGUI。
 
 ### 事件绑定
-ImGUI毕竟是一个UI库，那么我们的鼠标移动、点击、滚动等等事件也需要一并通知到ImGUI。如果不通知到ImGUI，它是无法处理这些行为的，ImGUI本身不会捕获每个平台的这些事件。
+ImGUI毕竟是一个UI库，类似鼠标移动、点击、滚动等事件也需要一并通知到ImGUI。如果不通知到ImGUI，它是无法处理这些行为的，ImGUI本身不会捕获每个平台的这些事件。
+
 ```c++
 void ImageGUIContext::StartFrame()
 {
@@ -133,7 +134,8 @@ void ImageGUIContext::StartFrame()
 
 ### Update
 
-当我们使用ImGUI时，如果我们有对UI进行操作，例如点开一个下拉列表等，这个时候出现了新的UI，也就意味ImGUI产生新的数据。这些UI最终是以三角形组合拼凑而成，因此VertexBuffer和IndexBuffer势必也会产生新的。这个时候就需要我们按需创建出对应的Buffer数据以供ImGUI使用。
+当使用ImGUI时，如果有对UI进行操作，例如点开一个下拉列表等，这个时候出现了新的UI，也就意味ImGUI产生新的数据。这些UI最终是以三角形组合拼凑而成，因此VertexBuffer和IndexBuffer势必也会产生新的。这个时候就需要我们按需创建出对应的Buffer数据以供ImGUI使用。
+
 ```c++
 bool ImageGUIContext::Update()
 {
@@ -191,9 +193,11 @@ bool ImageGUIContext::Update()
 	return updateCmdBuffers || m_Updated;
 }
 ```
+
 ### 集成到Demo
-集成到Demo其实非常简单，我们在`Draw`函数内部增加一个`UpdateUI`函数，这个函数里面就负责进行UI逻辑处理。如果有发现修改了渲染数据，我们就重新录制一下渲染命令即可。
-在录制渲染命令的时候，我们只需要把UI的绘制放到最后即可，如果我们放置到前面，可能会出现3D图像遮挡2D UI的情况。代码如下:
+集成到Demo其实非常简单，在`Draw`函数内部增加一个`UpdateUI`函数，这个函数里面就负责进行UI逻辑处理。如果有发现修改了渲染数据，就重新录制一下渲染命令即可。
+在录制渲染命令的时候，只需要把UI的绘制放到最后。如果放置到前面，可能会出现3D图像遮挡2D UI的情况。代码如下:
+
 ```c++
 VERIFYVULKANRESULT(vkBeginCommandBuffer(m_CommandBuffers[i], &cmdBeginInfo));
             
@@ -213,3 +217,5 @@ vkCmdEndRenderPass(m_CommandBuffers[i]);
 
 VERIFYVULKANRESULT(vkEndCommandBuffer(m_CommandBuffers[i]));
 ```
+
+综上所述就完成了UI的集成，后续的Demo就可以把参数可视化。

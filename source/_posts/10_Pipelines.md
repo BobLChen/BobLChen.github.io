@@ -14,7 +14,7 @@ categories:
 
 [项目Github地址请戳我](https://github.com/BobLChen/VulkanDemos)
 
-在前面的Demo里面，我们封装了很多东西，但是有一个东西一直没有处理，也是因为这个东西在前的这些Demo里面都没有需求。下面我们将着手封装**Pipeline**。
+在前面的Demo里面，我们封装了很多东西，但是有一个东西一直没有处理，也是因为这个东西在前的这些Demo里面都没有需求。在这个Demo里面将着手封装**Pipeline**。
 
 <!-- more -->
 
@@ -22,9 +22,9 @@ categories:
 
 ## DVKPipelineInfo
 
-通过观察之前Demo里面**Pipeline**创建流程，可以很容易的总结出，Pipeline的创建实质是状态的设置。例如混合、光栅化、深度模板测试等等。既然是状态的设置，那么我们提前准备好一个默认的状态，根据需要修改其中的状态，然后创建出**Pipeline**，不就简化了创建流程嘛？
+通过观察之前Demo里面**Pipeline**的创建流程，可以很容易的总结出，Pipeline的创建实质是状态的设置。例如混合模式、光栅化状态、深度模板测试等等。既然是状态的设置，那么提前准备好一个默认的状态，根据需要修改其中的状态，然后创建出**Pipeline**，不就简化了创建流程嘛？
 
-根据这个思路，我们设计出**PipelineInfo**，里面保存了创建**Pipeline**的必要元素。
+根据这个思路，设计出**PipelineInfo**，里面保存了创建**Pipeline**的必要元素。
 
 ```c++
 struct DVKPipelineInfo
@@ -156,7 +156,7 @@ struct DVKPipelineInfo
 
 ## DVKPipeline
 
-有了**PipelineInfo**，那我们就可以根据Info信息来创建出对应的**Pipeline**即可。那Pipeline的设计和创建也变得极为简单：
+有了**PipelineInfo**，就可以根据Info信息来创建出对应的**Pipeline**。Pipeline的设计和创建就变得极为简单：
 
 ```c++
 class DVKPipeline
@@ -198,7 +198,7 @@ public:
 };
 ```
 
-在Create函数里面，我们只是简单的把**PipelineInfo**里面的数据填充到**CreateInfo**里面，然后创建出来即可。
+在Create函数里面，只是简单的把**PipelineInfo**里面的数据填充到**CreateInfo**里面，然后创建出来即可。
 
 ```c++
 DVKPipeline* DVKPipeline::Create(
@@ -272,11 +272,11 @@ DVKPipeline* DVKPipeline::Create(
 	}
 ```
 
-这个Pipeline的封装，我们并没有做很多操作，只是把代码搬运到了一起而已。
+这个Pipeline的封装，并没有做很多操作，只是把代码搬运到了一起而已。
 
 ## Usage
 
-既然封装好了**Pipeline**，那我们肯定得要试用一下。在这个Demo里面，我们将创建三个Pipeline，以实现三种不同的效果。
+既然封装好了**Pipeline**，那肯定得要试用一下。在这个Demo里面创建三个Pipeline，以实现三种不同的效果。
 
 - 白色带光照的模型
 - 黄色带光照的模型
@@ -320,7 +320,7 @@ void main()
 
 ### 创建Pipelines
 
-我们在**CreatePipelines**函数里面分别创建三个Pipeline。如下所示：
+在**CreatePipelines**函数里面分别创建三个Pipeline。如下所示：
 
 ```c++
 void CreatePipelines()
@@ -357,7 +357,7 @@ void CreatePipelines()
 
 ### 调整Projection
 
-在这个Demo我还将演示如何通过Viewport参数来控制渲染区域。三个效果，我们将分成三个区域进行显示。既然渲染区域有调整，那么我们的投影矩阵中的宽高比例也有调整才行。
+在这个Demo里面还将演示如何通过Viewport参数来控制渲染区域。三个效果，分成三个区域进行显示。既然渲染区域有调整，那么投影矩阵中的宽高比例也有调整才行。
 
 ```c++
 void CreateUniformBuffers()
@@ -406,7 +406,7 @@ void CreateUniformBuffers()
 
 ### 录制渲染命令
 
-录制渲染命令时，我们需要注意，我们在绘制每一个模型时，我们都调整了视口的宽度，每个视口占屏幕宽度的1/3，并且还修改了坐标。这样每一个模型都是在单独的一个视口区域内进行绘制。
+录制渲染命令时，需要注意是，在绘制每一个模型时，都调整了视口的宽度，每个视口占屏幕宽度的1/3，并且还修改了坐标。这样每一个模型都是在单独的一个视口区域内进行绘制。
 
 ```c++
 for (int32 i = 0; i < m_CommandBuffers.size(); ++i)
@@ -453,5 +453,5 @@ for (int32 i = 0; i < m_CommandBuffers.size(); ++i)
 }
 ```
 
-最终的效果就是跟封面图一样。在这个Demo里面，我们封装了**Pipeline**，最终Pipeline的创建代码是急剧减少，尤其特别是需要大量创建Pipeline的时候，代码减少的更多。代码量少有一个好处：排查错误非常方便，避免了因为复制粘贴导致的一些错误。
+最终的效果就是跟封面图一样。在这个Demo里面，我们封装了**Pipeline**，创建Pipeline的代码量急剧减少，尤其特别是需要大量创建Pipeline的时候，代码减少的更多。代码量少有一个好处：排查错误非常方便，避免了因为复制粘贴导致的一些错误。
 

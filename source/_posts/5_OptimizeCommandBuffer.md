@@ -14,13 +14,13 @@ categories:
 
 [项目Github地址请戳我](https://github.com/BobLChen/VulkanDemos)
 
-在[4_OptimizeBuffer](http://xiaopengyou.fun/public/2019/08/01/4_OptimizeBuffer/#more)这个Demo里面，我们对**Buffer**进行了封装。封装过的**Buffer**使用起来非常方便，代码量急剧减少。但是在这个Demo里面，我们在优化**CreateMeshBuffers**时，我们会发现虽然**Buffer**的代码量减少了，但是**CommandBuffer**相关的代码任然非常庞大。为了减少代码量，我们需要对**CommandBuffer**也进行简单的封装。
+在[4_OptimizeBuffer](http://xiaopengyou.fun/public/2019/08/01/4_OptimizeBuffer/#more)这个Demo里面，我们对**Buffer**进行了封装。封装过的**Buffer**使用起来非常方便，代码量急剧减少。但是在这个Demo里面，我们在优化**CreateMeshBuffers**时，我们会发现虽然**Buffer**的代码量减少了，但是**CommandBuffer**相关的代码任然非常庞大。为了减少代码量，需要对**CommandBuffer**也进行简单的封装。
 
 <!-- more -->
 
 ## DVKCommandBuffer
 
-仍然跟之前的Demo一样，我们单独建个文件保存CommandBuffer相关的功能。头文件如下所示：
+仍然跟之前的Demo一样，单独建个文件保存CommandBuffer相关的功能。头文件如下所示：
 
 ```c++
 class DVKCommandBuffer
@@ -54,7 +54,7 @@ class DVKCommandBuffer
 
 ### Begin
 
-CommandBuffer在使用时需要显示的进行**Begin**以及**End**，但是**Begin**的时候需要**VkCommandBufferBeginInfo**参数，同时为了能够清楚的知道**CommandBuffer**的状态，我们也需要记录它是否开始以及结束状态，因此我们对**Begin**、**End**简单封装一下。
+CommandBuffer在使用时需要显示的进行**Begin**以及**End**，但是**Begin**的时候需要**VkCommandBufferBeginInfo**参数，同时为了能够清楚的知道**CommandBuffer**的状态，需要记录它是否开始以及结束状态。因此对**Begin**、**End**也简单封装一下。
 
 ```c++
 void DVKCommandBuffer::Begin()
@@ -74,7 +74,7 @@ void DVKCommandBuffer::Begin()
 
 ### End
 
-End则比较简单，我们重置一下状态即可。
+End则比较简单，重置一下状态即可。
 
 ```c++
 void DVKCommandBuffer::End()
@@ -90,7 +90,7 @@ void DVKCommandBuffer::End()
 
 ### Submit
 
-比较重要的是提交功能，我们需要将录制好的命名提交到**GPU**进行执行。**GPU**的则需要**Fence**来进行同步状态，因此我们的CommandBuffer里面需要自带一个**Fence**。有了**Fence**之后，我们就可以设计我们的**Submit**接口。
+比较重要的是提交功能，我们需要将录制好的命令提交到**GPU**进行执行。**GPU**与**GPU**之间的同步操作需要**Fence**来完成，因此CommandBuffer里面需要自带一个**Fence**。有了**Fence**之后，就可以设计**Submit**接口。
 
 ```c++
 void DVKCommandBuffer::Submit(VkSemaphore* signalSemaphore)
@@ -121,7 +121,7 @@ Submit提交时，自动进行End操作，防止未**End**的情况进行了提�
 
 ### Create
 
-完成了上述的接口设计之后，我们就可以编写创建的函数。创建函数跟之前Demo里面的创建过程一样，我们把之前的Demo里面的代码拷贝过来即可。
+完成了上述的接口设计之后，就可以着手编写创建的函数。创建函数跟之前Demo里面的创建过程一样，把之前的Demo里面的代码拷贝过来即可。
 
 ```c++
 DVKCommandBuffer* DVKCommandBuffer::Create(std::shared_ptr<VulkanDevice> vulkanDevice, VkCommandPool commandPool, VkCommandBufferLevel level)
@@ -151,7 +151,7 @@ DVKCommandBuffer* DVKCommandBuffer::Create(std::shared_ptr<VulkanDevice> vulkanD
 
 ## Usage
 
-有了封装之后的**DVKCommandBuffer**之后，我们就可以修改上一个Demo的代码，对其中**CreateMeshBuffers()**函数进行优化。
+有了封装之后的**DVKCommandBuffer**之后，对上一个Demo的代码进行修改替换，其中**CreateMeshBuffers()**函数可以进行适当的优化。
 
 ```c++
 void CreateMeshBuffers()
@@ -216,5 +216,5 @@ void CreateMeshBuffers()
 	}
 ```
 
-优化之后我们就会发现相对之前代码量又减少了很多。**CommandBuffer**只需要**Begin**、**录制**、**Sumit**即可。
+优化之后可以看到相对之前代码量又减少了很多。**CommandBuffer**只需要**Begin**、**录制**、**Sumit**即可。
 

@@ -14,24 +14,24 @@ categories:
 
 [项目Github地址请戳我](https://github.com/BobLChen/VulkanDemos)
 
-在[11_Texture](https://github.com/BobLChen/VulkanDemos/tree/master/examples/11_Texture)这个Demo里面，我们了解了如何从磁盘加载图片并赋予给模型使用。在那个Demo里面，我使用的是多张Texture2D，但是其实我们可以像数组那样来使用Texture。在某些情况下可以通过这种方式来进行一些优化，例如地形系统。地形一般会使用到许多图片来进行互相融合以丰富地表，但是并不是是说可以任意数量的Texture，因为Texture的寄存器根据设备不同只有8个或者16个。但是我们确实有这样的需求，一般在低端设备上我们会对其进行拆分，然后通过绘制多次来实现这个需求，在高端设备上我们就可以使用TextureArray的方式来避免拆分多次绘制以提高性能。
+在[11_Texture](https://github.com/BobLChen/VulkanDemos/tree/master/examples/11_Texture)这个Demo里面，我们了解到如何从磁盘加载图片并赋予给模型使用。在那个Demo里面，我使用的是多张Texture2D，但是其实可以像数组那样来使用Texture。在某些情况下可以通过这种方式来进行一些优化，例如地形系统。地形一般会使用到许多图片来进行互相融合以丰富地表，但是并不是是说可以使用任意数量的Texture，因为Texture的寄存器根据设备不同只有8个或者16个。在这种情况下，通过TextureArray可以满足这种特定的需求。
 
 <!-- more -->
 
-![DynamicUniformBuffer](https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/14_TextureArray.jpg)
+![14_TextureArray](https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/14_TextureArray.jpg)
 
 ## TextureArray
 
 TextureArray也并不是毫无限制的进行使用。
 
-- 它的数量根据设备不同有不同的数量限制，具体数量限制刻意通过**VkPhysicalDeviceLimits.maxImageArrayLayers**查询得到，我的设备是可以使用到2048个的，这个数量看起来是非常可观的。
+- 它的数量根据设备不同有不同的数量限制，具体数量限制可以通过**VkPhysicalDeviceLimits.maxImageArrayLayers**查询得到，我的设备是可以使用到2048个的，这个数量看起来是非常可观的。
 - 尺寸必须要求全部保持一致。
 
-这些限制其实算不上一些特殊限制，在大多数情况下我们都可以利用上TextuerArray，例如地形、角色贴图、UI图集等。
+这些限制其实算不上一些特殊限制，在大多数情况下都可以利用上TextuerArray，例如地形、角色贴图、UI图集等。
 
 ## 创建TextuerArray
 
-我们之前已经简单封装过Texture2D的功能，TextureArray其实只是比Texture2D多了一个维度，我们继续在**DVKTexture**里面进行封装我们的TextuerArray功能。
+在之前就已经简单封装过Texture2D的功能，TextureArray其实只是比Texture2D多了一个维度，继续在**DVKTexture**里面进行封装TextuerArray功能。
 
 ```c++
 static DVKTexture* Create2DArray(
@@ -42,7 +42,7 @@ static DVKTexture* Create2DArray(
 );
 ```
 
-因为是Array，因此传入的文件也从之前的单文件变成了文件数组。我们首先需要将所有的文件都加载进来：
+因为是Array，所以传入的文件也从之前的单文件变成了文件数组。首先将所有的文件都加载进来：
 
 ```c++
 struct ImageInfo
@@ -82,7 +82,7 @@ for (int32 i = 0; i < filenames.size(); ++i)
 }
 ```
 
-加载完毕之后，我们获取一下图片的尺寸，然后准备一下Array的长度，数据格式以及Mipmap数量。
+加载完毕之后，获取一下图片的尺寸，然后准备一下Array的长度，数据格式以及Mipmap数量。
 
 ```c++
 // 图片信息，TextureArray要求尺寸一致
@@ -117,7 +117,7 @@ for (int32 i = 0; i < images.size(); ++i)
 }
 ```
 
-然后创建我们的Image，创建Image的时候需要指定一下Array的长度。
+然后创建Image，创建Image的时候需要指定一下Array的长度。
 
 ```c++
 // 创建image
@@ -136,7 +136,7 @@ imageCreateInfo.usage           = VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USA
 VERIFYVULKANRESULT(vkCreateImage(device, &imageCreateInfo, VULKAN_CPU_ALLOCATOR, &image));
 ```
 
-后面就是一些分配Memory，绑定等工作跟之前的一样。我们从staging buffer拷贝到Image的时候，我们需要指定一下每一个Layer的尺寸以及Offset。
+后面就是一些分配Memory，绑定等工作跟之前的一样。我们从staging buffer拷贝到Image的时候，需要指定一下每一个Layer的尺寸以及Offset。
 
 ```c++
 // start record
@@ -171,7 +171,7 @@ vkCmdCopyBufferToImage(cmdBuffer->cmdBuffer, stagingBuffer->buffer, image, VK_IM
 ImagePipelineBarrier(cmdBuffer->cmdBuffer, image, ImageLayoutBarrier::TransferDest, ImageLayoutBarrier::TransferSource, subresourceRange);
 ```
 
-拷贝完成之后，我们就进行Mipmap的生成，这个过程跟之前的一样。
+拷贝完成之后，继续Mipmap的生成，这个过程跟之前的一样。
 
 ```c++
 // Generate the mip chain
@@ -237,7 +237,7 @@ VERIFYVULKANRESULT(vkCreateImageView(device, &viewInfo, VULKAN_CPU_ALLOCATOR, &i
 
 ## 设置混合数据
 
-光有贴图还不行，我们还需要额外的数据进行混合的操作，在这个Demo里面，我们就偷懒一下，把混合数据存储到顶点属性里面。但是一般在真实场景中，我们是通过一张或者多张额外的贴图来进行混合，将不同层级的混合数据存储到贴图的不同通道里面，虽然多了一张贴图，但是非常易于我们修改模型。顶点属性设置如下：
+光有贴图还不行，还需要额外的数据进行混合的操作，在这个Demo里面，我就偷懒一下，把混合数据存储到顶点属性里面。但是在真实开发场景中，绝大多数都是通过一张或者多张额外的贴图来进行混合，将不同层级的混合数据存储到贴图的不同通道里面，虽然多了一张贴图，但是非常易于修改。顶点属性设置如下：
 
 ```c++
 // 为顶点数据生成混合数据。PS:这里一般使用贴图来进行混合，而不是顶点数据。
@@ -300,7 +300,7 @@ for (int32 i = 0; i < m_Model->meshes.size(); ++i)
 
 ## 在Shader中混合
 
-准备好以上的数据之后，我们只需要根据混合权值在Fragment Shader中进行混合即可。
+准备好以上的数据之后，只需要根据混合权值在Fragment Shader中进行混合即可。
 
 ```c++
 #version 450
@@ -355,4 +355,4 @@ void main()
 }
 ```
 
-最终的效果也就是封面图的效果，我省略了一些步骤，这些步骤都是之前Demo里面的，居然代码查看源码即可。
+最终的效果也就是封面图的效果，我省略了一些步骤，这些步骤都是之前Demo里面的，查看源码即可。

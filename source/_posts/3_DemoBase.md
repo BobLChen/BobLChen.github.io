@@ -21,7 +21,7 @@ categories:
 
 ## 封装FrameBuffer
 
-在上个Demo中，我们创建了**RenderPass**、**FrameBuffer**、**DepthStencil**，这几个东西我们可以进行适当封装。在**AppModuleBase.h**里面我们准备一个**Prepare()**函数，用来准备这三个基本的要素。
+在上个Demo中，创建了**RenderPass**、**FrameBuffer**、**DepthStencil**，这几个东西其实可以进行适当封装。在**AppModuleBase.h**里面准备一个**Prepare()**函数，用来准备这三个基本的要素。
 
 ```c++
 virtual void Prepare()
@@ -32,7 +32,7 @@ virtual void Prepare()
 }
 ```
 
-在这个函数里面，分别创建这三个要素。需要注意的是，以后我们可能需要自己创建这三个资源，所以我们也需要对三个函数能够拥有**Override**权限。
+在这个函数里面，分别创建这三个要素。需要注意的是，以后有可能需要自己创建这三个资源，所以也需要对三个函数能够拥有**Override**权限。
 
 ### 创建DepthStenicl
 
@@ -208,7 +208,7 @@ virtual void CreateFrameBuffers()
 
 **AppModuleBase**只提供RenderPass、FrameBuffer、DepthStencil的封装，我不打算在**AppModuleBase**里面进行过度的封装，因为随着这个教程的不断演化，最终我是打算演化成为一个渲染功能比较健全的引擎。所以**Demo**功能我们专门封装到一个类**DemoBase**。
 
-有一些常用属性是需要经常访问的，例如**Device**、**FrameBuffer尺寸**、**Queue**等等。我们为**DemoBase**提供一个**Setup**函数，用于获取保存这些属性。即只要在**Demo**中调用了**Setup**函数，我们就可以直接获取这些参数。
+有一些常用属性是需要经常访问的，例如**Device**、**FrameBuffer尺寸**、**Queue**等等。我们为**DemoBase**提供一个**Setup**函数，用于获取保存这些属性。即只要在**Demo**中调用了**Setup**函数，就可以直接获取这些参数。
 
 ```c++
 void DemoBase::Setup()
@@ -230,7 +230,7 @@ void DemoBase::Setup()
 
 ## 封装常用Vulkan资源
 
-另外有一些功能是我们比较常用的，例如**Fence**、**CommandPool**、**CommandBuffer**、**PipelineCache**等。因此我们重写**AppModuleBase**的**Prepare**函数。
+另外有一些功能是比较常用的，例如**Fence**、**CommandPool**、**CommandBuffer**、**PipelineCache**等。因此重写**AppModuleBase**的**Prepare**函数，在里面准备这些资源。
 
 ```c++
 void Prepare() override
@@ -329,7 +329,7 @@ void DemoBase::CreatePipelineCache()
 
 ## 封装AcquireBackbufferIndex
 
-Backbuffer的索引获取是通过Swapchain请求到的，为了避免写起了麻烦，对它也简单封装一下。
+Backbuffer的索引获取是通过Swapchain请求到的，为了避免写起来麻烦，对它也简单封装一下。
 
 ```c++
 int32 DemoBase::AcquireBackbufferIndex()
@@ -341,7 +341,7 @@ int32 DemoBase::AcquireBackbufferIndex()
 
 ## 封装Present
 
-**Present**的调用目前来讲也是异常繁琐，同样我们对它也进行简单封装一下。
+**Present**的调用目前来讲也是异常繁琐，同样对它也进行简单封装一下。
 
 ```C++
 void DemoBase::Present(int backBufferIndex)
@@ -366,7 +366,7 @@ void DemoBase::Present(int backBufferIndex)
 }
 ```
 
-至此为止，我们的**DemoBase**就已经完成了它的使命，我们的**TriangleDemo**只要继承它，就可以拥有这些常用功能。经过封装之后，我们就会发现**TriangleDemo**的代码变成了500多行。代码越少，越方便理解。
+至此为止，我们的**DemoBase**就已经完成了它的使命，**TriangleDemo**只要继承它，就可以拥有这些常用功能。经过封装之后，新的**TriangleDemo**代码变成了500多行。代码越少，越方便理解。
 
 之前的Demo里面初始化以及释放函数长这样：
 

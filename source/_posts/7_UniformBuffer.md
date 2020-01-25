@@ -22,13 +22,14 @@ categories:
 
 ### [Pre-Integrated Skin Shading](https://zhuanlan.zhihu.com/p/56052015)
 
-皮肤材质是大家都比较关心，也希望解决的一个问题。常规的模拟方法是需要大量的计算，然后才能得到一个比较近似的结果。然后就出现了众多大佬经过多年的潜心研究，发明了一种计算量少但是效果还不错的方法。主要的原理还请参考这篇文章[Pre-Integrated Skin Shading](https://zhuanlan.zhihu.com/p/56052015)。在这篇文章里面，大佬将一些计算预先计算好，然后存储到一张贴图里面，然后在Shader里面通过这张查询图+曲率贴图以低成本的方式实现一个不成的效果。
+皮肤材质是大家都比较关心，希望解决的一个问题。常规的模拟方法是需要大量的计算，然后才能得到一个比较近似的结果。然后就出现了众多大佬经过多年的潜心研究，发明了一种计算量少但是效果还不错的方法。主要的原理还请参考这篇文章[Pre-Integrated Skin Shading](https://zhuanlan.zhihu.com/p/56052015)。在这篇文章里面，大佬将一些计算预先计算好，然后存储到一张贴图里面，然后在Shader里面通过这张查询图+曲率贴图以低成本的方式实现一个不成的效果。
 
-在这里我们不细说它是如何实现的，我们也不在这个Demo里面实现这个皮肤效果。我们另辟蹊径，在Shader里面通过函数来简单的拟合这张`LUT`查询图。当然我们只是拟合，并不能保证一模一样，但是也不要认为这个没有任何作用。1、首先我们节省了一张贴图，一张贴图无论是内存显存亦或者寄存器的占用，这些资源都是宝贵的；2、其次我们可以通过参数调节，来深层次的丰富效果。需要明确的是，有时候在做一些效果的时候，其实并不需要保证物理正确，反而只要保证`看起来非常不错`即可。
+在这里不细说它是如何实现的，我也不在这个Demo里面实现这个皮肤效果。另辟蹊径，在Shader里面通过函数来简单的拟合这张`LUT`查询图。当然只是拟合，并不能保证一模一样，但是也不要认为这个没有任何作用。1、首先节省了一张贴图，一张贴图无论是内存显存亦或者寄存器的占用，这些资源都是宝贵的；2、其次可以通过参数调节，来深层次的丰富效果。需要明确的是，有时候在做一些效果的时候，其实并不需要保证物理正确，反而只要保证`看起来非常不错`即可。
 
 ### 创建UniformBuffer
 
-Shader参数一般是通过UniformBuffer来进行传递，由于UniformBuffer可变，因此一般将UniformBuffer放置到`Host`端对GPU可见。虽然访问速度慢了一点儿，但是更新速度变快了。由于我们之前封装过Buffer，因此UniformBuffer的创建变得极为简单。
+Shader参数一般是通过UniformBuffer来进行传递，由于UniformBuffer可变，因此一般将UniformBuffer放置到`Host`端对GPU可见。虽然访问速度慢了一点儿，但是更新速度变快了。在之前的Demo里面封装过Buffer，因此UniformBuffer的创建变得极为简单。
+
 ```c++
 m_Params.omega   = 0.25 * PI;
 m_Params.k       = 10;
@@ -42,12 +43,14 @@ m_ParamsBuffer = vk_demo::DVKBuffer::CreateBuffer(
     &m_Params
 );
 m_ParamsBuffer->Map();
+
 ```
 需要注意的是`VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT`表明该Buffer是用于`UniformBuffer`,而`VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,`则表示Buffer没有创建到GPU的存储之上。
 
 ### 设置VkDescriptorPoolSize
 
-之前的Demo中可以发现，`DescriptorSet`是用来关联资源到Shader。而`DescriptorSet`的创建是通过Pool来分配的。现在我们多了一个UniformBuffer，那么我们也需要扩充我们的Pool的容量。
+从之前的Demo中可以发现，`DescriptorSet`是用来关联资源到Shader。而`DescriptorSet`的创建是通过Pool来分配的。现在多了一个UniformBuffer，那么也需要扩充Pool的容量。
+
 ```c++
 void CreateDescriptorPool()
 {
@@ -63,11 +66,13 @@ void CreateDescriptorPool()
     VERIFYVULKANRESULT(vkCreateDescriptorPool(m_Device, &descriptorPoolInfo, VULKAN_CPU_ALLOCATOR, &m_DescriptorPool));
 }
 ```
-在这里我们指定`PoolSize`的类型为`VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER`，它的数量有两个(1个ModelViewProject矩阵+1个参数)。设置好Size之后我们即可创建出对应的Pool。
+
+在这里指定`PoolSize`的类型为`VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER`，它的数量有两个(1个ModelViewProject矩阵+1个参数)。设置好Size之后我们即可创建出对应的Pool。
 
 ### 创建DescriptorSetLayout
 
-之前提到`DescriptorSetLayout`用来描述Shader的资源布局，多个`DescriptorSetLayout`构成一个`PipelineLayout`，真正使用的是`PipelineLayout`。在本Demo里面，使用到的资源有两个，`DescriptorSetLayout`就只需要一个即可。注意在Shader里面的参数如下：
+之前提到`DescriptorSetLayout`用来描述Shader的资源布局，多个`DescriptorSetLayout`构成一个`PipelineLayout`，真正使用的是`PipelineLayout`。在本Demo里面，使用到的资源有两个，`DescriptorSetLayout`只需要一个即可。注意在Shader里面的参数如下：
+
 ```GLSL
 layout (set = 0, binding = 1) uniform UBOParam 
 {
@@ -77,7 +82,9 @@ layout (set = 0, binding = 1) uniform UBOParam
 	float padding;
 } params;
 ```
-注意观察`layout (set = 0, binding = 1)`，其中指定了`set`为0，`binding`为1。`set`就与`DescriptorSetLayout`对应。`binding`指的是在这个`set`里面的绑定位置。我们在创建`DescriptorSetLayout`的时候就需要跟Shader里面的参数对应起来。例如在VertexShader以及FragmentShader里面的参数如下：
+
+注意观察`layout (set = 0, binding = 1)`，其中指定了`set`为0，`binding`为1。`set`就与`DescriptorSetLayout`对应。`binding`指的是在这个`set`里面的绑定位置。在创建`DescriptorSetLayout`的时候就需要跟Shader里面的参数对应起来。例如在VertexShader以及FragmentShader里面的参数如下：
+
 ```GLSL
 // vertex shader
 layout (set = 0, binding = 0) uniform UBO 
@@ -95,7 +102,9 @@ layout (set = 0, binding = 1) uniform UBOParam
 	float padding;
 } params;
 ```
-那么我们在创建`DescriptorSetLayout`时就需要配置相应的信息。如下所示：
+
+在创建`DescriptorSetLayout`时需要配置相应的信息。如下所示：
+
 ```c++
 std::vector<VkDescriptorSetLayoutBinding> layoutBindings(2);
 layoutBindings[0].binding 			 = 0;
@@ -128,6 +137,7 @@ VERIFYVULKANRESULT(vkCreatePipelineLayout(m_Device, &pipeLayoutInfo, VULKAN_CPU_
 ### 创建DescriptorSet
 
 DescriptorSet用于关联资源信息，需要注意的是，一个`DescriptorSet`对应一个`DescriptorSetLayout`。代码如下：
+
 ```c++
 VkDescriptorSetAllocateInfo allocInfo;
 ZeroVulkanStruct(allocInfo, VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO);
@@ -136,7 +146,9 @@ allocInfo.descriptorSetCount = 1;
 allocInfo.pSetLayouts        = &m_DescriptorSetLayout;
 VERIFYVULKANRESULT(vkAllocateDescriptorSets(m_Device, &allocInfo, &m_DescriptorSet));
 ```
-如果我们有多个`DescriptorSetLayout`，那么我们就需要创建对应的多个`DescriptorSet`。虽然这多个`DescriptorSetLayout`创建出了`PipelineLayout`，我们还是得使用`DescriptorSetLayout`信息来创建出`DescriptorSet`。创建完成之后，我们就可以将资源关联进去：
+
+如果有多个`DescriptorSetLayout`，就需要创建对应的多个`DescriptorSet`。虽然这多个`DescriptorSetLayout`创建出了`PipelineLayout`，但是任然需要使用`DescriptorSetLayout`信息来创建出`DescriptorSet`。创建完成之后，即可将资源关联进去：
+
 ```c++
 std::vector<VkWriteDescriptorSet> writeDescriptorSets(2);
 ZeroVulkanStruct(writeDescriptorSets[0], VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET);
@@ -155,11 +167,13 @@ writeDescriptorSets[1].dstBinding      = 1;
 
 vkUpdateDescriptorSets(m_Device, 2, writeDescriptorSets.data(), 0, nullptr);
 ```
+
 例如`Binding=0`关联了VertexShader的`MVP`矩阵数据；`Binding=1`关联了FragmentShader的`Param`数据。
 
 ### 设置DescriptorSet
 
-最后我们在录制命令的时候，设置好`DescriptorSet`即可。
+最后在录制命令的时候，设置好`DescriptorSet`即可。
+
 ```c++
 VERIFYVULKANRESULT(vkBeginCommandBuffer(m_CommandBuffers[i], &cmdBeginInfo));
             
@@ -179,6 +193,7 @@ vkCmdEndRenderPass(m_CommandBuffers[i]);
 
 VERIFYVULKANRESULT(vkEndCommandBuffer(m_CommandBuffers[i]));
 ```
+
 最终效果就如封面图所示，我们可以通过调节参数来近似的拟合那张贴图。
 
 ### VertexShader
