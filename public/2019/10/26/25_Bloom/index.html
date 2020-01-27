@@ -6,24 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
-  <title>骨骼动画简介 | Hello World</title>
+  <title>25_Bloom | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="项目Github地址请戳我 1、骨架骨架由一系列具有层次关系的关节(骨骼)组成，是一种树结构。可以通过平移和旋转根关节来确定整个骨架在模型空间中的位置和方向。父关节运动能影响子关节运动，但子关节运动对父关节不产生影响。因此平移、旋转、缩放父关节时，也会同时平移、旋转、缩放其所有子关节。">
-<meta name="keywords" content="Vulkan,物理设备,3D,Demo">
+  <meta name="description" content="25_Bloom 项目Github地址请戳我 Bloom是比较常用的后处理特效，实现的方式都大同小异，这次就实现一个非常建议的Bloom后处理效果。">
+<meta name="keywords" content="Vulkan,3D,Tutorial,Bloom">
 <meta property="og:type" content="article">
-<meta property="og:title" content="骨骼动画简介">
-<meta property="og:url" content="https://boblchen.github.io/public/2019/08/07/26_Skeleton/index.html">
+<meta property="og:title" content="25_Bloom">
+<meta property="og:url" content="https://boblchen.github.io/public/2019/10/26/25_Bloom/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="项目Github地址请戳我 1、骨架骨架由一系列具有层次关系的关节(骨骼)组成，是一种树结构。可以通过平移和旋转根关节来确定整个骨架在模型空间中的位置和方向。父关节运动能影响子关节运动，但子关节运动对父关节不产生影响。因此平移、旋转、缩放父关节时，也会同时平移、旋转、缩放其所有子关节。">
+<meta property="og:description" content="25_Bloom 项目Github地址请戳我 Bloom是比较常用的后处理特效，实现的方式都大同小异，这次就实现一个非常建议的Bloom后处理效果。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://boblchen.github.io/public/2019/08/07/26_Skeleton/0.png">
-<meta property="og:image" content="https://boblchen.github.io/public/2019/08/07/26_Skeleton/1.png">
-<meta property="og:image" content="https://boblchen.github.io/public/2019/08/07/26_Skeleton/2.png">
-<meta property="og:updated_time" content="2020-01-22T14:16:56.953Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/25_Bloom.jpg">
+<meta property="og:updated_time" content="2020-01-27T16:01:26.845Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="骨骼动画简介">
-<meta name="twitter:description" content="项目Github地址请戳我 1、骨架骨架由一系列具有层次关系的关节(骨骼)组成，是一种树结构。可以通过平移和旋转根关节来确定整个骨架在模型空间中的位置和方向。父关节运动能影响子关节运动，但子关节运动对父关节不产生影响。因此平移、旋转、缩放父关节时，也会同时平移、旋转、缩放其所有子关节。">
-<meta name="twitter:image" content="https://boblchen.github.io/public/2019/08/07/26_Skeleton/0.png">
+<meta name="twitter:title" content="25_Bloom">
+<meta name="twitter:description" content="25_Bloom 项目Github地址请戳我 Bloom是比较常用的后处理特效，实现的方式都大同小异，这次就实现一个非常建议的Bloom后处理效果。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/25_Bloom.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
   
@@ -163,80 +161,40 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-26_Skeleton" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-25_Bloom" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      骨骼动画简介
+      25_Bloom
     </h1>
   
 
         
-        <a href="/public/2019/08/07/26_Skeleton/" class="archive-article-date">
-  	<time datetime="2019-08-06T23:52:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-07</time>
+        <a href="/public/2019/10/26/25_Bloom/" class="archive-article-date">
+  	<time datetime="2019-10-26T14:26:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-26</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<h2 id="1、骨架"><a href="#1、骨架" class="headerlink" title="1、骨架"></a>1、骨架</h2><p>骨架由一系列具有层次关系的关节(骨骼)组成，是一种树结构。可以通过平移和旋转根关节来确定整个骨架在模型空间中的位置和方向。父关节运动能影响子关节运动，但子关节运动对父关节不产生影响。因此平移、旋转、缩放父关节时，也会同时平移、旋转、缩放其所有子关节。</p>
+        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/25_Bloom" target="_blank" rel="noopener">25_Bloom</a></p>
+<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
+<p>Bloom是比较常用的后处理特效，实现的方式都大同小异，这次就实现一个非常建议的Bloom后处理效果。</p>
 <a id="more"></a>
 
-<p><img src="0.png" alt="0.png"></p>
-<h2 id="2、骨骼的表示"><a href="#2、骨骼的表示" class="headerlink" title="2、骨骼的表示"></a>2、骨骼的表示</h2><p>通常会将骨骼进行编号[0,N−1],编号也是关节索引。一个骨骼包含以下信息:</p>
-<ul>
-<li>名称</li>
-<li>索引</li>
-<li>父骨骼索引</li>
-<li>BindPose(可能是逆变换，后面再说)</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Joint</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span>  name;</span><br><span class="line">    int32        index;</span><br><span class="line">    int32        parent;</span><br><span class="line">    Matrix4x4    bindPose;</span><br><span class="line">    <span class="comment">// Matrix4x4 inverseBindPose;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/25_Bloom.jpg" alt="25_Bloom"></p>
+<h2 id="亮度提取"><a href="#亮度提取" class="headerlink" title="亮度提取"></a>亮度提取</h2><p>Bloom效果一般是对亮度比较高的地方进行模糊处理，当然具体的实现不一定非得按照这样的方式来，这种特效完全是按照需求来决定的。既然要对亮度比较高的地方进行模糊处理，那显然需要将亮度比较高的地方提取出来。提取的方法很简单：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="type">vec3</span> W = <span class="type">vec3</span>(<span class="number">0.2125</span>, <span class="number">0.7154</span>, <span class="number">0.0721</span>);</span><br><span class="line"><span class="type">vec4</span> color = <span class="built_in">texture</span>(diffuseTexture, inUV0);</span><br><span class="line"><span class="type">float</span> luminance = <span class="built_in">dot</span>(color.rgb, W);</span><br></pre></td></tr></table></figure>
 
-<h2 id="3、姿态"><a href="#3、姿态" class="headerlink" title="3、姿态"></a>3、姿态</h2><p>把关节旋转、平移、缩放，就能为骨架摆出各种姿势。关节的姿势被定义为关节相对于某坐标系的位置、朝向、缩放。通常骨架存在绑定姿势、局部姿势、全局姿势。</p>
-<h3 id="绑定姿势"><a href="#绑定姿势" class="headerlink" title="绑定姿势"></a>绑定姿势</h3><p>绑定姿势是网格绑定到骨骼之前的姿势，也就是将网格当作正常<code>没有蒙皮</code>的姿势，通常是美术绑定模型时预设的。下图左边是绑定姿势，右图是某个运动状态的姿势：</p>
-<p><img src="1.png" alt="1.png"></p>
-<h3 id="局部姿势"><a href="#局部姿势" class="headerlink" title="局部姿势"></a>局部姿势</h3><p>局部姿势是关节相对于父关节的位置、缩放、旋转状态。局部姿势存储为TQS的格式，表示相对与父关节的位置、朝向、缩放。</p>
-<h3 id="全局姿势"><a href="#全局姿势" class="headerlink" title="全局姿势"></a>全局姿势</h3><p>全局姿势是相对于局部姿势而言的，它是关节相对于模型空间的姿势（局部姿势是相对于父关节的姿势）。假设某个关节<code>J</code>坐标空间的点<code>q</code>需要转换到全局空间，那么可以通过从该关节<code>J</code>开始一直遍历到根关节，即可将<code>q</code>变换到<code>世界坐标系(模型空间)</code>中表示的坐标形式。</p>
-<p><img src="2.png" alt="2.png"></p>
-<p>如上图所示，左边是人体骨架名称，右边是对应的标号。现在假我们将关节<code>rfemur</code>空间的点<code>q</code>变换到<code>世界坐标系(模型空间)</code>中,<code>rfemur</code>关节编号是8，我们用P8表示它的局部姿势矩阵，以此类推，那么<code>q</code>在世界坐标系中<code>q′</code>的坐标可以表示为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">q′ = P1 x P7 x P8 x q</span><br></pre></td></tr></table></figure>
+<h2 id="模糊"><a href="#模糊" class="headerlink" title="模糊"></a>模糊</h2><p>亮度提取完成之后，就需要进行模糊处理。模糊处理常用的方式就是降采样的同时进行一次横向或者纵向的模糊处理，然后再进行一次模糊处理。之所以要进行两次模糊处理，主要是为了优化性能分成了两次。想要一次处理完成其实也是可以的，这需要在一次pass里面大量的进行采样，但是真实情况下不容许我们进行大量的采样。一是因为采样的次数有限不能无限次采样，二是因为采样数量过多性能急剧下降。那这样的话在一次pass里面进行10x10(如果允许的)次采样跟两次pass，横向10次+纵向10次的效果是一致的。</p>
+<h2 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h2><p>我们只是对亮度教高得区域进行了模糊，还需要跟原图进行合并，一般都是给个权值用来影响合并图层的程度。<br>综上所述，所需要创建的RenderTarget代码如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CreateRenderTarget</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    m_RTColor = vk_demo::DVKTexture::CreateRenderTarget(</span><br><span class="line">        m_VulkanDevice,</span><br><span class="line">        PixelFormatToVkFormat(GetVulkanRHI()-&gt;GetPixelFormat(), <span class="literal">false</span>), </span><br><span class="line">        VK_IMAGE_ASPECT_COLOR_BIT,</span><br><span class="line">        m_FrameWidth, m_FrameHeight,</span><br><span class="line">        VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT</span><br><span class="line">    );</span><br><span class="line">    </span><br><span class="line">    m_RTColorQuater0 = vk_demo::DVKTexture::CreateRenderTarget(</span><br><span class="line">        m_VulkanDevice,</span><br><span class="line">        PixelFormatToVkFormat(GetVulkanRHI()-&gt;GetPixelFormat(), <span class="literal">false</span>), </span><br><span class="line">        VK_IMAGE_ASPECT_COLOR_BIT,</span><br><span class="line">        m_FrameWidth / <span class="number">4.0f</span>, m_FrameHeight / <span class="number">4.0f</span>,</span><br><span class="line">        VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT</span><br><span class="line">    );</span><br><span class="line">    </span><br><span class="line">    m_RTColorQuater1 = vk_demo::DVKTexture::CreateRenderTarget(</span><br><span class="line">        m_VulkanDevice,</span><br><span class="line">        PixelFormatToVkFormat(GetVulkanRHI()-&gt;GetPixelFormat(), <span class="literal">false</span>), </span><br><span class="line">        VK_IMAGE_ASPECT_COLOR_BIT,</span><br><span class="line">        m_FrameWidth / <span class="number">4.0f</span>, m_FrameHeight / <span class="number">4.0f</span>,</span><br><span class="line">        VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT</span><br><span class="line">    );</span><br><span class="line">    </span><br><span class="line">    m_RTDepth = vk_demo::DVKTexture::CreateRenderTarget(</span><br><span class="line">        m_VulkanDevice,</span><br><span class="line">        PixelFormatToVkFormat(m_DepthFormat, <span class="literal">false</span>),</span><br><span class="line">        VK_IMAGE_ASPECT_DEPTH_BIT,</span><br><span class="line">        m_FrameWidth, m_FrameHeight,</span><br><span class="line">        VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT</span><br><span class="line">    );</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 正常渲染场景</span></span><br><span class="line">    vk_demo::<span class="function">DVKRenderPassInfo <span class="title">rttNormalInfo</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        m_RTColor, VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE,</span></span></span><br><span class="line"><span class="function"><span class="params">        m_RTDepth, VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE</span></span></span><br><span class="line"><span class="function"><span class="params">    )</span></span>;</span><br><span class="line">    m_RTTNormal = vk_demo::DVKRenderTarget::Create(m_VulkanDevice, rttNormalInfo);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1/4降级渲染</span></span><br><span class="line">    vk_demo::<span class="function">DVKRenderPassInfo <span class="title">rttQuater0Info</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        m_RTColorQuater0, VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE, <span class="literal">nullptr</span></span></span></span><br><span class="line"><span class="function"><span class="params">    )</span></span>;</span><br><span class="line">    m_RTTQuater0 = vk_demo::DVKRenderTarget::Create(m_VulkanDevice, rttQuater0Info);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1/4降级渲染</span></span><br><span class="line">    vk_demo::<span class="function">DVKRenderPassInfo <span class="title">rttQuater1Info</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        m_RTColorQuater1, VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE, <span class="literal">nullptr</span></span></span></span><br><span class="line"><span class="function"><span class="params">    )</span></span>;</span><br><span class="line">    m_RTTQuater1 = vk_demo::DVKRenderTarget::Create(m_VulkanDevice, rttQuater1Info);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>对应的变换矩阵是<code>P1P7P8</code>,该变换矩阵便是关节<code>8</code>的<code>全局姿势矩阵</code>。它直接将关节<code>8坐标系下</code>的<code>点</code>变换到世界坐标系中。我们知道变换矩阵的<code>逆</code>表示<code>逆变换</code>，那么<code>全局姿势矩阵</code>的<code>逆矩阵</code>可以将<code>世界空间(模型空间)</code>的点变换到<code>关节空间中</code>。那么在世界坐标系中<code>q′</code>的坐标可以通过逆变换转化到关节<code>rfemur</code>空间的点<code>q</code>。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">q = inverse(P1 x P7 x P8) x q′</span><br></pre></td></tr></table></figure>
-
-<p><strong>这个逆矩阵非常关键。</strong></p>
-<h2 id="4、蒙皮"><a href="#4、蒙皮" class="headerlink" title="4、蒙皮"></a>4、蒙皮</h2><p>蒙皮就是计算骨架在<strong>某一状态</strong>下网格<strong>顶点的位置</strong>。每个顶点可以绑定到一个或者多个骨骼（一般四个），动画播放时<strong>顶点随着关节运动</strong>。顶点的<strong>最终变换</strong>就等于它所<strong>绑定的骨架变换的加权和</strong>。对于每个顶点，我们需要有以下信息：</p>
-<ul>
-<li>骨骼索引(四个)</li>
-<li>骨骼应用权重(四个)</li>
-</ul>
-<h3 id="蒙皮矩阵"><a href="#蒙皮矩阵" class="headerlink" title="蒙皮矩阵"></a>蒙皮矩阵</h3><p>蒙皮矩阵就是把顶点从<strong>绑定姿势</strong>变换到骨骼的<strong>当前姿势</strong>的矩阵，注意顶点的变换前后都是在<strong>模型空间中</strong>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FinalPosition = Bone0 * V * Weight0 + Bone1 * V * Weight1 + Bone2 * V * Weight2 + Bone3 * V * Weight3</span><br></pre></td></tr></table></figure>
-
-<p><strong>Bone0、Bone1、Bone2、Bone3</strong>代表关节的<strong>全局变换矩阵</strong>与<strong>BindPose</strong>的<strong>全局变换矩阵的逆变换</strong>。</p>
-<p>这里就有一个需要注意的地方：我们的顶点是<strong>绑定姿态</strong>时的坐标，这个坐标是在模型空间中的。假设一个<strong>绑定姿态</strong>下的顶点<strong>V(Global)</strong>，它对应的骨骼空间中的点为<strong>v(local)</strong>，根据第三节<strong>姿态</strong>章节里面描述，我们可以知道。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">V = P1 x P7 x P8 x v</span><br></pre></td></tr></table></figure>
-
-<p>那么顶点<strong>V</strong>对应的关节局部空间的顶点<strong>v</strong>就可以通过逆变换矩阵计算出来：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v = inverse(P1 x P7 x P8) x V</span><br></pre></td></tr></table></figure>
-
-<p>我们为什么要将<strong>模型空间的顶点</strong>转化到<strong>关节局部空间</strong>？</p>
-<p>可能有人会有疑问，为什么要做这个操作？回想前面提到的，在关节局部空间的<strong>顶点p</strong>可以通过<strong>P1 x P7 x P8</strong>(也是关节的Global变换矩阵)矩阵变换到<strong>模型空间</strong>。我们存储的是关节<strong>相对于</strong>父关节的<strong>变换矩阵</strong>，经过了一系列的变换，我们可以计算出关节在模型空间下的<strong>全局变换矩阵</strong>(模型空间)。</p>
-<p>但是我们加载出来的模型的<strong>顶点</strong>确是在<strong>模型空间</strong>中。那么显然我们不能将加载出来的顶点直接应用到关节的<strong>全局变换</strong>上。关节的<strong>全局变换矩阵</strong>的作用是将<strong>关节空间</strong>下的<strong>顶点v</strong>通过<strong>全局变换矩阵</strong>变换到<strong>模型空间</strong>。现在我们拿到手的顶点都<strong>没有</strong>在关节局部空间，<strong>而是</strong>在模型空间，显然<strong>不能</strong>将一个<strong>已经</strong>变换到模型空间的顶点，再次拿去经过一次全局变换。</p>
-<p>解决这个问题其实也很简单，既然我们拿到的是<strong>模型空间</strong>下的<strong>顶点V</strong>，那么我们把它转化到<strong>关节空间v</strong>里面去不就行了嘛！这样我们不就有了一个在<strong>关节空间</strong>下的<strong>顶点v</strong>，那我们就可以应用关节的<strong>全局变换</strong>把它变到<strong>模型空间</strong>了。</p>
-<h3 id="绑定姿态"><a href="#绑定姿态" class="headerlink" title="绑定姿态"></a>绑定姿态</h3><p>之前谈到了绑定姿态，也知道了是绑定骨骼之前用到的一个姿态。虽然没有任何蒙皮，动画信息，但是它总归是一个姿态。之前我们推导出，如果我们需要将顶点应用到关节的<strong>全局变换</strong>，那么我们就需要将模型空间的<strong>顶点V</strong>经过逆变换，变换到关节的局部空间。</p>
-<p>我们加载出来的模型也是美术预设的模型，它就是<strong>绑定姿态(BindPose)</strong>。那么其实我们只需要将<strong>绑定姿态</strong>的关节的<strong>局部变换矩阵</strong>或者<strong>全局变换矩阵</strong>存储下来，然后通过骨骼的关系，把每个关节的<strong>全局变换矩阵</strong>计算出来，最后对<strong>全局变换矩阵</strong>取逆，就得到了我们需要的逆矩阵。通过这个逆矩阵，我们就可以将绑定姿态下的顶点转化到关节的局部空间。</p>
-<h3 id="关节空间下的顶点"><a href="#关节空间下的顶点" class="headerlink" title="关节空间下的顶点"></a>关节空间下的顶点</h3><p>值得一提的是，如果一个顶点在关节空间中，那么无论我们的关节如何运动，这个顶点相对于关节来说它永远都是不变的。这个也跟骨架的原理一样，如果只是根节点在运动，那么子关节相对于根节点来讲也是不变的。就好比我们把我们整个手臂抡圆了转圈甩，你的手指相对于你手臂来讲，它是不变的，但是它随着手臂的运动在全局空间里面表现出来是运动状态。</p>
-<p>为什么要提这个呢？是因为顶点在关节的局部空间是不变的，那么我们只要拥有在关节局部空间的顶点即可，不管它是通过<strong>BindPose</strong>计算出来的，但是通过其它<strong>Pose</strong>计算出来的，但它总归是在关节的局部空间中。</p>
-<p>其实这里就引申了出了，我们可以不存储<strong>BindPose</strong>状态下的模型数据，我们其实可以存储动画<strong>某个时刻</strong>的<strong>模型数据</strong>，然后我们将<strong>这个时刻</strong>的<strong>关节数据</strong>存储下来，把这个时刻的关节数据用来做逆变换其实也是可以的。我们不一定是非得需要<strong>BindPose</strong>。</p>
-<h2 id="5、动画"><a href="#5、动画" class="headerlink" title="5、动画"></a>5、动画</h2><p>如果上一节看懂了，那么大家可能也会有另外一个疑问。我特么<strong>顶点V</strong>已经是模型空间下了，我再把它通过<strong>BindPose</strong>的<strong>全局变换矩阵的逆矩阵</strong>转换到关节的<strong>局部空间</strong>，然后我再通过<strong>BindPose</strong>下关节的<strong>全局变换矩阵</strong>把它局部空间的顶点v变换到模型空间，这不还是原来的<strong>顶点V</strong>？？？这不是吃饱了撑的？？？</p>
-<p>但是如果关节运动起来了，那么就很有意思了。假设有一个攻击的动画，整个持续时间1S。那么整个骨架里面的关节在这1S内都会运动，这个时候如果我们每隔<strong>0.0166666666666667</strong>秒就把关节当前相对于父关节<strong>的旋转、缩放、位移</strong>的信息存储下来。这样我们就有了<strong>60组</strong>数据，每一组存储了每一个时刻关节的信息。</p>
-<p>现在我们把关节空间下的<strong>顶点v</strong>应用到<strong>某一组</strong>的关节的<strong>全局变换矩阵</strong>上，那么这个顶点就是在<strong>这个时刻</strong>的<strong>模型空间</strong>下的坐标。整个动画的原理其实就这样，我们按照一定的帧率记录每一帧所有关节在当前时间节点的<strong>旋转、位移、缩放</strong>信息。然后应用到顶点上，让顶点从模型空间变换到新的模型空间。</p>
+<p>其它的比较简单，不再细说，最后的效果就如预览图所述，由于模型选择的有问题，效果可能不太明显，大家可以注意观察一下角色的大光头，大光头是有辉光的效果的。</p>
 
       
 
@@ -254,15 +212,15 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Bloom</a>
         		</li>
       		
 		</ul>
@@ -329,7 +287,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://boblchen.github.io/public/2019/08/07/26_Skeleton/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://boblchen.github.io/public/2019/10/26/25_Bloom/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -343,18 +301,18 @@
   
 <nav id="article-nav">
   
-    <a href="/public/2019/08/12/12_PushConstants/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/public/2019/11/06/26_Skeleton/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          12_PushConstants
+          骨骼动画简介
         
       </div>
     </a>
   
   
-    <a href="/public/2019/08/02/11_Texture/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">11_Texture</div>
+    <a href="/public/2019/10/19/24_NormalEdge/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">24_NormalEdge</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -589,6 +547,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Edge</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Bloom</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Skeleton</a>
               </li>
             
             <div class="clearfix"></div>
