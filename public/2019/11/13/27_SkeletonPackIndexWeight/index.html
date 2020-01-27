@@ -6,19 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
-  <title>Archives: 2019 | Hello World</title>
+  <title>27_SkeletonPackIndexWeight | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我亦无他唯手熟尔">
-<meta name="keywords" content="3D Engine Opengl Stage3D DirectX Vulkan C++">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://boblchen.github.io/public/archives/2019/page/3/index.html">
+  <meta name="description" content="项目Github地址请戳我 上一个Demo里面给出了一个骨骼动画的实现，但是并不是最优的状态，在这一节里面给出一些简单的优化。">
+<meta name="keywords" content="Vulkan,3D,Demo,Skeleton">
+<meta property="og:type" content="article">
+<meta property="og:title" content="27_SkeletonPackIndexWeight">
+<meta property="og:url" content="https://boblchen.github.io/public/2019/11/13/27_SkeletonPackIndexWeight/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="我亦无他唯手熟尔">
+<meta property="og:description" content="项目Github地址请戳我 上一个Demo里面给出了一个骨骼动画的实现，但是并不是最优的状态，在这一节里面给出一些简单的优化。">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/26_Skeleton.gif">
+<meta property="og:updated_time" content="2020-01-27T16:56:19.436Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="我亦无他唯手熟尔">
+<meta name="twitter:title" content="27_SkeletonPackIndexWeight">
+<meta name="twitter:description" content="项目Github地址请戳我 上一个Demo里面给出了一个骨骼动画的实现，但是并不是最优的状态，在这一节里面给出一些简单的优化。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/26_Skeleton.gif">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
   
@@ -158,36 +161,52 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-27_SkeletonPackIndexWeight" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      27_SkeletonPackIndexWeight
+    </h1>
+  
+
+        
+        <a href="/public/2019/11/13/27_SkeletonPackIndexWeight/" class="archive-article-date">
+  	<time datetime="2019-11-13T15:22:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-13</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
+<p>上一个Demo里面给出了一个骨骼动画的实现，但是并不是最优的状态，在这一节里面给出一些简单的优化。</p>
+<a id="more"></a>
+
+<p><img src="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/26_Skeleton.gif" alt="26_Skeleton"></p>
+<h2 id="优化骨骼索引"><a href="#优化骨骼索引" class="headerlink" title="优化骨骼索引"></a>优化骨骼索引</h2><p>上一个Demo里面，采用32位来存储骨骼索引数据，但是在真实的场景中不可能使用到这么多骨骼来驱动，一般使用到256根骨骼就已经是非常精良的制作。基于此其实可以将32bit压缩为8bit，8bit已经能够满足大多数的需求。使用8bit来存储也有两种方式：1、将8个bit打包到32bit里面，一般也就是1个int存储了4个索引的数据。2、打包解包需要计算，其实可以直接设定顶点的数据格式为byte。在这里我采样第一种方式，有两个原因：1、Demo的设计里面没有支持byte的形式；2、旧设备也能得到支持。</p>
+<p>先来看看在CPU里面进行pack的代码:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">int32 idx0 = primitive-&gt;vertices[idx + <span class="number">0</span>];</span><br><span class="line">int32 idx1 = primitive-&gt;vertices[idx + <span class="number">1</span>];</span><br><span class="line">int32 idx2 = primitive-&gt;vertices[idx + <span class="number">2</span>];</span><br><span class="line">int32 idx3 = primitive-&gt;vertices[idx + <span class="number">3</span>];</span><br><span class="line"><span class="comment">// packIndex</span></span><br><span class="line">uint32 packIndex = (idx0 &lt;&lt; <span class="number">24</span>) + (idx1 &lt;&lt; <span class="number">16</span>) + (idx2 &lt;&lt; <span class="number">8</span>) + idx3;</span><br><span class="line">primitive-&gt;vertices[idx + <span class="number">0</span>] = packIndex;</span><br><span class="line">primitive-&gt;vertices[idx + <span class="number">1</span>] = packIndex;</span><br><span class="line">primitive-&gt;vertices[idx + <span class="number">2</span>] = packIndex;</span><br><span class="line">primitive-&gt;vertices[idx + <span class="number">3</span>] = packIndex;</span><br></pre></td></tr></table></figure>
+
+<p>然后看看shader里面的unpack代码:</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ivec4</span> UnPackUInt32To4Byte(<span class="type">uint</span> packIndex)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">uint</span> idx0 = (packIndex &gt;&gt; <span class="number">24</span>) &amp; <span class="number">0xFF</span>;</span><br><span class="line">	<span class="type">uint</span> idx1 = (packIndex &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xFF</span>;</span><br><span class="line">	<span class="type">uint</span> idx2 = (packIndex &gt;&gt; <span class="number">8</span>)  &amp; <span class="number">0xFF</span>;</span><br><span class="line">	<span class="type">uint</span> idx3 = (packIndex &gt;&gt; <span class="number">0</span>)  &amp; <span class="number">0xFF</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="type">ivec4</span>(idx0, idx1, idx2, idx3);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="优化骨骼权值"><a href="#优化骨骼权值" class="headerlink" title="优化骨骼权值"></a>优化骨骼权值</h2><p>权重值得优化套路其实跟索引一样，权重值采用16bit来存储，一般情况下这样的精度是可以满足需求的，除非是对动画要求特别高得场景。既然套路都一样，这里也就不再过多解释。看一下代码即可：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// packWeight</span></span><br><span class="line">uint16 weight0 = primitive-&gt;vertices[idx + <span class="number">4</span>] * <span class="number">65535</span>;</span><br><span class="line">uint16 weight1 = primitive-&gt;vertices[idx + <span class="number">5</span>] * <span class="number">65535</span>;</span><br><span class="line">uint16 weight2 = primitive-&gt;vertices[idx + <span class="number">6</span>] * <span class="number">65535</span>;</span><br><span class="line">uint16 weight3 = primitive-&gt;vertices[idx + <span class="number">7</span>] * <span class="number">65535</span>;</span><br><span class="line">uint32 packWeight0 = (weight0 &lt;&lt; <span class="number">16</span>) + weight1;</span><br><span class="line">uint32 packWeight1 = (weight2 &lt;&lt; <span class="number">16</span>) + weight3;</span><br><span class="line">primitive-&gt;vertices[idx + <span class="number">4</span>] = packWeight0;</span><br><span class="line">primitive-&gt;vertices[idx + <span class="number">5</span>] = packWeight1;</span><br><span class="line">primitive-&gt;vertices[idx + <span class="number">6</span>] = packWeight0;</span><br><span class="line">primitive-&gt;vertices[idx + <span class="number">7</span>] = packWeight1;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ivec2</span> UnPackUInt32To2Short(<span class="type">uint</span> packIndex)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">uint</span> idx0 = (packIndex &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xFFFF</span>;</span><br><span class="line">	<span class="type">uint</span> idx1 = (packIndex &gt;&gt; <span class="number">0</span>)  &amp; <span class="number">0xFFFF</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="type">ivec2</span>(idx0, idx1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个的优化主要目的是减少模型的数据量。下一个Demo着手来优化动画的数量量。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/public/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/08/02/7_UniformBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T16:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/08/02/7_UniformBuffer/">7_UniformBuffer</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -201,17 +220,17 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">UniformBuffer</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Skeleton</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -224,496 +243,103 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://boblchen.github.io/public/2019/11/13/27_SkeletonPackIndexWeight/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/08/01/6_ImageGUI/" class="archive-article-date">
-  	<time datetime="2019-08-01T12:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/public/2019/11/06/26_Skeleton/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">骨骼动画简介</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/08/01/6_ImageGUI/">6_ImGUI</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">IMGUI</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/08/01/5_OptimizeCommandBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T11:45:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/08/01/5_OptimizeCommandBuffer/">5_OptimizeCommandBuffer</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">VKCommandBuffer</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/08/01/4_OptimizeBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T10:25:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/08/01/4_OptimizeBuffer/">Vulkan Demo 4_OptimizeBuffer</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">VKBuffer</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/08/01/3_DemoBase/" class="archive-article-date">
-  	<time datetime="2019-07-31T16:16:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/08/01/3_DemoBase/">Vulkan Demo 03 DemoBase</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Triangle</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/07/28/2_Triangle/" class="archive-article-date">
-  	<time datetime="2019-07-27T16:16:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/07/28/2_Triangle/">Vulkan Demo 02 Triangle</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Triangle</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/06/23/UniformBuffer设计/" class="archive-article-date">
-  	<time datetime="2019-06-23T03:51:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/06/23/UniformBuffer设计/">UniformBuffer设计</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/06/07/VulkanBuffer与内存/" class="archive-article-date">
-  	<time datetime="2019-06-07T15:43:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/06/07/VulkanBuffer与内存/">Vulkan Buffer与内存</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">内存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/06/03/物理设备与簇/" class="archive-article-date">
-  	<time datetime="2019-06-03T13:53:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/06/03/物理设备与簇/">物理设备与簇</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/public/archives/2019/page/2/">&laquo; Prev</a><a class="page-number" href="/public/archives/2019/">1</a><a class="page-number" href="/public/archives/2019/page/2/">2</a><span class="page-number current">3</span>
-    </nav>
+  
+
+  
+
   
 
 
@@ -737,8 +363,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
