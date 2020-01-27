@@ -3,9 +3,9 @@ title: 5_OptimizeCommandBuffer
 date: 2019-08-01 19:45:25
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- VKCommandBuffer
+- Tutorial
 categories:
 - Vulkan
 ---

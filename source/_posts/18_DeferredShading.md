@@ -3,9 +3,9 @@ title: 18_DeferredShading
 date: 2019-09-9 23:15:23
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- DeferredShading
+- Tutorial
 categories:
 - Vulkan
 ---

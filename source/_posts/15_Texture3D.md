@@ -3,9 +3,9 @@ title: 15_Texture3D
 date: 2019-08-23 23:50:12
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- Texture3D
+- Tutorial
 categories:
 - Vulkan
 ---

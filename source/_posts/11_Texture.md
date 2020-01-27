@@ -3,9 +3,9 @@ title: 11_Texture
 date: 2019-08-02 22:03:40
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- Texture
+- Tutorial
 categories:
 - Vulkan
 ---

@@ -3,9 +3,9 @@ title: 10_Pipelines
 date: 2019-08-02 20:01:52
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- Pipeline
+- Tutorial
 categories:
 - Vulkan
 ---

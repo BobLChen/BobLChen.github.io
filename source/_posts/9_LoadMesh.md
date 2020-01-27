@@ -3,9 +3,9 @@ title: 9_LoadMesh
 date: 2019-08-02 19:09:52
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- OBJ
+- Tutorial
 categories:
 - Vulkan
 ---

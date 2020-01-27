@@ -3,9 +3,9 @@ title: 17_InputAttachments
 date: 2019-09-2 23:25:41
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- InputAttachment
+- Tutorial
 categories:
 - Vulkan
 ---

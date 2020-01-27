@@ -9,7 +9,7 @@
   <title>17_InputAttachments | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="17_InputAttachments 项目Github地址请戳我 在这个Demo里面我们来了解如何使用InputAttachment(附件)。InputAttachment会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，我们将这个Demo里面了解如何在一个Pass里面进行对附件的读取操作。">
-<meta name="keywords" content="Vulkan,物理设备,3D,Demo">
+<meta name="keywords" content="Vulkan,3D,Tutorial,InputAttachment">
 <meta property="og:type" content="article">
 <meta property="og:title" content="17_InputAttachments">
 <meta property="og:url" content="https://boblchen.github.io/public/2019/09/02/17_InputAttachments/index.html">
@@ -17,7 +17,7 @@
 <meta property="og:description" content="17_InputAttachments 项目Github地址请戳我 在这个Demo里面我们来了解如何使用InputAttachment(附件)。InputAttachment会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，我们将这个Demo里面了解如何在一个Pass里面进行对附件的读取操作。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/BobLChen/VulkanTutorials/master/preview/17_InputAttachments.jpg">
-<meta property="og:updated_time" content="2020-01-25T02:12:29.000Z">
+<meta property="og:updated_time" content="2020-01-27T03:20:09.383Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="17_InputAttachments">
 <meta name="twitter:description" content="17_InputAttachments 项目Github地址请戳我 在这个Demo里面我们来了解如何使用InputAttachment(附件)。InputAttachment会在后面大量用到，特别是后期效果的处理流程中，离不开这个功能。如何使用附件是非常简单的，我们将这个Demo里面了解如何在一个Pass里面进行对附件的读取操作。">
@@ -283,15 +283,15 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">InputAttachment</a>
         		</li>
       		
 		</ul>
@@ -526,6 +526,90 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">内存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Triangle</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Tutorial</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">VKBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">VKCommandBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">IMGUI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">UniformBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">VertexBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">IndexBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">OBJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Pipeline</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Texture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DynamicUniformBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">TextureArray</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Texture3D</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Shader</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">DescriptorLayout</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">InputAttachment</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DeferredShading</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Material</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Stencil</a>
               </li>
             
             <div class="clearfix"></div>

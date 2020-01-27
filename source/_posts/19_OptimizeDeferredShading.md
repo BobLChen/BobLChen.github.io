@@ -3,9 +3,9 @@ title: 19_OptimizeDeferredShading
 date: 2019-09-14 23:55:29
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- DeferredShading
+- Tutorial
 categories:
 - Vulkan
 ---

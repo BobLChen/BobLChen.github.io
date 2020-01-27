@@ -3,9 +3,9 @@ title: 7_UniformBuffer
 date: 2019-08-02 00:09:52
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- UniformBuffer
+- Tutorial
 categories:
 - Vulkan
 ---

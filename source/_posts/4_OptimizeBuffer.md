@@ -3,9 +3,9 @@ title: Vulkan Demo 4_OptimizeBuffer
 date: 2019-08-01 18:25:06
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- Tutorial
+- VKBuffer
 categories:
 - Vulkan
 ---

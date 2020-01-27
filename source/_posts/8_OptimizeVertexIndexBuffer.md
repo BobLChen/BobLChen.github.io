@@ -3,9 +3,10 @@ title: 8_OptimizeVertexIndexBuffer
 date: 2019-08-02 01:02:32
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- VertexBuffer
+- IndexBuffer
+- Tutorial
 categories:
 - Vulkan
 ---

@@ -3,9 +3,10 @@ title: 16_OptimizeShaderAndLayout
 date: 2019-08-27 22:49:01
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- Shader
+- DescriptorLayout
+- Tutorial
 categories:
 - Vulkan
 ---

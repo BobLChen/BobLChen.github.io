@@ -3,9 +3,9 @@ title: 14_TextureArray
 date: 2019-08-19 23:21:32
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- TextureArray
+- Tutorial
 categories:
 - Vulkan
 ---

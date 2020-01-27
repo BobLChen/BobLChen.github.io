@@ -9,7 +9,7 @@
   <title>19_OptimizeDeferredShading | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="19_OptimizeDeferredShading 项目Github地址请戳我 虽说上个Demo是个非常简易版本的延迟渲染案例，但是其中也是有部分可以优化的地方。为了这个优化，我又新增了一个Demo用于说明如何进行优化。之所以新增一个Demo，是因为这个优化在后面会大量用到，这个优化看似很小但是其实很常用。">
-<meta name="keywords" content="Vulkan,物理设备,3D,Demo">
+<meta name="keywords" content="Vulkan,3D,Tutorial,DeferredShading">
 <meta property="og:type" content="article">
 <meta property="og:title" content="19_OptimizeDeferredShading">
 <meta property="og:url" content="https://boblchen.github.io/public/2019/09/14/19_OptimizeDeferredShading/index.html">
@@ -17,7 +17,7 @@
 <meta property="og:description" content="19_OptimizeDeferredShading 项目Github地址请戳我 虽说上个Demo是个非常简易版本的延迟渲染案例，但是其中也是有部分可以优化的地方。为了这个优化，我又新增了一个Demo用于说明如何进行优化。之所以新增一个Demo，是因为这个优化在后面会大量用到，这个优化看似很小但是其实很常用。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/19_OptimizeDeferredShading_1.jpg">
-<meta property="og:updated_time" content="2020-01-25T03:51:07.000Z">
+<meta property="og:updated_time" content="2020-01-27T03:20:35.241Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="19_OptimizeDeferredShading">
 <meta name="twitter:description" content="19_OptimizeDeferredShading 项目Github地址请戳我 虽说上个Demo是个非常简易版本的延迟渲染案例，但是其中也是有部分可以优化的地方。为了这个优化，我又新增了一个Demo用于说明如何进行优化。之所以新增一个Demo，是因为这个优化在后面会大量用到，这个优化看似很小但是其实很常用。">
@@ -244,15 +244,15 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">DeferredShading</a>
         		</li>
       		
 		</ul>
@@ -332,6 +332,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/public/2019/09/20/20_Material/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          20_Material
+        
+      </div>
+    </a>
   
   
     <a href="/public/2019/09/09/18_DeferredShading/" id="article-nav-older" class="article-nav-link-wrap">
@@ -478,6 +487,90 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">内存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Triangle</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Tutorial</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">VKBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">VKCommandBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">IMGUI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">UniformBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">VertexBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">IndexBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">OBJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Pipeline</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Texture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DynamicUniformBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">TextureArray</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Texture3D</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Shader</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">DescriptorLayout</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">InputAttachment</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DeferredShading</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Material</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Stencil</a>
               </li>
             
             <div class="clearfix"></div>

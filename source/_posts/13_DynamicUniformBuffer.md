@@ -3,9 +3,9 @@ title: 13_DynamicUniformBuffer
 date: 2019-08-15 22:49:17
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- DynamicUniformBuffer
+- Tutorial
 categories:
 - Vulkan
 ---

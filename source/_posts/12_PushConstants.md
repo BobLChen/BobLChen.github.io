@@ -3,9 +3,9 @@ title: 12_PushConstants
 date: 2019-08-12 23:39:07
 tags:
 - Vulkan
-- 物理设备
 - 3D
-- Demo
+- PushConstants
+- Tutorial
 categories:
 - Vulkan
 ---

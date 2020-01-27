@@ -3,9 +3,9 @@ title: Vulkan Demo 02 Triangle
 date: 2019-07-28 00:16:33
 tags:
 - Vulkan
-- 物理设备
+- Triangle
 - 3D
-- Demo
+- Tutorial
 categories:
 - Vulkan
 ---

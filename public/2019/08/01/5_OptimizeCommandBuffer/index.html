@@ -9,14 +9,14 @@
   <title>5_OptimizeCommandBuffer | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="OptimizeCommandBuffer 项目Github地址请戳我 在4_OptimizeBuffer这个Demo里面，我们对Buffer进行了封装。封装过的Buffer使用起来非常方便，代码量急剧减少。但是在这个Demo里面，我们在优化CreateMeshBuffers时，我们会发现虽然Buffer的代码量减少了，但是CommandBuffer相关的代码任然非常庞大。为了减少代码量，需要对C">
-<meta name="keywords" content="Vulkan,物理设备,3D,Demo">
+<meta name="keywords" content="Vulkan,3D,Tutorial,VKCommandBuffer">
 <meta property="og:type" content="article">
 <meta property="og:title" content="5_OptimizeCommandBuffer">
 <meta property="og:url" content="https://boblchen.github.io/public/2019/08/01/5_OptimizeCommandBuffer/index.html">
 <meta property="og:site_name" content="Hello World">
 <meta property="og:description" content="OptimizeCommandBuffer 项目Github地址请戳我 在4_OptimizeBuffer这个Demo里面，我们对Buffer进行了封装。封装过的Buffer使用起来非常方便，代码量急剧减少。但是在这个Demo里面，我们在优化CreateMeshBuffers时，我们会发现虽然Buffer的代码量减少了，但是CommandBuffer相关的代码任然非常庞大。为了减少代码量，需要对C">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-01-24T14:23:02.000Z">
+<meta property="og:updated_time" content="2020-01-27T03:17:54.415Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="5_OptimizeCommandBuffer">
 <meta name="twitter:description" content="OptimizeCommandBuffer 项目Github地址请戳我 在4_OptimizeBuffer这个Demo里面，我们对Buffer进行了封装。封装过的Buffer使用起来非常方便，代码量急剧减少。但是在这个Demo里面，我们在优化CreateMeshBuffers时，我们会发现虽然Buffer的代码量减少了，但是CommandBuffer相关的代码任然非常庞大。为了减少代码量，需要对C">
@@ -221,15 +221,15 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">VKCommandBuffer</a>
         		</li>
       		
 		</ul>
@@ -464,6 +464,90 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">内存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Triangle</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Tutorial</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">VKBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">VKCommandBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">IMGUI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">UniformBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">VertexBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">IndexBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">OBJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Pipeline</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Texture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DynamicUniformBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">TextureArray</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Texture3D</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Shader</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">DescriptorLayout</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">InputAttachment</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DeferredShading</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Material</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Stencil</a>
               </li>
             
             <div class="clearfix"></div>
