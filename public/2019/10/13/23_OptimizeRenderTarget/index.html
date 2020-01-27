@@ -6,19 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
-  <title>Hello World</title>
+  <title>23_OptimizeRenderTarget | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我亦无他唯手熟尔">
-<meta name="keywords" content="3D Engine Opengl Stage3D DirectX Vulkan C++">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://boblchen.github.io/public/page/2/index.html">
+  <meta name="description" content="23_OptimizeRenderTarget 项目Github地址请戳我 上个Demo里面，我们创建附件的时候写了太多代码，也进行许多配置，为了简化后续的使用，在这个Demo里面进行简单的封装。">
+<meta name="keywords" content="Vulkan,3D,Tutorial,RenderTarget">
+<meta property="og:type" content="article">
+<meta property="og:title" content="23_OptimizeRenderTarget">
+<meta property="og:url" content="https://boblchen.github.io/public/2019/10/13/23_OptimizeRenderTarget/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="我亦无他唯手熟尔">
+<meta property="og:description" content="23_OptimizeRenderTarget 项目Github地址请戳我 上个Demo里面，我们创建附件的时候写了太多代码，也进行许多配置，为了简化后续的使用，在这个Demo里面进行简单的封装。">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/22_RenderTarget.gif">
+<meta property="og:updated_time" content="2020-01-27T12:48:55.887Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="我亦无他唯手熟尔">
+<meta name="twitter:title" content="23_OptimizeRenderTarget">
+<meta name="twitter:description" content="23_OptimizeRenderTarget 项目Github地址请戳我 上个Demo里面，我们创建附件的时候写了太多代码，也进行许多配置，为了简化后续的使用，在这个Demo里面进行简单的封装。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/22_RenderTarget.gif">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
   
@@ -158,34 +161,48 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-13_DynamicUniformBuffer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-23_OptimizeRenderTarget" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/15/13_DynamicUniformBuffer/">13_DynamicUniformBuffer</a>
+    <h1 class="article-title" itemprop="name">
+      23_OptimizeRenderTarget
     </h1>
   
 
         
-        <a href="/public/2019/08/15/13_DynamicUniformBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-15T14:49:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-15</time>
+        <a href="/public/2019/10/13/23_OptimizeRenderTarget/" class="archive-article-date">
+  	<time datetime="2019-10-13T15:11:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-13</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://github.com/BobLChen/VulkanDemos/blob/master/examples/13_DynamicUniformBuffer/DynamicUniformBuffer.cpp" target="_blank" rel="noopener">DynamicUniformBuffer</a></p>
+        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/23_OptimizeRenderTarget" target="_blank" rel="noopener">23_OptimizeRenderTarget</a></p>
 <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>上一个Demo里面我们通过PushConstant实现了使用同一个Shader绘制不同模型的需求。但是PushConstant有弊端，它能够使用的数据量非常少，在RTX2080TI上面只有256字节可以使用，我相信在其它常规设备上面也只会有这个量。所以我们要来了解一下DynamicUniformBuffer。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/15/13_DynamicUniformBuffer/#more">more >></a>
-        
+<p>上个Demo里面，我们创建附件的时候写了太多代码，也进行许多配置，为了简化后续的使用，在这个Demo里面进行简单的封装。</p>
+<a id="more"></a>
+
+<p><img src="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/22_RenderTarget.gif" alt="23_OptimizeRenderTarget"></p>
+<h2 id="DVKRenderPassInfo"><a href="#DVKRenderPassInfo" class="headerlink" title="DVKRenderPassInfo"></a>DVKRenderPassInfo</h2><p>RenderTarget输出的数据是多样性的，主要体现在Color Attachment上，Depth数据确是最多只有一个。这些附件在使用的时候是配置一下它们的行为的，例如希望在使用之前清除掉附件的数据，这个跟我们写代码希望初始化一样；当然某些情况下更希望复用数据不进行任何操作等。</p>
+<p>为了满足上述的一些要求，我特意准备了一个DVKRenderPassInfo来容纳这些信息。代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DVKRenderPassInfo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ColorEntry</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        DVKTexture*         renderTarget = <span class="literal">nullptr</span>;</span><br><span class="line">        DVKTexture*         resolveTarget = <span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">        VkAttachmentLoadOp  loadAction = VK_ATTACHMENT_LOAD_OP_CLEAR;</span><br><span class="line">        VkAttachmentStoreOp storeAction = VK_ATTACHMENT_STORE_OP_STORE;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">DepthStencilEntry</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        DVKTexture*         depthStencilTarget = <span class="literal">nullptr</span>;</span><br><span class="line">        DVKTexture*         resolveTarget = <span class="literal">nullptr</span>;</span><br><span class="line">        VkAttachmentLoadOp  loadAction = VK_ATTACHMENT_LOAD_OP_CLEAR;</span><br><span class="line">        VkAttachmentStoreOp storeAction = VK_ATTACHMENT_STORE_OP_STORE;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    ColorEntry              colorRenderTargets[MaxSimultaneousRenderTargets];</span><br><span class="line">    DepthStencilEntry       depthStencilRenderTarget;</span><br><span class="line">    int32                   numColorRenderTargets;</span><br><span class="line">    <span class="keyword">bool</span>					multiview = <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Color, no depth</span></span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">DVKRenderPassInfo</span><span class="params">(DVKTexture* colorRT, VkAttachmentLoadOp colorLoadAction, VkAttachmentStoreOp colorStoreAction, DVKTexture* resolveRT)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        numColorRenderTargets = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].renderTarget  = colorRT;</span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].resolveTarget = resolveRT;</span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].loadAction    = colorLoadAction;</span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].storeAction   = colorStoreAction;</span><br><span class="line"></span><br><span class="line">        depthStencilRenderTarget.depthStencilTarget = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.resolveTarget      = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.loadAction         = VK_ATTACHMENT_LOAD_OP_DONT_CARE;</span><br><span class="line">        depthStencilRenderTarget.storeAction        = VK_ATTACHMENT_STORE_OP_DONT_CARE;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">memset</span>(&amp;colorRenderTargets[numColorRenderTargets], <span class="number">0</span>, <span class="keyword">sizeof</span>(ColorEntry) * (MaxSimultaneousRenderTargets - numColorRenderTargets));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Color And Depth</span></span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">DVKRenderPassInfo</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        DVKTexture* colorRT, </span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentLoadOp colorLoadAction, </span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentStoreOp colorStoreAction,</span></span></span><br><span class="line"><span class="function"><span class="params">        DVKTexture* depthRT,</span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentLoadOp depthLoadAction, </span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentStoreOp depthStoreAction</span></span></span><br><span class="line"><span class="function"><span class="params">    )</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        numColorRenderTargets = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].renderTarget  = colorRT;</span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].resolveTarget = <span class="literal">nullptr</span>;</span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].loadAction    = colorLoadAction;</span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].storeAction   = colorStoreAction;</span><br><span class="line"></span><br><span class="line">        depthStencilRenderTarget.depthStencilTarget = depthRT;</span><br><span class="line">        depthStencilRenderTarget.resolveTarget      = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.loadAction         = depthLoadAction;</span><br><span class="line">        depthStencilRenderTarget.storeAction        = depthStoreAction;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">memset</span>(&amp;colorRenderTargets[numColorRenderTargets], <span class="number">0</span>, <span class="keyword">sizeof</span>(ColorEntry) * (MaxSimultaneousRenderTargets - numColorRenderTargets));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// MRTs, No Depth</span></span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">DVKRenderPassInfo</span><span class="params">(int32 numColorRTs, DVKTexture* colorRT[], VkAttachmentLoadOp colorLoadAction, VkAttachmentStoreOp colorStoreAction)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        numColorRenderTargets = numColorRTs;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; numColorRTs; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            colorRenderTargets[i].renderTarget  = colorRT[i];</span><br><span class="line">            colorRenderTargets[i].resolveTarget = <span class="literal">nullptr</span>;</span><br><span class="line">            colorRenderTargets[i].loadAction    = colorLoadAction;</span><br><span class="line">            colorRenderTargets[i].storeAction   = colorStoreAction;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        depthStencilRenderTarget.depthStencilTarget = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.resolveTarget      = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.loadAction         = VK_ATTACHMENT_LOAD_OP_DONT_CARE;</span><br><span class="line">        depthStencilRenderTarget.storeAction        = VK_ATTACHMENT_STORE_OP_DONT_CARE;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (numColorRTs &lt; MaxSimultaneousRenderTargets) &#123;</span><br><span class="line">            <span class="built_in">memset</span>(&amp;colorRenderTargets[numColorRenderTargets], <span class="number">0</span>, <span class="keyword">sizeof</span>(ColorEntry) * (MaxSimultaneousRenderTargets - numColorRenderTargets));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// MRTs And Depth</span></span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">DVKRenderPassInfo</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        int32 numColorRTs, </span></span></span><br><span class="line"><span class="function"><span class="params">        DVKTexture* colorRT[], </span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentLoadOp colorLoadAction, </span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentStoreOp colorStoreAction,</span></span></span><br><span class="line"><span class="function"><span class="params">        DVKTexture* depthRT,</span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentLoadOp depthLoadAction, </span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentStoreOp depthStoreAction</span></span></span><br><span class="line"><span class="function"><span class="params">    )</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        numColorRenderTargets = numColorRTs;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; numColorRTs; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            colorRenderTargets[i].renderTarget  = colorRT[i];</span><br><span class="line">            colorRenderTargets[i].resolveTarget = <span class="literal">nullptr</span>;</span><br><span class="line">            colorRenderTargets[i].loadAction    = colorLoadAction;</span><br><span class="line">            colorRenderTargets[i].storeAction   = colorStoreAction;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        depthStencilRenderTarget.depthStencilTarget = depthRT;</span><br><span class="line">        depthStencilRenderTarget.resolveTarget      = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.loadAction         = depthLoadAction;</span><br><span class="line">        depthStencilRenderTarget.storeAction        = depthStoreAction;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (numColorRTs &lt; MaxSimultaneousRenderTargets) &#123;</span><br><span class="line">            <span class="built_in">memset</span>(&amp;colorRenderTargets[numColorRenderTargets], <span class="number">0</span>, <span class="keyword">sizeof</span>(ColorEntry) * (MaxSimultaneousRenderTargets - numColorRenderTargets));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Depth, No Color</span></span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">DVKRenderPassInfo</span><span class="params">(DVKTexture* depthRT, VkAttachmentLoadOp depthLoadAction, VkAttachmentStoreOp depthStoreAction)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        numColorRenderTargets = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        depthStencilRenderTarget.depthStencilTarget = depthRT;</span><br><span class="line">        depthStencilRenderTarget.resolveTarget      = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.loadAction         = depthLoadAction;</span><br><span class="line">        depthStencilRenderTarget.storeAction        = depthStoreAction;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">memset</span>(&amp;colorRenderTargets[numColorRenderTargets], <span class="number">0</span>, <span class="keyword">sizeof</span>(ColorEntry) * MaxSimultaneousRenderTargets);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="DVKRenderTargetLayout"><a href="#DVKRenderTargetLayout" class="headerlink" title="DVKRenderTargetLayout"></a>DVKRenderTargetLayout</h2><p>有了Colors以及DepthStencil之后，还不能创建出RenderTarget，毕竟Colors是一个数组，它里面的元素具体的使用情况并不清楚。这个的情况其实跟DescriptorLayout很像，所以这里我也设想一个RenderTargetLayout出来，代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DVKRenderTargetLayout</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    DVKRenderTargetLayout(<span class="keyword">const</span> DVKRenderPassInfo&amp; renderPassInfo);</span><br><span class="line"></span><br><span class="line">    <span class="function">uint16 <span class="title">SetupSubpasses</span><span class="params">(VkSubpassDescription* outDescs, uint32 maxDescs, VkSubpassDependency* outDeps, uint32 maxDeps, uint32&amp; outNumDependencies)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    VkAttachmentReference   colorReferences[MaxSimultaneousRenderTargets];</span><br><span class="line">    VkAttachmentReference   depthStencilReference;</span><br><span class="line">    VkAttachmentReference   resolveReferences[MaxSimultaneousRenderTargets];</span><br><span class="line">    VkAttachmentReference   inputAttachments[MaxSimultaneousRenderTargets + <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    VkAttachmentDescription descriptions[MaxSimultaneousRenderTargets * <span class="number">2</span> + <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    uint8                   numAttachmentDescriptions = <span class="number">0</span>;</span><br><span class="line">    uint8                   numColorAttachments = <span class="number">0</span>;</span><br><span class="line">    uint8                   numInputAttachments = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">bool</span>                    hasDepthStencil = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">bool</span>                    hasResolveAttachments = <span class="literal">false</span>;</span><br><span class="line">    VkSampleCountFlagBits   numSamples = VK_SAMPLE_COUNT_1_BIT;</span><br><span class="line">    uint8                   numUsedClearValues = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    VkExtent3D	            extent3D;</span><br><span class="line">    <span class="keyword">bool</span>					multiview = <span class="literal">false</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="RenderPass和FrameBuffer"><a href="#RenderPass和FrameBuffer" class="headerlink" title="RenderPass和FrameBuffer"></a>RenderPass和FrameBuffer</h2><p>上个Demo里面，可以发现最终使用的是RenderPass和FrameBuffer，这两个东西也需要简单封装一下，组成我们的RenderTarget的元素其实就是这两个，为了使用方便把这两个的创建、维护、管理给封装了一下而已。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DVKRenderPass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    DVKRenderPass(VkDevice inDevice, <span class="keyword">const</span> DVKRenderTargetLayout&amp; rtLayout);</span><br><span class="line"></span><br><span class="line">    ~DVKRenderPass()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (renderPass != VK_NULL_HANDLE)</span><br><span class="line">        &#123;</span><br><span class="line">            vkDestroyRenderPass(device, renderPass, VULKAN_CPU_ALLOCATOR);</span><br><span class="line">            renderPass = VK_NULL_HANDLE;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    DVKRenderTargetLayout	layout;</span><br><span class="line">    VkRenderPass		    renderPass = VK_NULL_HANDLE;</span><br><span class="line">    uint32				    numUsedClearValues = <span class="number">0</span>;</span><br><span class="line">    VkDevice		        device = VK_NULL_HANDLE;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DVKFrameBuffer</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    DVKFrameBuffer(VkDevice device, <span class="keyword">const</span> DVKRenderTargetLayout&amp; rtLayout, <span class="keyword">const</span> DVKRenderPass&amp; renderPass, <span class="keyword">const</span> DVKRenderPassInfo&amp; renderPassInfo);</span><br><span class="line"></span><br><span class="line">    ~DVKFrameBuffer()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (frameBuffer != VK_NULL_HANDLE)</span><br><span class="line">        &#123;</span><br><span class="line">            vkDestroyFramebuffer(device, frameBuffer, VULKAN_CPU_ALLOCATOR);</span><br><span class="line">            frameBuffer = VK_NULL_HANDLE;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;VkImageView&gt; ImageViews;</span><br><span class="line"></span><br><span class="line">    VkDevice            device = VK_NULL_HANDLE;</span><br><span class="line"></span><br><span class="line">    VkFramebuffer       frameBuffer = VK_NULL_HANDLE;</span><br><span class="line">    uint32              numColorRenderTargets = <span class="number">0</span>;</span><br><span class="line">    uint32              numColorAttachments = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    ImageViews          attachmentTextureViews;</span><br><span class="line">    VkImage             colorRenderTargetImages[MaxSimultaneousRenderTargets];</span><br><span class="line">    VkImage             depthStencilRenderTargetImage = VK_NULL_HANDLE;</span><br><span class="line"></span><br><span class="line">    VkExtent2D          extent2D;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="RenderTarget"><a href="#RenderTarget" class="headerlink" title="RenderTarget"></a>RenderTarget</h2><p>有了以上的封装之后，就可以着手将它们组合起来。组合的过程其实非常简单，主要的问题在于Image的Layout更改。在之前的Demo里面，Layout的更改是靠<strong>VkSubpassDependency</strong>来进行转换的，配置好VkSubpassDependency之后，会隐式的对Image的Layout进行转换。我们封装了RenderTarget之后就需要显示的进行转换。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DVKRenderTarget</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    DVKRenderTarget(<span class="keyword">const</span> DVKRenderPassInfo&amp; inRenderPassInfo)</span><br><span class="line">        : rtLayout(inRenderPassInfo)</span><br><span class="line">        , renderPassInfo(inRenderPassInfo)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; inRenderPassInfo.numColorRenderTargets; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            VkClearValue clearValue = &#123;&#125;;</span><br><span class="line">            clearValue.color        = &#123; &#123; <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span> &#125; &#125;;</span><br><span class="line">            clearValues.push_back(clearValue);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (inRenderPassInfo.depthStencilRenderTarget.depthStencilTarget)</span><br><span class="line">        &#123;</span><br><span class="line">            VkClearValue clearValue = &#123;&#125;;</span><br><span class="line">            clearValue.depthStencil = &#123; <span class="number">1.0f</span>, <span class="number">0</span> &#125;;</span><br><span class="line">            clearValues.push_back(clearValue);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        colorLayout = ImageLayoutBarrier::PixelShaderRead;</span><br><span class="line">        depthLayout = ImageLayoutBarrier::PixelShaderRead;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ~DVKRenderTarget()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (renderPass) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">delete</span> renderPass;</span><br><span class="line">            renderPass = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (frameBuffer) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">delete</span> frameBuffer;</span><br><span class="line">            frameBuffer = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">BeginRenderPass</span><span class="params">(VkCommandBuffer cmdBuffer)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">EndRenderPass</span><span class="params">(VkCommandBuffer cmdBuffer)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> VkRenderPass <span class="title">GetRenderPass</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> renderPass-&gt;renderPass;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> VkFramebuffer <span class="title">GetFrameBuffer</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> frameBuffer-&gt;frameBuffer;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">static</span> DVKRenderTarget* <span class="title">Create</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;VulkanDevice&gt; vulkanDevice, <span class="keyword">const</span> DVKRenderPassInfo&amp; inRenderPassInfo)</span></span>;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    DVKRenderTargetLayout       rtLayout;</span><br><span class="line">    DVKRenderPassInfo           renderPassInfo;</span><br><span class="line">    </span><br><span class="line">    DVKRenderPass*              renderPass = <span class="literal">nullptr</span>;</span><br><span class="line">    DVKFrameBuffer*             frameBuffer = <span class="literal">nullptr</span>;</span><br><span class="line">    </span><br><span class="line">    VkDevice                    device = VK_NULL_HANDLE;</span><br><span class="line">    VkExtent2D                  extent2D;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;VkClearValue&gt;   clearValues;</span><br><span class="line"></span><br><span class="line">    ImageLayoutBarrier			colorLayout;</span><br><span class="line">    ImageLayoutBarrier			depthLayout;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实现</span></span><br><span class="line"><span class="comment">// -------------- DVKRenderTargetLayout --------------</span></span><br><span class="line">DVKRenderTargetLayout::DVKRenderTargetLayout(<span class="keyword">const</span> DVKRenderPassInfo&amp; renderPassInfo)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">memset</span>(colorReferences, <span class="number">0</span>, <span class="keyword">sizeof</span>(colorReferences));</span><br><span class="line">    <span class="built_in">memset</span>(&amp;depthStencilReference, <span class="number">0</span>, <span class="keyword">sizeof</span>(depthStencilReference));</span><br><span class="line">    <span class="built_in">memset</span>(resolveReferences, <span class="number">0</span>, <span class="keyword">sizeof</span>(resolveReferences));</span><br><span class="line">    <span class="built_in">memset</span>(inputAttachments, <span class="number">0</span>, <span class="keyword">sizeof</span>(inputAttachments));</span><br><span class="line">    <span class="built_in">memset</span>(descriptions, <span class="number">0</span>, <span class="keyword">sizeof</span>(descriptions));</span><br><span class="line">    <span class="built_in">memset</span>(&amp;extent3D, <span class="number">0</span>, <span class="keyword">sizeof</span>(extent3D));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (int32 index = <span class="number">0</span>; index &lt; renderPassInfo.numColorRenderTargets; ++index)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">const</span> DVKRenderPassInfo::ColorEntry&amp; colorEntry = renderPassInfo.colorRenderTargets[index];</span><br><span class="line">        DVKTexture* texture = colorEntry.renderTarget;</span><br><span class="line"></span><br><span class="line">        extent3D.width  = texture-&gt;width;</span><br><span class="line">        extent3D.height = texture-&gt;height;</span><br><span class="line">        extent3D.depth  = texture-&gt;depth;</span><br><span class="line">        numSamples      = texture-&gt;numSamples;</span><br><span class="line"></span><br><span class="line">        VkAttachmentDescription&amp; attchmentDescription = descriptions[numAttachmentDescriptions];</span><br><span class="line">        attchmentDescription.samples        = numSamples;</span><br><span class="line">        attchmentDescription.format         = texture-&gt;format;</span><br><span class="line">        attchmentDescription.loadOp         = colorEntry.loadAction;</span><br><span class="line">        attchmentDescription.storeOp        = colorEntry.storeAction;</span><br><span class="line">        attchmentDescription.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;</span><br><span class="line">        attchmentDescription.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;</span><br><span class="line">        attchmentDescription.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;</span><br><span class="line">        attchmentDescription.finalLayout    = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;</span><br><span class="line"></span><br><span class="line">        colorReferences[numColorAttachments].attachment = numAttachmentDescriptions;</span><br><span class="line">        colorReferences[numColorAttachments].layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (numSamples != VK_SAMPLE_COUNT_1_BIT)</span><br><span class="line">        &#123;</span><br><span class="line">            descriptions[numAttachmentDescriptions + <span class="number">1</span>] = descriptions[numAttachmentDescriptions];</span><br><span class="line">            descriptions[numAttachmentDescriptions + <span class="number">1</span>].samples = VK_SAMPLE_COUNT_1_BIT;</span><br><span class="line"></span><br><span class="line">            resolveReferences[numColorAttachments].attachment = numAttachmentDescriptions + <span class="number">1</span>;</span><br><span class="line">            resolveReferences[numColorAttachments].layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;</span><br><span class="line"></span><br><span class="line">            numAttachmentDescriptions += <span class="number">1</span>;</span><br><span class="line">            hasResolveAttachments      = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        numAttachmentDescriptions += <span class="number">1</span>;</span><br><span class="line">        numColorAttachments       += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (renderPassInfo.depthStencilRenderTarget.depthStencilTarget)</span><br><span class="line">    &#123;</span><br><span class="line">        DVKTexture* texture = renderPassInfo.depthStencilRenderTarget.depthStencilTarget;</span><br><span class="line">        VkAttachmentDescription&amp; attchmentDescription = descriptions[numAttachmentDescriptions];</span><br><span class="line"></span><br><span class="line">        extent3D.width  = texture-&gt;width;</span><br><span class="line">        extent3D.height = texture-&gt;height;</span><br><span class="line">        extent3D.depth  = texture-&gt;depth;</span><br><span class="line">        numSamples      = texture-&gt;numSamples;</span><br><span class="line"></span><br><span class="line">        attchmentDescription.samples        = texture-&gt;numSamples;</span><br><span class="line">        attchmentDescription.format         = texture-&gt;format;</span><br><span class="line">        attchmentDescription.loadOp         = renderPassInfo.depthStencilRenderTarget.loadAction;</span><br><span class="line">        attchmentDescription.stencilLoadOp  = renderPassInfo.depthStencilRenderTarget.loadAction;</span><br><span class="line">        attchmentDescription.storeOp        = renderPassInfo.depthStencilRenderTarget.storeAction;</span><br><span class="line">        attchmentDescription.stencilStoreOp = renderPassInfo.depthStencilRenderTarget.storeAction;</span><br><span class="line">        attchmentDescription.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;</span><br><span class="line">        attchmentDescription.finalLayout    = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;</span><br><span class="line"></span><br><span class="line">        depthStencilReference.attachment = numAttachmentDescriptions;</span><br><span class="line">        depthStencilReference.layout     = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;</span><br><span class="line"></span><br><span class="line">        numAttachmentDescriptions += <span class="number">1</span>;</span><br><span class="line">        hasDepthStencil            = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    multiview = renderPassInfo.multiview;</span><br><span class="line">    numUsedClearValues = numAttachmentDescriptions;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">uint16 DVKRenderTargetLayout::SetupSubpasses(VkSubpassDescription* outDescs, uint32 maxDescs, VkSubpassDependency* outDeps, uint32 maxDeps, uint32&amp; outNumDependencies) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">memset</span>(outDescs, <span class="number">0</span>, <span class="keyword">sizeof</span>(outDescs[<span class="number">0</span>]) * maxDescs);</span><br><span class="line"></span><br><span class="line">    outDescs[<span class="number">0</span>].pipelineBindPoint       = VK_PIPELINE_BIND_POINT_GRAPHICS;</span><br><span class="line">    outDescs[<span class="number">0</span>].colorAttachmentCount    = numColorAttachments;</span><br><span class="line">    outDescs[<span class="number">0</span>].pColorAttachments       = numColorAttachments &gt; <span class="number">0</span> ? colorReferences        : <span class="literal">nullptr</span>;</span><br><span class="line">    outDescs[<span class="number">0</span>].pResolveAttachments     = hasResolveAttachments   ? resolveReferences      : <span class="literal">nullptr</span>;</span><br><span class="line">    outDescs[<span class="number">0</span>].pDepthStencilAttachment = hasDepthStencil         ? &amp;depthStencilReference : <span class="literal">nullptr</span>;</span><br><span class="line">    </span><br><span class="line">    outNumDependencies = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// -------------- DVKRenderPass --------------</span></span><br><span class="line">DVKRenderPass::DVKRenderPass(VkDevice inDevice, <span class="keyword">const</span> DVKRenderTargetLayout&amp; rtLayout)</span><br><span class="line">    : layout(rtLayout)</span><br><span class="line">    , device(inDevice)</span><br><span class="line">&#123;</span><br><span class="line">    VkSubpassDescription subpassDesc[<span class="number">1</span>];</span><br><span class="line">    VkSubpassDependency  subpassDep[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    uint32 numDependencies = <span class="number">0</span>;</span><br><span class="line">    uint16 numSubpasses    = rtLayout.SetupSubpasses(subpassDesc, <span class="number">1</span>, subpassDep, <span class="number">1</span>, numDependencies);</span><br><span class="line"></span><br><span class="line">    VkRenderPassCreateInfo renderPassCreateInfo;</span><br><span class="line">    ZeroVulkanStruct(renderPassCreateInfo, VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO);</span><br><span class="line">    renderPassCreateInfo.attachmentCount = rtLayout.numAttachmentDescriptions;</span><br><span class="line">    renderPassCreateInfo.pAttachments    = rtLayout.descriptions;</span><br><span class="line">    renderPassCreateInfo.subpassCount    = numSubpasses;</span><br><span class="line">    renderPassCreateInfo.pSubpasses      = subpassDesc;</span><br><span class="line">    renderPassCreateInfo.dependencyCount = numDependencies;</span><br><span class="line">    renderPassCreateInfo.pDependencies   = subpassDep;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (rtLayout.extent3D.depth &gt; <span class="number">1</span> &amp;&amp; rtLayout.multiview)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">const</span> uint32 viewMask        = (<span class="number">1</span> &lt;&lt; rtLayout.extent3D.depth) - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">const</span> uint32 correlationMask = (<span class="number">1</span> &lt;&lt; rtLayout.extent3D.depth) - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        VkRenderPassMultiviewCreateInfo multiviewCreateInfo;</span><br><span class="line">        ZeroVulkanStruct(multiviewCreateInfo, VK_STRUCTURE_TYPE_RENDER_PASS_MULTIVIEW_CREATE_INFO);</span><br><span class="line">        multiviewCreateInfo.subpassCount         = numSubpasses;</span><br><span class="line">        multiviewCreateInfo.pViewMasks           = &amp;viewMask;</span><br><span class="line">        multiviewCreateInfo.correlationMaskCount = <span class="number">1</span>;</span><br><span class="line">        multiviewCreateInfo.pCorrelationMasks    = &amp;correlationMask;</span><br><span class="line"></span><br><span class="line">        renderPassCreateInfo.pNext = &amp;multiviewCreateInfo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    VERIFYVULKANRESULT(vkCreateRenderPass(inDevice, &amp;renderPassCreateInfo, VULKAN_CPU_ALLOCATOR, &amp;renderPass));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// -------------- DVKFrameBuffer --------------</span></span><br><span class="line">DVKFrameBuffer::DVKFrameBuffer(VkDevice inDevice, <span class="keyword">const</span> DVKRenderTargetLayout&amp; rtLayout, <span class="keyword">const</span> DVKRenderPass&amp; renderPass, <span class="keyword">const</span> DVKRenderPassInfo&amp; renderPassInfo)</span><br><span class="line">    : device(inDevice)</span><br><span class="line">&#123;</span><br><span class="line">    numColorAttachments   = rtLayout.numColorAttachments;</span><br><span class="line">    numColorRenderTargets = renderPassInfo.numColorRenderTargets;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (int32 index = <span class="number">0</span>; index &lt; renderPassInfo.numColorRenderTargets; ++index)</span><br><span class="line">    &#123;</span><br><span class="line">        DVKTexture* texture = renderPassInfo.colorRenderTargets[index].renderTarget;</span><br><span class="line"></span><br><span class="line">        colorRenderTargetImages[index] = texture-&gt;image;</span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span>MSAAView</span></span><br><span class="line">        attachmentTextureViews.push_back(texture-&gt;imageView);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (rtLayout.hasDepthStencil)</span><br><span class="line">    &#123;</span><br><span class="line">        DVKTexture* texture = renderPassInfo.depthStencilRenderTarget.depthStencilTarget;</span><br><span class="line">        depthStencilRenderTargetImage = texture-&gt;image;</span><br><span class="line">        attachmentTextureViews.push_back(texture-&gt;imageView);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    VkFramebufferCreateInfo frameBufferCreateInfo;</span><br><span class="line">    ZeroVulkanStruct(frameBufferCreateInfo, VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO);</span><br><span class="line">    frameBufferCreateInfo.renderPass      = renderPass.renderPass;</span><br><span class="line">    frameBufferCreateInfo.attachmentCount = attachmentTextureViews.size();</span><br><span class="line">    frameBufferCreateInfo.pAttachments    = attachmentTextureViews.data();</span><br><span class="line">    frameBufferCreateInfo.width           = rtLayout.extent3D.width;</span><br><span class="line">    frameBufferCreateInfo.height          = rtLayout.extent3D.height;</span><br><span class="line">    frameBufferCreateInfo.layers          = rtLayout.extent3D.depth;</span><br><span class="line">    VERIFYVULKANRESULT(vkCreateFramebuffer(device, &amp;frameBufferCreateInfo, VULKAN_CPU_ALLOCATOR, &amp;frameBuffer));</span><br><span class="line"></span><br><span class="line">    extent2D.width  = rtLayout.extent3D.width;</span><br><span class="line">    extent2D.height = rtLayout.extent3D.height;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> DVKRenderTarget::BeginRenderPass(VkCommandBuffer commandBuffer)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (int32 index = <span class="number">0</span>; index &lt; renderPassInfo.numColorRenderTargets; ++index)</span><br><span class="line">    &#123;</span><br><span class="line">        DVKTexture* texture = renderPassInfo.colorRenderTargets[index].renderTarget;</span><br><span class="line">        VkImage image = texture-&gt;image;</span><br><span class="line">        VkImageSubresourceRange subResRange = &#123; &#125;;</span><br><span class="line">        subResRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;</span><br><span class="line">        subResRange.baseMipLevel   = <span class="number">0</span>;</span><br><span class="line">        subResRange.levelCount     = <span class="number">1</span>;</span><br><span class="line">        subResRange.layerCount     = texture-&gt;depth;</span><br><span class="line">        subResRange.baseArrayLayer = <span class="number">0</span>;</span><br><span class="line">        ImagePipelineBarrier(commandBuffer, image, ImageLayoutBarrier::Undefined, ImageLayoutBarrier::ColorAttachment, subResRange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (renderPassInfo.depthStencilRenderTarget.depthStencilTarget)</span><br><span class="line">    &#123;</span><br><span class="line">        DVKTexture* texture = renderPassInfo.depthStencilRenderTarget.depthStencilTarget;</span><br><span class="line">        VkImage image = texture-&gt;image;</span><br><span class="line">        VkImageSubresourceRange subResRange = &#123; &#125;;</span><br><span class="line">        subResRange.aspectMask     = VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT;</span><br><span class="line">        subResRange.baseMipLevel   = <span class="number">0</span>;</span><br><span class="line">        subResRange.levelCount     = <span class="number">1</span>;</span><br><span class="line">        subResRange.layerCount     = renderPassInfo.depthStencilRenderTarget.depthStencilTarget-&gt;depth;</span><br><span class="line">        subResRange.baseArrayLayer = <span class="number">0</span>;</span><br><span class="line">        ImagePipelineBarrier(commandBuffer, image, ImageLayoutBarrier::Undefined, ImageLayoutBarrier::DepthStencilAttachment, subResRange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    VkViewport viewport = &#123;&#125;;</span><br><span class="line">    viewport.x        = <span class="number">0</span>;</span><br><span class="line">    viewport.y        = extent2D.height;</span><br><span class="line">    viewport.width    = extent2D.width;</span><br><span class="line">    viewport.height   = -(<span class="keyword">float</span>)extent2D.height;    <span class="comment">// flip y axis</span></span><br><span class="line">    viewport.minDepth = <span class="number">0.0f</span>;</span><br><span class="line">    viewport.maxDepth = <span class="number">1.0f</span>;</span><br><span class="line">    </span><br><span class="line">    VkRect2D scissor = &#123;&#125;;</span><br><span class="line">    scissor.extent.width  = extent2D.width;</span><br><span class="line">    scissor.extent.height = extent2D.height;</span><br><span class="line">    scissor.offset.x = <span class="number">0</span>;</span><br><span class="line">    scissor.offset.y = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    VkRenderPassBeginInfo renderPassBeginInfo;</span><br><span class="line">    ZeroVulkanStruct(renderPassBeginInfo, VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO);</span><br><span class="line">    renderPassBeginInfo.renderPass               = renderPass-&gt;renderPass;</span><br><span class="line">    renderPassBeginInfo.framebuffer              = frameBuffer-&gt;frameBuffer;</span><br><span class="line">    renderPassBeginInfo.renderArea.offset.x      = <span class="number">0</span>;</span><br><span class="line">    renderPassBeginInfo.renderArea.offset.y      = <span class="number">0</span>;</span><br><span class="line">    renderPassBeginInfo.renderArea.extent.width  = extent2D.width;</span><br><span class="line">    renderPassBeginInfo.renderArea.extent.height = extent2D.height;</span><br><span class="line">    renderPassBeginInfo.clearValueCount          = clearValues.size();</span><br><span class="line">    renderPassBeginInfo.pClearValues             = clearValues.data();</span><br><span class="line">    vkCmdBeginRenderPass(commandBuffer, &amp;renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);</span><br><span class="line">    </span><br><span class="line">    vkCmdSetViewport(commandBuffer, <span class="number">0</span>, <span class="number">1</span>, &amp;viewport);</span><br><span class="line">    vkCmdSetScissor(commandBuffer,  <span class="number">0</span>, <span class="number">1</span>, &amp;scissor);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> DVKRenderTarget::EndRenderPass(VkCommandBuffer commandBuffer)</span><br><span class="line">&#123;</span><br><span class="line">    vkCmdEndRenderPass(commandBuffer);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (int32 index = <span class="number">0</span>; index &lt; renderPassInfo.numColorRenderTargets; ++index)</span><br><span class="line">    &#123;</span><br><span class="line">        DVKTexture* texture = renderPassInfo.colorRenderTargets[index].renderTarget;</span><br><span class="line">        VkImage image = texture-&gt;image;</span><br><span class="line">        VkImageSubresourceRange subResRange = &#123; &#125;;</span><br><span class="line">        subResRange.aspectMask	   = VK_IMAGE_ASPECT_COLOR_BIT;</span><br><span class="line">        subResRange.baseMipLevel   = <span class="number">0</span>;</span><br><span class="line">        subResRange.levelCount     = <span class="number">1</span>;</span><br><span class="line">        subResRange.layerCount	   = texture-&gt;depth;</span><br><span class="line">        subResRange.baseArrayLayer = <span class="number">0</span>;</span><br><span class="line">        ImagePipelineBarrier(commandBuffer, image, ImageLayoutBarrier::ColorAttachment, colorLayout, subResRange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (renderPassInfo.depthStencilRenderTarget.depthStencilTarget)</span><br><span class="line">    &#123;</span><br><span class="line">        DVKTexture* texture = renderPassInfo.depthStencilRenderTarget.depthStencilTarget;</span><br><span class="line">        VkImage image = texture-&gt;image;</span><br><span class="line">        VkImageSubresourceRange subResRange = &#123; &#125;;</span><br><span class="line">        subResRange.aspectMask     = VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT;</span><br><span class="line">        subResRange.baseMipLevel   = <span class="number">0</span>;</span><br><span class="line">        subResRange.levelCount     = <span class="number">1</span>;</span><br><span class="line">        subResRange.layerCount     = renderPassInfo.depthStencilRenderTarget.depthStencilTarget-&gt;depth;</span><br><span class="line">        subResRange.baseArrayLayer = <span class="number">0</span>;</span><br><span class="line">        ImagePipelineBarrier(commandBuffer, image, ImageLayoutBarrier::DepthStencilAttachment, depthLayout, subResRange);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">DVKRenderTarget* DVKRenderTarget::Create(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;VulkanDevice&gt; vulkanDevice, <span class="keyword">const</span> DVKRenderPassInfo&amp; inRenderPassInfo)</span><br><span class="line">&#123;</span><br><span class="line">    VkDevice device = vulkanDevice-&gt;GetInstanceHandle();</span><br><span class="line">    </span><br><span class="line">    DVKRenderTarget* renderTarget = <span class="keyword">new</span> DVKRenderTarget(inRenderPassInfo);</span><br><span class="line">    renderTarget-&gt;device          = device;</span><br><span class="line">    renderTarget-&gt;renderPass      = <span class="keyword">new</span> DVKRenderPass(device, renderTarget-&gt;rtLayout);</span><br><span class="line">    renderTarget-&gt;frameBuffer     = <span class="keyword">new</span> DVKFrameBuffer(device, renderTarget-&gt;rtLayout, *(renderTarget-&gt;renderPass), inRenderPassInfo);</span><br><span class="line">    renderTarget-&gt;extent2D        = renderTarget-&gt;frameBuffer-&gt;extent2D;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> renderTarget;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我将它们的实现也贴了出来，篇幅可能会比较长，主要的原因还是实现稍微有点儿复杂以及绕。想看具体的实现可以去github上面看看。主要的思想还是自动维护创建RenderTarget所需要的元素。</p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p>这个Demo里面其实没有太多需要说明的东西，做的主要工作就是简单封装了一个RenderTarget方面后续使用而已。</p>
+
       
 
       
@@ -210,7 +227,7 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">DynamicUniformBuffer</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">RenderTarget</a>
         		</li>
       		
 		</ul>
@@ -230,16 +247,75 @@
 
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/15/13_DynamicUniformBuffer/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://boblchen.github.io/public/2019/10/13/23_OptimizeRenderTarget/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/public/2019/10/05/22_RenderTarget/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">22_RenderTarget</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -259,924 +335,14 @@
 
 
 
-
-  
-    <article id="post-12_PushConstants" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/12/12_PushConstants/">12_PushConstants</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/12/12_PushConstants/" class="archive-article-date">
-  	<time datetime="2019-08-12T15:39:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/12_PushConstants" target="_blank" rel="noopener">PushConstants</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>上一个Demo里面我们了解到如何将贴图与模型结合起来显示，通过一些复杂的Shader可以实现许多特殊的效果，但是存在一个问题，不知道大家有没有想过，那就是如何显示多个模型，并且这些模型位于不同的位置。在之前的Demo中，我们处理的都是一个模型，一个模型的显示非常方便，但是多个模型的显示可能就会有一种束手束脚的感觉。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/12/12_PushConstants/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">PushConstants</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/12/12_PushConstants/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-26_Skeleton" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/07/26_Skeleton/">骨骼动画简介</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/07/26_Skeleton/" class="archive-article-date">
-  	<time datetime="2019-08-06T23:52:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<h2 id="1、骨架"><a href="#1、骨架" class="headerlink" title="1、骨架"></a>1、骨架</h2><p>骨架由一系列具有层次关系的关节(骨骼)组成，是一种树结构。可以通过平移和旋转根关节来确定整个骨架在模型空间中的位置和方向。父关节运动能影响子关节运动，但子关节运动对父关节不产生影响。因此平移、旋转、缩放父关节时，也会同时平移、旋转、缩放其所有子关节。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/07/26_Skeleton/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/07/26_Skeleton/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-11_Texture" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/02/11_Texture/">11_Texture</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/02/11_Texture/" class="archive-article-date">
-  	<time datetime="2019-08-02T14:03:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/11_Texture" target="_blank" rel="noopener">Texture</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>上一个Demo里面封装了Pipeline，然后通过Pipeline显示了三种不同的效果，但是至今为止我们的模型都极为单调。在这个Demo里面将使用Texture来丰富效果。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/02/11_Texture/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Texture</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/02/11_Texture/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-10_Pipelines" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/02/10_Pipelines/">10_Pipelines</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/02/10_Pipelines/" class="archive-article-date">
-  	<time datetime="2019-08-02T12:01:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/10_Pipelines" target="_blank" rel="noopener">Pipelines</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在前面的Demo里面，我们封装了很多东西，但是有一个东西一直没有处理，也是因为这个东西在前的这些Demo里面都没有需求。在这个Demo里面将着手封装<strong>Pipeline</strong>。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/02/10_Pipelines/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Pipeline</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/02/10_Pipelines/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-9_LoadMesh" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/02/9_LoadMesh/">9_LoadMesh</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/02/9_LoadMesh/" class="archive-article-date">
-  	<time datetime="2019-08-02T11:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/9_LoadMesh" target="_blank" rel="noopener">LoadMesh</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在上一个Demo里面，封装了<strong>VertexBuffer</strong>以及<strong>IndexBuffer</strong>。封装的目的就是为了方便加载外部模型文件显示。这个Demo里面将展示如何加载外部模型并显示。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/02/9_LoadMesh/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">OBJ</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/02/9_LoadMesh/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-8_OptimizeVertexIndexBuffer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/">8_OptimizeVertexIndexBuffer</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T17:02:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">Github项目</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/8_OptimizeVertexIndexBuffer" target="_blank" rel="noopener">Demo源码地址</a></p>
-<p>在前面的Demo里面，模型数据的创建全是靠手工编写。对于非常复杂的模型，例如上万面或上万顶点，我们不太可能也进行手工编写。后续的Demo里面势必会有从外部加载模型文件的需求。为了后续Demo在加载外部模型文件时更加方便快捷，在这个Demo里面，对<strong>VertexBuffer</strong>以及<strong>IndexBuffer</strong>进行封装。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">VertexBuffer</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">IndexBuffer</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-7_UniformBuffer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/02/7_UniformBuffer/">7_UniformBuffer</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/02/7_UniformBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T16:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">Github项目</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/7_UniformBuffer" target="_blank" rel="noopener">Demo源码地址</a></p>
-<p>在之前的几个Demo里面，我们都是在为后续的Demo做准备，包括封装CommandBuffer、封装Buffer、集成ImGUI等等。做了这么久的准备工作，暂时不想再进行相关的封装工作，现在迫切的需要一个新的Demo来验证之前的封装是否合理。在这个Demo里面，我们将传递一些参数给Shader，通过控制不同的参数来达到一些需要的效果。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/02/7_UniformBuffer/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">UniformBuffer</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/02/7_UniformBuffer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-6_ImageGUI" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/01/6_ImageGUI/">6_ImGUI</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/01/6_ImageGUI/" class="archive-article-date">
-  	<time datetime="2019-08-01T12:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/6_ImageGUI" target="_blank" rel="noopener">ImageGUI</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在之前的Demo里面，我们对一些需要大量编码的工作进行了简单封装。为了方便后续<strong>Demo</strong>的进行，现在急需一个<strong>UI</strong>来进行参数或者功能相关的调节。幸运的是，<strong>Github</strong>上有现成的<strong>UI</strong>库可以使用，该项目叫做<a href="https://github.com/ocornut/imgui" target="_blank" rel="noopener"><strong>imgui</strong></a>。这个UI库有<strong>Vulkan</strong>的实现<strong><a href="https://github.com/ocornut/imgui/blob/master/examples/imgui_impl_vulkan.cpp" target="_blank" rel="noopener">点我查看</a></strong></p>
-        
-          <a class="article-more-a" href="/public/2019/08/01/6_ImageGUI/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">IMGUI</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/01/6_ImageGUI/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-5_OptimizeCommandBuffer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/01/5_OptimizeCommandBuffer/">5_OptimizeCommandBuffer</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/01/5_OptimizeCommandBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T11:45:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/5_OptimizeCommandBuffer" target="_blank" rel="noopener">OptimizeCommandBuffer</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在<a href="http://xiaopengyou.fun/public/2019/08/01/4_OptimizeBuffer/#more" target="_blank" rel="noopener">4_OptimizeBuffer</a>这个Demo里面，我们对<strong>Buffer</strong>进行了封装。封装过的<strong>Buffer</strong>使用起来非常方便，代码量急剧减少。但是在这个Demo里面，我们在优化<strong>CreateMeshBuffers</strong>时，我们会发现虽然<strong>Buffer</strong>的代码量减少了，但是<strong>CommandBuffer</strong>相关的代码任然非常庞大。为了减少代码量，需要对<strong>CommandBuffer</strong>也进行简单的封装。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/01/5_OptimizeCommandBuffer/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">VKCommandBuffer</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/01/5_OptimizeCommandBuffer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/public/">&laquo; Prev</a><a class="page-number" href="/public/">1</a><span class="page-number current">2</span><a class="page-number" href="/public/page/3/">3</a><a class="extend next" rel="next" href="/public/page/3/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
+  
+
   
 
 
@@ -1199,8 +365,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
