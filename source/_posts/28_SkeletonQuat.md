@@ -1,5 +1,5 @@
 ---
-title: 28_SkeletonQuat
+title: 28_SkeletonDualQuat
 date: 2019-11-29 23:12:29
 tags:
 - Vulkan

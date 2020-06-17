@@ -6,19 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
-  <title>Archives | Hello World</title>
+  <title>29_SkinInTexture | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我亦无他唯手熟尔">
-<meta name="keywords" content="3D Engine Opengl Stage3D DirectX Vulkan C++">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://boblchen.github.io/public/archives/index.html">
+  <meta name="description" content="项目Github地址请戳我 上个Demo里面对动画数据进行了一定的压缩，但是有个地方问题对性能有一定的冲击，细心的同学也会有所发现…">
+<meta name="keywords" content="Vulkan,3D,Demo,Skeleton">
+<meta property="og:type" content="article">
+<meta property="og:title" content="29_SkinInTexture">
+<meta property="og:url" content="https://boblchen.github.io/public/2019/12/12/29_SkinInTexture/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="我亦无他唯手熟尔">
+<meta property="og:description" content="项目Github地址请戳我 上个Demo里面对动画数据进行了一定的压缩，但是有个地方问题对性能有一定的冲击，细心的同学也会有所发现…">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/28_SkeletonDualQuat.gif">
+<meta property="og:updated_time" content="2020-06-17T10:39:41.571Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="我亦无他唯手熟尔">
+<meta name="twitter:title" content="29_SkinInTexture">
+<meta name="twitter:description" content="项目Github地址请戳我 上个Demo里面对动画数据进行了一定的压缩，但是有个地方问题对性能有一定的冲击，细心的同学也会有所发现…">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/28_SkeletonDualQuat.gif">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
   
@@ -158,36 +161,60 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-29_SkinInTexture" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      29_SkinInTexture
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/public/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/12/12/29_SkinInTexture/" class="archive-article-date">
+
+        
+        <a href="/public/2019/12/12/29_SkinInTexture/" class="archive-article-date">
   	<time datetime="2019-12-12T15:12:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-12</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/12/12/29_SkinInTexture/">29_SkinInTexture</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
+<p>上个Demo里面对动画数据进行了一定的压缩，但是有个地方问题对性能有一定的冲击，细心的同学也会有所发现…</p>
+<a id="more"></a>
 
-        <div class="article-info info-on-right">
-          
+<p><img src="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/28_SkeletonDualQuat.gif" alt="29_SkinInTexture"></p>
+<h2 id="Pose计算"><a href="#Pose计算" class="headerlink" title="Pose计算"></a>Pose计算</h2><p>细心的同学会发现Pose的计算量其实非常大，这个计算量跟骨骼的数量正相关。Pose的数据计算其实就是下面这个过程：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">UpdateAnimation(time, delta);</span><br><span class="line"></span><br><span class="line"><span class="comment">// bones data</span></span><br><span class="line"><span class="keyword">for</span> (int32 j = <span class="number">0</span>; j &lt; mesh-&gt;bones.size(); ++j) </span><br><span class="line">&#123;</span><br><span class="line">    int32 boneIndex = mesh-&gt;bones[j];</span><br><span class="line">    vk_demo::DVKBone* bone = m_RoleModel-&gt;bones[boneIndex];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取骨骼的最终Transform矩阵</span></span><br><span class="line">    <span class="comment">// 也可以使用对偶四元素来替换矩阵的计算</span></span><br><span class="line">    Matrix4x4 boneTransform = bone-&gt;finalTransform;</span><br><span class="line">    boneTransform.Append(mesh-&gt;linkNode-&gt;GetGlobalMatrix().Inverse());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从Transform矩阵中获取四元数以及位移信息</span></span><br><span class="line">    Quat quat   = boneTransform.ToQuat();</span><br><span class="line">    Vector3 pos = boneTransform.GetOrigin();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 转为使用对偶四元数</span></span><br><span class="line">    <span class="keyword">float</span> dx = (+<span class="number">0.5</span>) * ( pos.x * quat.w + pos.y * quat.z - pos.z * quat.y);</span><br><span class="line">    <span class="keyword">float</span> dy = (+<span class="number">0.5</span>) * (-pos.x * quat.z + pos.y * quat.w + pos.z * quat.x);</span><br><span class="line">    <span class="keyword">float</span> dz = (+<span class="number">0.5</span>) * ( pos.x * quat.y - pos.y * quat.x + pos.z * quat.w);</span><br><span class="line">    <span class="keyword">float</span> dw = (<span class="number">-0.5</span>) * ( pos.x * quat.x + pos.y * quat.y + pos.z * quat.z);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置参数</span></span><br><span class="line">    m_BonesData.dualQuats[j * <span class="number">2</span> + <span class="number">0</span>].Set(quat.x, quat.y, quat.z, quat.w);</span><br><span class="line">    m_BonesData.dualQuats[j * <span class="number">2</span> + <span class="number">1</span>].Set(dx, dy, dz, dw);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意地方是<code>UpdateAnimation(time, delta)</code>，这个函数是根据delta时间对两个关键帧进行插值，然后通过<code>BindPose</code>计算出<code>ModelSpace</code>下的<code>Pose</code>数据。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> DVKModel::GotoAnimation(<span class="keyword">float</span> time)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (animIndex == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    DVKAnimation&amp; animation = animations[animIndex];</span><br><span class="line">    animation.time = MMath::Clamp(time, <span class="number">0.0f</span>, animation.duration);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// update nodes animation</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> it = animation.clips.begin(); it != animation.clips.end(); ++it)</span><br><span class="line">    &#123;</span><br><span class="line">        vk_demo::DVKAnimationClip&amp; clip = it-&gt;second;</span><br><span class="line">        vk_demo::DVKNode* node = nodesMap[clip.nodeName];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">float</span> alpha = <span class="number">0.0f</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// rotation</span></span><br><span class="line">        <span class="function">Quat <span class="title">prevRot</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="function">Quat <span class="title">nextRot</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">        clip.rotations.GetValue(animation.time, prevRot, nextRot, alpha);</span><br><span class="line">        Quat retRot = MMath::Lerp(prevRot, nextRot, alpha);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// position</span></span><br><span class="line">        <span class="function">Vector3 <span class="title">prevPos</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="function">Vector3 <span class="title">nextPos</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">        clip.positions.GetValue(animation.time, prevPos, nextPos, alpha);</span><br><span class="line">        Vector3 retPos = MMath::Lerp(prevPos, nextPos, alpha);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// scale</span></span><br><span class="line">        <span class="function">Vector3 <span class="title">prevScale</span><span class="params">(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="function">Vector3 <span class="title">nextScale</span><span class="params">(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">        clip.scales.GetValue(animation.time, prevScale, nextScale, alpha);</span><br><span class="line">        Vector3 retScale = MMath::Lerp(prevScale, nextScale, alpha);</span><br><span class="line">        </span><br><span class="line">        node-&gt;localMatrix.SetIdentity();</span><br><span class="line">        node-&gt;localMatrix.AppendScale(retScale);</span><br><span class="line">        node-&gt;localMatrix.Append(retRot.ToMatrix());</span><br><span class="line">        node-&gt;localMatrix.AppendTranslation(retPos);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// update bones</span></span><br><span class="line">    <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; bones.size(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        DVKBone* bone = bones[i];</span><br><span class="line">        DVKNode* node = nodesMap[bone-&gt;name];</span><br><span class="line">        <span class="comment">// 注意行列矩阵的区别</span></span><br><span class="line">        bone-&gt;finalTransform = bone-&gt;inverseBindPose;</span><br><span class="line">        bone-&gt;finalTransform.Append(node-&gt;GetGlobalMatrix());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面的代码可以看出，计算量其实还是比较大的，特别是角色数量非常多的情况下。当然这个得计算过程可以放到子线程里面去完成，分发到多个子线程里面，在提交Command的时间再把数据取回来。但是在某些时候我们不会关心动画的Blend效果如何或者说可以牺牲掉一些动画效果，那么在这种情况下就可以提前将Pose的数据计算出来并加以存储。在这里为了通用，采样了存储到Texture的方式进行演示，当然存储到<code>StorageBuffer</code>也是可以的，存储到Texture稍微更通用一点儿。</p>
+<p>现在提供一个函数，用来捕获所有帧的动画数据，然后存储到Texture：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CreateAnimTexture</span><span class="params">(vk_demo::DVKCommandBuffer* cmdBuffer)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt; animData(<span class="number">64</span> * <span class="number">32</span> * <span class="number">4</span>); <span class="comment">// 21个骨骼 * 30帧动画数据 * 8</span></span><br><span class="line">    vk_demo::DVKAnimation&amp; animation = m_RoleModel-&gt;GetAnimation();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 获取关键帧信息</span></span><br><span class="line">    m_Keys.push_back(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> it = animation.clips.begin(); it != animation.clips.end(); ++it)</span><br><span class="line">    &#123;</span><br><span class="line">        vk_demo::DVKAnimationClip&amp; clip = it-&gt;second;</span><br><span class="line">        <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; clip.positions.keys.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (m_Keys.back() &lt; clip.positions.keys[i]) &#123;</span><br><span class="line">                m_Keys.push_back(clip.positions.keys[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; clip.rotations.keys.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (m_Keys.back() &lt; clip.rotations.keys[i]) &#123;</span><br><span class="line">                m_Keys.push_back(clip.rotations.keys[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; clip.scales.keys.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (m_Keys.back() &lt; clip.scales.keys[i]) &#123;</span><br><span class="line">                m_Keys.push_back(clip.scales.keys[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    vk_demo::DVKMesh* mesh = m_RoleModel-&gt;meshes[<span class="number">0</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 存储每一帧所对应的动画数据</span></span><br><span class="line">    <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; m_Keys.size(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        m_RoleModel-&gt;GotoAnimation(m_Keys[i]);</span><br><span class="line">        <span class="comment">// 数据步长，一个节点的动画数据需要两个Vector存储。</span></span><br><span class="line">        int32 step = i * mesh-&gt;bones.size() * <span class="number">8</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (int32 j = <span class="number">0</span>; j &lt; mesh-&gt;bones.size(); ++j)</span><br><span class="line">        &#123;</span><br><span class="line">            int32 boneIndex = mesh-&gt;bones[j];</span><br><span class="line">            vk_demo::DVKBone* bone = m_RoleModel-&gt;bones[boneIndex];</span><br><span class="line">            <span class="comment">// 获取骨骼的最终Transform矩阵</span></span><br><span class="line">            <span class="comment">// 也可以使用对偶四元素来替换矩阵的计算</span></span><br><span class="line">            Matrix4x4 boneTransform = bone-&gt;finalTransform;</span><br><span class="line">            boneTransform.Append(mesh-&gt;linkNode-&gt;GetGlobalMatrix().Inverse());</span><br><span class="line">            <span class="comment">// 从Transform矩阵中获取四元数以及位移信息</span></span><br><span class="line">            Quat quat   = boneTransform.ToQuat();</span><br><span class="line">            Vector3 pos = boneTransform.GetOrigin();</span><br><span class="line">            <span class="comment">// 转为使用对偶四元数</span></span><br><span class="line">            <span class="keyword">float</span> dx = (+<span class="number">0.5</span>) * ( pos.x * quat.w + pos.y * quat.z - pos.z * quat.y);</span><br><span class="line">            <span class="keyword">float</span> dy = (+<span class="number">0.5</span>) * (-pos.x * quat.z + pos.y * quat.w + pos.z * quat.x);</span><br><span class="line">            <span class="keyword">float</span> dz = (+<span class="number">0.5</span>) * ( pos.x * quat.y - pos.y * quat.x + pos.z * quat.w);</span><br><span class="line">            <span class="keyword">float</span> dw = (<span class="number">-0.5</span>) * ( pos.x * quat.x + pos.y * quat.y + pos.z * quat.z);</span><br><span class="line">            <span class="comment">// 计算出当前帧当前骨骼在Texture中的坐标</span></span><br><span class="line">            int32 index = step + j * <span class="number">8</span>;</span><br><span class="line">            animData[index + <span class="number">0</span>] = quat.x;</span><br><span class="line">            animData[index + <span class="number">1</span>] = quat.y;</span><br><span class="line">            animData[index + <span class="number">2</span>] = quat.z;</span><br><span class="line">            animData[index + <span class="number">3</span>] = quat.w;</span><br><span class="line">            animData[index + <span class="number">4</span>] = dx;</span><br><span class="line">            animData[index + <span class="number">5</span>] = dy;</span><br><span class="line">            animData[index + <span class="number">6</span>] = dz;</span><br><span class="line">            animData[index + <span class="number">7</span>] = dw;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 创建Texture</span></span><br><span class="line">    m_AnimTexture = vk_demo::DVKTexture::Create2D(</span><br><span class="line">        (<span class="keyword">const</span> uint8*)animData.data(), animData.size() * <span class="keyword">sizeof</span>(<span class="keyword">float</span>), VK_FORMAT_R32G32B32A32_SFLOAT, </span><br><span class="line">        <span class="number">64</span>, <span class="number">32</span>,</span><br><span class="line">        m_VulkanDevice,</span><br><span class="line">        cmdBuffer</span><br><span class="line">    );</span><br><span class="line">    m_AnimTexture-&gt;UpdateSampler(</span><br><span class="line">        VK_FILTER_NEAREST, </span><br><span class="line">        VK_FILTER_NEAREST,</span><br><span class="line">        VK_SAMPLER_MIPMAP_MODE_NEAREST,</span><br><span class="line">        VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE,</span><br><span class="line">        VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE,</span><br><span class="line">        VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先提前把所有关键帧的时间节点都捕获下来，然后让动画驱动到对应时间节点捕获其对应的数据。获取到数据之后将其转化为对偶四元素以节省存储空间，最后创建Float类型的Texture即可。</p>
+<p>最后在VertexShader中采样出数据，然后进行蒙皮即可。首先将UniformBuffer更换为Sample2D:</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">layout</span> (<span class="keyword">binding</span> = <span class="number">1</span>) <span class="keyword">uniform</span> <span class="type">sampler2D</span> animMap;</span><br></pre></td></tr></table></figure>
+
+<p>然后从Texture中采样出动画数据:</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">mat2x4</span> ReadBoneAnim(<span class="type">int</span> boneIndex, <span class="type">int</span> startIndex)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 计算出当前帧动画的骨骼的索引</span></span><br><span class="line">	<span class="type">int</span> <span class="keyword">index</span> = startIndex + boneIndex * <span class="number">2</span>;</span><br><span class="line">	<span class="type">int</span> animY = <span class="keyword">index</span> / <span class="type">int</span>(paramData.animIndex.x);</span><br><span class="line">	<span class="type">int</span> animX = <span class="keyword">index</span> % <span class="type">int</span>(paramData.animIndex.x);</span><br><span class="line"></span><br><span class="line">	<span class="type">vec2</span> index0 = <span class="type">vec2</span>(animX + <span class="number">0.0</span>f, animY) / paramData.animIndex.xy;</span><br><span class="line">	<span class="type">vec2</span> index1 = <span class="type">vec2</span>(animX + <span class="number">1.0</span>f, animY) / paramData.animIndex.xy;</span><br><span class="line"></span><br><span class="line">	<span class="type">mat2x4</span> animData;</span><br><span class="line">	animData[<span class="number">0</span>] = <span class="built_in">texture</span>(animMap, index0);</span><br><span class="line">	animData[<span class="number">1</span>] = <span class="built_in">texture</span>(animMap, index1);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> animData;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">mat2x4</span> CalcDualQuat(<span class="type">ivec4</span> skinIndex, <span class="type">vec4</span> skinWeight, <span class="type">int</span> startIndex)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">mat2x4</span> dualQuat0 = ReadBoneAnim(skinIndex.x, startIndex);</span><br><span class="line">	<span class="type">mat2x4</span> dualQuat1 = ReadBoneAnim(skinIndex.y, startIndex);</span><br><span class="line">	<span class="type">mat2x4</span> dualQuat2 = ReadBoneAnim(skinIndex.z, startIndex);</span><br><span class="line">	<span class="type">mat2x4</span> dualQuat3 = ReadBoneAnim(skinIndex.w, startIndex);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">dot</span>(dualQuat0[<span class="number">0</span>], dualQuat1[<span class="number">0</span>]) &lt; <span class="number">0.0</span>) &#123;</span><br><span class="line">		dualQuat1 *= <span class="number">-1.0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">dot</span>(dualQuat0[<span class="number">0</span>], dualQuat2[<span class="number">0</span>]) &lt; <span class="number">0.0</span>) &#123;</span><br><span class="line">		dualQuat2 *= <span class="number">-1.0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">dot</span>(dualQuat0[<span class="number">0</span>], dualQuat3[<span class="number">0</span>]) &lt; <span class="number">0.0</span>) &#123;</span><br><span class="line">		dualQuat3 *= <span class="number">-1.0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="type">mat2x4</span> blendDualQuat = dualQuat0 * skinWeight.x;</span><br><span class="line">	blendDualQuat += dualQuat1 * skinWeight.y;</span><br><span class="line">	blendDualQuat += dualQuat2 * skinWeight.z;</span><br><span class="line">	blendDualQuat += dualQuat3 * skinWeight.w;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> blendDualQuat;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后按照之前的方式驱动起来即可。</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 450</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">layout</span> (<span class="keyword">location</span> = <span class="number">0</span>) <span class="keyword">in</span> <span class="type">vec3</span>  inPosition;</span><br><span class="line"><span class="keyword">layout</span> (<span class="keyword">location</span> = <span class="number">1</span>) <span class="keyword">in</span> <span class="type">vec2</span>  inUV0;</span><br><span class="line"><span class="keyword">layout</span> (<span class="keyword">location</span> = <span class="number">2</span>) <span class="keyword">in</span> <span class="type">vec3</span>  inNormal;</span><br><span class="line"><span class="keyword">layout</span> (<span class="keyword">location</span> = <span class="number">3</span>) <span class="keyword">in</span> <span class="type">vec3</span>  inSkinPack;</span><br><span class="line"></span><br><span class="line"><span class="keyword">layout</span> (<span class="keyword">binding</span> = <span class="number">0</span>) <span class="keyword">uniform</span> MVPBlock </span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">mat4</span> modelMatrix;</span><br><span class="line">	<span class="type">mat4</span> viewMatrix;</span><br><span class="line">	<span class="type">mat4</span> projectionMatrix;</span><br><span class="line"></span><br><span class="line">	<span class="type">vec4</span> animIndex;</span><br><span class="line">&#125; paramData;</span><br><span class="line"></span><br><span class="line"><span class="keyword">layout</span> (<span class="keyword">binding</span> = <span class="number">1</span>) <span class="keyword">uniform</span> <span class="type">sampler2D</span> animMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">layout</span> (<span class="keyword">location</span> = <span class="number">0</span>) <span class="keyword">out</span> <span class="type">vec2</span> outUV;</span><br><span class="line"><span class="keyword">layout</span> (<span class="keyword">location</span> = <span class="number">1</span>) <span class="keyword">out</span> <span class="type">vec3</span> outNormal;</span><br><span class="line"><span class="keyword">layout</span> (<span class="keyword">location</span> = <span class="number">2</span>) <span class="keyword">out</span> <span class="type">vec4</span> outColor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">out</span> gl_PerVertex </span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">vec4</span> <span class="built_in">gl_Position</span>;   </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">ivec4</span> UnPackUInt32To4Byte(<span class="type">uint</span> packIndex)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">uint</span> idx0 = (packIndex &gt;&gt; <span class="number">24</span>) &amp; <span class="number">0xFF</span>;</span><br><span class="line">	<span class="type">uint</span> idx1 = (packIndex &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xFF</span>;</span><br><span class="line">	<span class="type">uint</span> idx2 = (packIndex &gt;&gt; <span class="number">8</span>)  &amp; <span class="number">0xFF</span>;</span><br><span class="line">	<span class="type">uint</span> idx3 = (packIndex &gt;&gt; <span class="number">0</span>)  &amp; <span class="number">0xFF</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="type">ivec4</span>(idx0, idx1, idx2, idx3);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">ivec2</span> UnPackUInt32To2Short(<span class="type">uint</span> packIndex)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">uint</span> idx0 = (packIndex &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xFFFF</span>;</span><br><span class="line">	<span class="type">uint</span> idx1 = (packIndex &gt;&gt; <span class="number">0</span>)  &amp; <span class="number">0xFFFF</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="type">ivec2</span>(idx0, idx1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">mat4x4</span> DualQuat2Matrix(<span class="type">vec4</span> real, <span class="type">vec4</span> dual) &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="type">float</span> len2 = <span class="built_in">dot</span>(real, real);</span><br><span class="line">	<span class="type">float</span> qx = real.x;</span><br><span class="line">	<span class="type">float</span> qy = real.y;</span><br><span class="line">	<span class="type">float</span> qz = real.z;</span><br><span class="line">	<span class="type">float</span> qw = real.w;</span><br><span class="line"></span><br><span class="line">	<span class="type">float</span> tx = dual.x;</span><br><span class="line">	<span class="type">float</span> ty = dual.y;</span><br><span class="line">	<span class="type">float</span> tz = dual.z;</span><br><span class="line">	<span class="type">float</span> tw = dual.w; </span><br><span class="line">	</span><br><span class="line">	<span class="type">mat4x4</span> matrix;</span><br><span class="line">	matrix[<span class="number">0</span>][<span class="number">0</span>] = qw * qw + qx * qx - qy * qy - qz * qz;</span><br><span class="line">	matrix[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">2</span> * qx * qy - <span class="number">2</span> * qw * qz;</span><br><span class="line">	matrix[<span class="number">2</span>][<span class="number">0</span>] = <span class="number">2</span> * qx * qz + <span class="number">2</span> * qw * qy;</span><br><span class="line">	matrix[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">2</span> * qx * qy + <span class="number">2</span> * qw * qz;</span><br><span class="line">	matrix[<span class="number">1</span>][<span class="number">1</span>] = qw * qw + qy * qy - qx * qx - qz * qz;</span><br><span class="line">	matrix[<span class="number">2</span>][<span class="number">1</span>] = <span class="number">2</span> * qy * qz - <span class="number">2</span> * qw * qx;</span><br><span class="line">	matrix[<span class="number">0</span>][<span class="number">2</span>] = <span class="number">2</span> * qx * qz - <span class="number">2</span> * qw * qy;</span><br><span class="line">	matrix[<span class="number">1</span>][<span class="number">2</span>] = <span class="number">2</span> * qy * qz + <span class="number">2</span> * qw * qx;</span><br><span class="line">	matrix[<span class="number">2</span>][<span class="number">2</span>] = qw * qw + qz * qz - qx * qx - qy * qy;</span><br><span class="line"></span><br><span class="line">	matrix[<span class="number">3</span>][<span class="number">0</span>] = <span class="number">-2</span> * tw * qx + <span class="number">2</span> * qw * tx - <span class="number">2</span> * ty * qz + <span class="number">2</span> * qy * tz;</span><br><span class="line">	matrix[<span class="number">3</span>][<span class="number">1</span>] = <span class="number">-2</span> * tw * qy + <span class="number">2</span> * tx * qz - <span class="number">2</span> * qx * tz + <span class="number">2</span> * qw * ty;</span><br><span class="line">	matrix[<span class="number">3</span>][<span class="number">2</span>] = <span class="number">-2</span> * tw * qz + <span class="number">2</span> * qx * ty + <span class="number">2</span> * qw * tz - <span class="number">2</span> * tx * qy;</span><br><span class="line"></span><br><span class="line">	matrix[<span class="number">0</span>][<span class="number">3</span>] = <span class="number">0</span>;</span><br><span class="line">	matrix[<span class="number">1</span>][<span class="number">3</span>] = <span class="number">0</span>;</span><br><span class="line">	matrix[<span class="number">2</span>][<span class="number">3</span>] = <span class="number">0</span>;</span><br><span class="line">	matrix[<span class="number">3</span>][<span class="number">3</span>] = len2;</span><br><span class="line"></span><br><span class="line">	matrix /= len2;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> matrix;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">vec3</span> DualQuatTransformPosition(<span class="type">mat2x4</span> dualQuat, <span class="type">vec3</span> position)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">float</span> len = <span class="built_in">length</span>(dualQuat[<span class="number">0</span>]);</span><br><span class="line">	dualQuat /= len;</span><br><span class="line">	</span><br><span class="line">	<span class="type">vec3</span> result = position.xyz + <span class="number">2.0</span> * <span class="built_in">cross</span>(dualQuat[<span class="number">0</span>].xyz, <span class="built_in">cross</span>(dualQuat[<span class="number">0</span>].xyz, position.xyz) + dualQuat[<span class="number">0</span>].w * position.xyz);</span><br><span class="line">	<span class="type">vec3</span> trans  = <span class="number">2.0</span> * (dualQuat[<span class="number">0</span>].w * dualQuat[<span class="number">1</span>].xyz - dualQuat[<span class="number">1</span>].w * dualQuat[<span class="number">0</span>].xyz + <span class="built_in">cross</span>(dualQuat[<span class="number">0</span>].xyz, dualQuat[<span class="number">1</span>].xyz));</span><br><span class="line">	result += trans;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">vec3</span> DualQuatTransformVector(<span class="type">mat2x4</span> dualQuat, <span class="type">vec3</span> vector)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> vector + <span class="number">2.0</span> * <span class="built_in">cross</span>(dualQuat[<span class="number">0</span>].xyz, <span class="built_in">cross</span>(dualQuat[<span class="number">0</span>].xyz, vector) + dualQuat[<span class="number">0</span>].w * vector);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">mat2x4</span> ReadBoneAnim(<span class="type">int</span> boneIndex, <span class="type">int</span> startIndex)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 计算出当前帧动画的骨骼的索引</span></span><br><span class="line">	<span class="type">int</span> <span class="keyword">index</span> = startIndex + boneIndex * <span class="number">2</span>;</span><br><span class="line">	<span class="type">int</span> animY = <span class="keyword">index</span> / <span class="type">int</span>(paramData.animIndex.x);</span><br><span class="line">	<span class="type">int</span> animX = <span class="keyword">index</span> % <span class="type">int</span>(paramData.animIndex.x);</span><br><span class="line"></span><br><span class="line">	<span class="type">vec2</span> index0 = <span class="type">vec2</span>(animX + <span class="number">0.0</span>f, animY) / paramData.animIndex.xy;</span><br><span class="line">	<span class="type">vec2</span> index1 = <span class="type">vec2</span>(animX + <span class="number">1.0</span>f, animY) / paramData.animIndex.xy;</span><br><span class="line"></span><br><span class="line">	<span class="type">mat2x4</span> animData;</span><br><span class="line">	animData[<span class="number">0</span>] = <span class="built_in">texture</span>(animMap, index0);</span><br><span class="line">	animData[<span class="number">1</span>] = <span class="built_in">texture</span>(animMap, index1);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> animData;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">mat2x4</span> CalcDualQuat(<span class="type">ivec4</span> skinIndex, <span class="type">vec4</span> skinWeight, <span class="type">int</span> startIndex)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">mat2x4</span> dualQuat0 = ReadBoneAnim(skinIndex.x, startIndex);</span><br><span class="line">	<span class="type">mat2x4</span> dualQuat1 = ReadBoneAnim(skinIndex.y, startIndex);</span><br><span class="line">	<span class="type">mat2x4</span> dualQuat2 = ReadBoneAnim(skinIndex.z, startIndex);</span><br><span class="line">	<span class="type">mat2x4</span> dualQuat3 = ReadBoneAnim(skinIndex.w, startIndex);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">dot</span>(dualQuat0[<span class="number">0</span>], dualQuat1[<span class="number">0</span>]) &lt; <span class="number">0.0</span>) &#123;</span><br><span class="line">		dualQuat1 *= <span class="number">-1.0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">dot</span>(dualQuat0[<span class="number">0</span>], dualQuat2[<span class="number">0</span>]) &lt; <span class="number">0.0</span>) &#123;</span><br><span class="line">		dualQuat2 *= <span class="number">-1.0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">dot</span>(dualQuat0[<span class="number">0</span>], dualQuat3[<span class="number">0</span>]) &lt; <span class="number">0.0</span>) &#123;</span><br><span class="line">		dualQuat3 *= <span class="number">-1.0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="type">mat2x4</span> blendDualQuat = dualQuat0 * skinWeight.x;</span><br><span class="line">	blendDualQuat += dualQuat1 * skinWeight.y;</span><br><span class="line">	blendDualQuat += dualQuat2 * skinWeight.z;</span><br><span class="line">	blendDualQuat += dualQuat3 * skinWeight.w;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> blendDualQuat;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main() </span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">vec4</span> position;</span><br><span class="line">	<span class="type">vec3</span> normal;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (paramData.animIndex.w &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// skin info</span></span><br><span class="line">		<span class="type">ivec4</span> skinIndex   = UnPackUInt32To4Byte(<span class="type">uint</span>(inSkinPack.x));</span><br><span class="line">		<span class="type">ivec2</span> skinWeight0 = UnPackUInt32To2Short(<span class="type">uint</span>(inSkinPack.y));</span><br><span class="line">		<span class="type">ivec2</span> skinWeight1 = UnPackUInt32To2Short(<span class="type">uint</span>(inSkinPack.z));</span><br><span class="line">		<span class="type">vec4</span>  skinWeight  = <span class="type">vec4</span>(skinWeight0 / <span class="number">65535.0</span>, skinWeight1 / <span class="number">65535.0</span>);</span><br><span class="line"></span><br><span class="line">		<span class="type">mat2x4</span> dualQuat = CalcDualQuat(skinIndex, skinWeight, <span class="type">int</span>(paramData.animIndex.z));</span><br><span class="line"></span><br><span class="line">		position = <span class="type">vec4</span>(DualQuatTransformPosition(dualQuat, inPosition.xyz), <span class="number">1.0</span>);</span><br><span class="line">		normal   = DualQuatTransformVector(dualQuat, inNormal);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		position = <span class="type">vec4</span>(inPosition, <span class="number">1.0</span>);</span><br><span class="line">		normal   = inNormal;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 转换法线</span></span><br><span class="line">	<span class="type">mat3</span> normalMatrix = <span class="built_in">transpose</span>(<span class="built_in">inverse</span>(<span class="type">mat3</span>(paramData.modelMatrix)));</span><br><span class="line">	normal = <span class="built_in">normalize</span>(normalMatrix * normal);</span><br><span class="line"></span><br><span class="line">	outUV     = inUV0;</span><br><span class="line">	outNormal = normal;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">gl_Position</span> = paramData.projectionMatrix * paramData.viewMatrix * paramData.modelMatrix * position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>整个流程其实也是非常简单的，不同之处是不在CPU里面计算每个时刻的<code>Pose</code>数据了，而是直接采样提前计算好的<code>Pose</code>数据。这种优化对于大量重复角色的场景下是非常有效的。下一篇文章就会讲解如何扩大这种优势。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -211,7 +238,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -224,569 +251,103 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://boblchen.github.io/public/2019/12/12/29_SkinInTexture/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/11/29/28_SkeletonQuat/" class="archive-article-date">
-  	<time datetime="2019-11-29T15:12:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-29</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/public/2019/11/29/28_SkeletonQuat/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">28_SkeletonDualQuat</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/11/29/28_SkeletonQuat/">28_SkeletonDualQuat</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Skeleton</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/11/13/27_SkeletonPackIndexWeight/" class="archive-article-date">
-  	<time datetime="2019-11-13T15:22:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-13</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/11/13/27_SkeletonPackIndexWeight/">27_SkeletonPackIndexWeight</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Skeleton</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/11/06/26_Skeleton/" class="archive-article-date">
-  	<time datetime="2019-11-06T14:15:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/11/06/26_Skeleton/">骨骼动画简介</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Skeleton</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/10/26/25_Bloom/" class="archive-article-date">
-  	<time datetime="2019-10-26T14:26:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/10/26/25_Bloom/">25_Bloom</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Bloom</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/10/19/24_NormalEdge/" class="archive-article-date">
-  	<time datetime="2019-10-19T15:51:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/10/19/24_NormalEdge/">24_NormalEdge</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Edge</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/10/13/23_OptimizeRenderTarget/" class="archive-article-date">
-  	<time datetime="2019-10-13T15:11:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-13</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/10/13/23_OptimizeRenderTarget/">23_OptimizeRenderTarget</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">RenderTarget</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/10/05/22_RenderTarget/" class="archive-article-date">
-  	<time datetime="2019-10-05T14:31:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/10/05/22_RenderTarget/">22_RenderTarget</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">RenderTarget</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/09/27/21_Stencil/" class="archive-article-date">
-  	<time datetime="2019-09-27T15:24:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/09/27/21_Stencil/">21_Stencil</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Stencil</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2019/09/20/20_Material/" class="archive-article-date">
-  	<time datetime="2019-09-20T14:45:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2019/09/20/20_Material/">20_Material</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Material</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/public/archives/page/2/">2</a><a class="page-number" href="/public/archives/page/3/">3</a><a class="page-number" href="/public/archives/page/4/">4</a><a class="extend next" rel="next" href="/public/archives/page/2/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -810,8 +371,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
