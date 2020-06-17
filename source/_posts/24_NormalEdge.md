@@ -14,7 +14,7 @@ categories:
 
 [项目Github地址请戳我](https://github.com/BobLChen/VulkanDemos)
 
-在这个Demo里面加强一下RenderTarget的使用，顺便试试输出多个数据是否可以很好的工作。在这个Demo里面输出Color以及Normal数据，利用Normal数据来检测边缘。
+在这个Demo里面加强一下RenderTarget的使用，顺便试试输出多个数据是否可以很好的工作。在这个Demo里面输出Color以及Normal数据，利用Normal数据来检测边缘。
 
 <!-- more -->
 

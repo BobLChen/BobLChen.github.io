@@ -14,7 +14,7 @@ categories:
 
 [项目Github地址请戳我](https://github.com/BobLChen/VulkanDemos)
 
-Bloom是比较常用的后处理特效，实现的方式都大同小异，这次就实现一个非常建议的Bloom后处理效果。
+Bloom是比较常用的后处理特效，实现的方式都大同小异，这次就实现一个非常建议的Bloom后处理效果。
 
 <!-- more -->
 

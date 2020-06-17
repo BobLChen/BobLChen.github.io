@@ -17,7 +17,7 @@
 <meta property="og:description" content="23_OptimizeRenderTarget 项目Github地址请戳我 上个Demo里面，我们创建附件的时候写了太多代码，也进行许多配置，为了简化后续的使用，在这个Demo里面进行简单的封装。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/22_RenderTarget.gif">
-<meta property="og:updated_time" content="2020-01-27T12:48:55.887Z">
+<meta property="og:updated_time" content="2020-06-17T09:16:16.563Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="23_OptimizeRenderTarget">
 <meta name="twitter:description" content="23_OptimizeRenderTarget 项目Github地址请戳我 上个Demo里面，我们创建附件的时候写了太多代码，也进行许多配置，为了简化后续的使用，在这个Demo里面进行简单的封装。">
@@ -187,7 +187,7 @@
 <a id="more"></a>
 
 <p><img src="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/22_RenderTarget.gif" alt="23_OptimizeRenderTarget"></p>
-<h2 id="DVKRenderPassInfo"><a href="#DVKRenderPassInfo" class="headerlink" title="DVKRenderPassInfo"></a>DVKRenderPassInfo</h2><p>RenderTarget输出的数据是多样性的，主要体现在Color Attachment上，Depth数据确是最多只有一个。这些附件在使用的时候是配置一下它们的行为的，例如希望在使用之前清除掉附件的数据，这个跟我们写代码希望初始化一样；当然某些情况下更希望复用数据不进行任何操作等。</p>
+<h2 id="DVKRenderPassInfo"><a href="#DVKRenderPassInfo" class="headerlink" title="DVKRenderPassInfo"></a>DVKRenderPassInfo</h2><p>RenderTarget输出的数据是多样性的，主要体现在Color Attachment上，Depth数据确是最多只有一个。这些附件在使用的时候是配置一下它们的行为的，例如希望在使用之前清除掉附件的数据，这个跟我们写代码希望初始化一样；当然某些情况下更希望复用数据不进行任何操作等。</p>
 <p>为了满足上述的一些要求，我特意准备了一个DVKRenderPassInfo来容纳这些信息。代码如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DVKRenderPassInfo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ColorEntry</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        DVKTexture*         renderTarget = <span class="literal">nullptr</span>;</span><br><span class="line">        DVKTexture*         resolveTarget = <span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">        VkAttachmentLoadOp  loadAction = VK_ATTACHMENT_LOAD_OP_CLEAR;</span><br><span class="line">        VkAttachmentStoreOp storeAction = VK_ATTACHMENT_STORE_OP_STORE;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">DepthStencilEntry</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        DVKTexture*         depthStencilTarget = <span class="literal">nullptr</span>;</span><br><span class="line">        DVKTexture*         resolveTarget = <span class="literal">nullptr</span>;</span><br><span class="line">        VkAttachmentLoadOp  loadAction = VK_ATTACHMENT_LOAD_OP_CLEAR;</span><br><span class="line">        VkAttachmentStoreOp storeAction = VK_ATTACHMENT_STORE_OP_STORE;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    ColorEntry              colorRenderTargets[MaxSimultaneousRenderTargets];</span><br><span class="line">    DepthStencilEntry       depthStencilRenderTarget;</span><br><span class="line">    int32                   numColorRenderTargets;</span><br><span class="line">    <span class="keyword">bool</span>					multiview = <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Color, no depth</span></span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">DVKRenderPassInfo</span><span class="params">(DVKTexture* colorRT, VkAttachmentLoadOp colorLoadAction, VkAttachmentStoreOp colorStoreAction, DVKTexture* resolveRT)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        numColorRenderTargets = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].renderTarget  = colorRT;</span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].resolveTarget = resolveRT;</span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].loadAction    = colorLoadAction;</span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].storeAction   = colorStoreAction;</span><br><span class="line"></span><br><span class="line">        depthStencilRenderTarget.depthStencilTarget = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.resolveTarget      = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.loadAction         = VK_ATTACHMENT_LOAD_OP_DONT_CARE;</span><br><span class="line">        depthStencilRenderTarget.storeAction        = VK_ATTACHMENT_STORE_OP_DONT_CARE;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">memset</span>(&amp;colorRenderTargets[numColorRenderTargets], <span class="number">0</span>, <span class="keyword">sizeof</span>(ColorEntry) * (MaxSimultaneousRenderTargets - numColorRenderTargets));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Color And Depth</span></span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">DVKRenderPassInfo</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        DVKTexture* colorRT, </span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentLoadOp colorLoadAction, </span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentStoreOp colorStoreAction,</span></span></span><br><span class="line"><span class="function"><span class="params">        DVKTexture* depthRT,</span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentLoadOp depthLoadAction, </span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentStoreOp depthStoreAction</span></span></span><br><span class="line"><span class="function"><span class="params">    )</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        numColorRenderTargets = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].renderTarget  = colorRT;</span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].resolveTarget = <span class="literal">nullptr</span>;</span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].loadAction    = colorLoadAction;</span><br><span class="line">        colorRenderTargets[<span class="number">0</span>].storeAction   = colorStoreAction;</span><br><span class="line"></span><br><span class="line">        depthStencilRenderTarget.depthStencilTarget = depthRT;</span><br><span class="line">        depthStencilRenderTarget.resolveTarget      = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.loadAction         = depthLoadAction;</span><br><span class="line">        depthStencilRenderTarget.storeAction        = depthStoreAction;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">memset</span>(&amp;colorRenderTargets[numColorRenderTargets], <span class="number">0</span>, <span class="keyword">sizeof</span>(ColorEntry) * (MaxSimultaneousRenderTargets - numColorRenderTargets));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// MRTs, No Depth</span></span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">DVKRenderPassInfo</span><span class="params">(int32 numColorRTs, DVKTexture* colorRT[], VkAttachmentLoadOp colorLoadAction, VkAttachmentStoreOp colorStoreAction)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        numColorRenderTargets = numColorRTs;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; numColorRTs; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            colorRenderTargets[i].renderTarget  = colorRT[i];</span><br><span class="line">            colorRenderTargets[i].resolveTarget = <span class="literal">nullptr</span>;</span><br><span class="line">            colorRenderTargets[i].loadAction    = colorLoadAction;</span><br><span class="line">            colorRenderTargets[i].storeAction   = colorStoreAction;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        depthStencilRenderTarget.depthStencilTarget = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.resolveTarget      = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.loadAction         = VK_ATTACHMENT_LOAD_OP_DONT_CARE;</span><br><span class="line">        depthStencilRenderTarget.storeAction        = VK_ATTACHMENT_STORE_OP_DONT_CARE;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (numColorRTs &lt; MaxSimultaneousRenderTargets) &#123;</span><br><span class="line">            <span class="built_in">memset</span>(&amp;colorRenderTargets[numColorRenderTargets], <span class="number">0</span>, <span class="keyword">sizeof</span>(ColorEntry) * (MaxSimultaneousRenderTargets - numColorRenderTargets));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// MRTs And Depth</span></span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">DVKRenderPassInfo</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        int32 numColorRTs, </span></span></span><br><span class="line"><span class="function"><span class="params">        DVKTexture* colorRT[], </span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentLoadOp colorLoadAction, </span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentStoreOp colorStoreAction,</span></span></span><br><span class="line"><span class="function"><span class="params">        DVKTexture* depthRT,</span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentLoadOp depthLoadAction, </span></span></span><br><span class="line"><span class="function"><span class="params">        VkAttachmentStoreOp depthStoreAction</span></span></span><br><span class="line"><span class="function"><span class="params">    )</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        numColorRenderTargets = numColorRTs;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (int32 i = <span class="number">0</span>; i &lt; numColorRTs; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            colorRenderTargets[i].renderTarget  = colorRT[i];</span><br><span class="line">            colorRenderTargets[i].resolveTarget = <span class="literal">nullptr</span>;</span><br><span class="line">            colorRenderTargets[i].loadAction    = colorLoadAction;</span><br><span class="line">            colorRenderTargets[i].storeAction   = colorStoreAction;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        depthStencilRenderTarget.depthStencilTarget = depthRT;</span><br><span class="line">        depthStencilRenderTarget.resolveTarget      = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.loadAction         = depthLoadAction;</span><br><span class="line">        depthStencilRenderTarget.storeAction        = depthStoreAction;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (numColorRTs &lt; MaxSimultaneousRenderTargets) &#123;</span><br><span class="line">            <span class="built_in">memset</span>(&amp;colorRenderTargets[numColorRenderTargets], <span class="number">0</span>, <span class="keyword">sizeof</span>(ColorEntry) * (MaxSimultaneousRenderTargets - numColorRenderTargets));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Depth, No Color</span></span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">DVKRenderPassInfo</span><span class="params">(DVKTexture* depthRT, VkAttachmentLoadOp depthLoadAction, VkAttachmentStoreOp depthStoreAction)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        numColorRenderTargets = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        depthStencilRenderTarget.depthStencilTarget = depthRT;</span><br><span class="line">        depthStencilRenderTarget.resolveTarget      = <span class="literal">nullptr</span>;</span><br><span class="line">        depthStencilRenderTarget.loadAction         = depthLoadAction;</span><br><span class="line">        depthStencilRenderTarget.storeAction        = depthStoreAction;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">memset</span>(&amp;colorRenderTargets[numColorRenderTargets], <span class="number">0</span>, <span class="keyword">sizeof</span>(ColorEntry) * MaxSimultaneousRenderTargets);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -465,7 +465,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Triangle</a>
+                <a href="javascript:void(0)" class="js-tag color1">DeferredShading</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -473,83 +473,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">VKBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">VKCommandBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">IMGUI</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">UniformBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">VertexBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">IndexBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">OBJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Pipeline</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Texture</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">DynamicUniformBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">TextureArray</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Texture3D</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Shader</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">DescriptorLayout</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">InputAttachment</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">DeferredShading</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Material</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Stencil</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RenderTarget</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -562,6 +486,82 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Skeleton</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Stencil</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">RenderTarget</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">VKCommandBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">TextureArray</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DynamicUniformBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Texture3D</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">VKBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">VertexBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">IndexBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">IMGUI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">UniformBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Pipeline</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">InputAttachment</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Triangle</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Texture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Shader</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">DescriptorLayout</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">OBJ</a>
               </li>
             
             <div class="clearfix"></div>
