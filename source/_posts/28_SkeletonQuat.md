@@ -36,7 +36,8 @@ categories:
 [参考链接](https://www.chinedufn.com/dual-quaternion-shader-explained/)
 
 位移+旋转转化为对偶四元素的过程其实非常简单，代码如下所示：
-```
+
+```c++
 // 从Transform矩阵中获取四元数以及位移信息
 Quat quat   = boneTransform.ToQuat();
 Vector3 pos = boneTransform.GetOrigin();
@@ -57,7 +58,7 @@ m_BonesData.dualQuats[j * 2 + 1].Set(dx, dy, dz, dw);
 
 在Vertex Shader里面定义的Uniform数据格式需要简单调整一下：
 
-```
+```glsl
 layout (binding = 1) uniform BonesTransformBlock 
 {
 	mat2x4 	dualQuats[MAX_BONES];
@@ -69,7 +70,7 @@ layout (binding = 1) uniform BonesTransformBlock
 
 然后就是在VertexShader里面安装索引以及权重插值计算出最终的对偶四元素。
 
-```
+```glsl
 // skin info
 ivec4 skinIndex   = UnPackUInt32To4Byte(uint(inSkinPack.x));
 ivec2 skinWeight0 = UnPackUInt32To2Short(uint(inSkinPack.y));
@@ -100,7 +101,7 @@ blendDualQuat += dualQuat3 * skinWeight.w;
 
 最后利用`blendDualQuat`对顶点、法线、切线数据进行转化即可。
 
-```
+```glsl
 vec3 DualQuatTransformPosition(mat2x4 dualQuat, vec3 position)
 {
 	float len = length(dualQuat[0]);
@@ -143,7 +144,8 @@ normal = normalize(normalMatrix * normal);
 ```
 
 首先定义出针对顶点的转化函数`DualQuatTransformPosition`以及针对向量的转化函数`DualQuatTransformVector`，然后对输入的顶点以及法线数据转化即可。最终的Shader代码如下所示：
-```
+
+```glsl
 #version 450
 
 layout (location = 0) in vec3  inPosition;
