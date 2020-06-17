@@ -6,19 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
-  <title>Hello World</title>
+  <title>28_SkeletonQuat | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我亦无他唯手熟尔">
-<meta name="keywords" content="3D Engine Opengl Stage3D DirectX Vulkan C++">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://boblchen.github.io/public/page/3/index.html">
+  <meta name="description" content="项目Github地址请戳我 上个Demo里面对骨骼动画做了一些简单的数据压缩，但是在移动设备上，某些极端情况下还能持续的进行压缩以及优化，下面将展示如何利用对偶四元素压缩数据。">
+<meta name="keywords" content="Vulkan,3D,Demo,Skeleton">
+<meta property="og:type" content="article">
+<meta property="og:title" content="28_SkeletonQuat">
+<meta property="og:url" content="https://boblchen.github.io/public/2019/11/29/28_SkeletonQuat/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="我亦无他唯手熟尔">
+<meta property="og:description" content="项目Github地址请戳我 上个Demo里面对骨骼动画做了一些简单的数据压缩，但是在移动设备上，某些极端情况下还能持续的进行压缩以及优化，下面将展示如何利用对偶四元素压缩数据。">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/28_SkeletonDualQuat.gif">
+<meta property="og:image" content="https://boblchen.github.io/public/2019/11/29/28_SkeletonQuat/0.png">
+<meta property="og:updated_time" content="2020-06-17T10:11:26.647Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="我亦无他唯手熟尔">
+<meta name="twitter:title" content="28_SkeletonQuat">
+<meta name="twitter:description" content="项目Github地址请戳我 上个Demo里面对骨骼动画做了一些简单的数据压缩，但是在移动设备上，某些极端情况下还能持续的进行压缩以及优化，下面将展示如何利用对偶四元素压缩数据。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/28_SkeletonDualQuat.gif">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
   
@@ -158,34 +162,55 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-8_OptimizeVertexIndexBuffer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-28_SkeletonQuat" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/">8_OptimizeVertexIndexBuffer</a>
+    <h1 class="article-title" itemprop="name">
+      28_SkeletonQuat
     </h1>
   
 
         
-        <a href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T17:02:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
+        <a href="/public/2019/11/29/28_SkeletonQuat/" class="archive-article-date">
+  	<time datetime="2019-11-29T15:12:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-29</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">Github项目</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/8_OptimizeVertexIndexBuffer" target="_blank" rel="noopener">Demo源码地址</a></p>
-<p>在前面的Demo里面，模型数据的创建全是靠手工编写。对于非常复杂的模型，例如上万面或上万顶点，我们不太可能也进行手工编写。后续的Demo里面势必会有从外部加载模型文件的需求。为了后续Demo在加载外部模型文件时更加方便快捷，在这个Demo里面，对<strong>VertexBuffer</strong>以及<strong>IndexBuffer</strong>进行封装。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/#more">more >></a>
-        
+        <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
+<p>上个Demo里面对骨骼动画做了一些简单的数据压缩，但是在移动设备上，某些极端情况下还能持续的进行压缩以及优化，下面将展示如何利用对偶四元素压缩数据。 </p>
+<a id="more"></a>
+
+<p><img src="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/28_SkeletonDualQuat.gif" alt="28_SkeletonDualQuat"></p>
+<h2 id="关于缩放"><a href="#关于缩放" class="headerlink" title="关于缩放"></a>关于缩放</h2><p>在常规的动画中，缩放其实很少用到，大多数情况下不会用到缩放。比如人形角色一般不会制作带有缩放的骨骼动画，因为加了缩放会变得比较奇怪。基于这种情况，可以考虑把缩放因子从动画数据中移除掉，那么参与动画的实际上只有<code>位移</code>以及<code>旋转</code>数据。</p>
+<h2 id="数据重组"><a href="#数据重组" class="headerlink" title="数据重组"></a>数据重组</h2><p>由于拿掉了缩放数据，就需要考虑到一个问题，就是如何把位移以及旋转数据重组成矩阵数据以方便在Shader中进行蒙皮操作。通过位移以及旋转重组出矩阵这个过程其实还蛮复杂的，参考下面的矩阵：</p>
+<p><img src="0.png" alt="0.png"></p>
+<p>上图只是一个旋转的矩阵，位移的矩阵非常简单，就不在说明。主要考察这个旋转的矩阵，会发现要把旋转转化为矩阵这个过程计算量非常大，如果在Shader里面要完成4次这样的转换会感觉有点儿得不偿失，既虽然压缩了数据，但是极大的增加了计算量。为了解决这个问题，可以利用对偶四元素来加速这个过程的计算，总体来说会得到一个比较均衡的状态。另外一个比较有趣的地方是在某些情况下对偶四元素的动画效果要优于矩阵的方式。</p>
+<h2 id="对偶四元素"><a href="#对偶四元素" class="headerlink" title="对偶四元素"></a>对偶四元素</h2><p>对偶四元素的具体推导以及原理这里不再细说，要推导起来估计没个上万字是搞不定的，这里提供一些参考资料。某些时候大家不需要了解其原理，只要能把算法应用起来即可。<br><a href="https://www.chinedufn.com/dual-quaternion-shader-explained/" target="_blank" rel="noopener">参考链接</a></p>
+<p>位移+旋转转化为对偶四元素的过程其实非常简单，代码如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 从Transform矩阵中获取四元数以及位移信息</span><br><span class="line">Quat quat   = boneTransform.ToQuat();</span><br><span class="line">Vector3 pos = boneTransform.GetOrigin();</span><br><span class="line"></span><br><span class="line">// 转为使用对偶四元数</span><br><span class="line">float dx = (+0.5) * ( pos.x * quat.w + pos.y * quat.z - pos.z * quat.y);</span><br><span class="line">float dy = (+0.5) * (-pos.x * quat.z + pos.y * quat.w + pos.z * quat.x);</span><br><span class="line">float dz = (+0.5) * ( pos.x * quat.y - pos.y * quat.x + pos.z * quat.w);</span><br><span class="line">float dw = (-0.5) * ( pos.x * quat.x + pos.y * quat.y + pos.z * quat.z);</span><br><span class="line"></span><br><span class="line">// 设置参数</span><br><span class="line">m_BonesData.dualQuats[j * 2 + 0].Set(quat.x, quat.y, quat.z, quat.w);</span><br><span class="line">m_BonesData.dualQuats[j * 2 + 1].Set(dx, dy, dz, dw);</span><br></pre></td></tr></table></figure>
+
+<p>数据转化完成之后即可上传到GPU，在Shader里面实现蒙皮操作。</p>
+<h2 id="蒙皮"><a href="#蒙皮" class="headerlink" title="蒙皮"></a>蒙皮</h2><p>在Vertex Shader里面定义的Uniform数据格式需要简单调整一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">layout (binding = 1) uniform BonesTransformBlock </span><br><span class="line">&#123;</span><br><span class="line">	mat2x4 	dualQuats[MAX_BONES];</span><br><span class="line">	vec4 	debugParam;</span><br><span class="line">&#125; bonesData;</span><br></pre></td></tr></table></figure>
+
+<p>因为每根骨骼只需要传输两个Vector4数据，因此用mat2x4既2行似列的数据格式来映射。</p>
+<p>然后就是在VertexShader里面安装索引以及权重插值计算出最终的对偶四元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// skin info</span><br><span class="line">ivec4 skinIndex   = UnPackUInt32To4Byte(uint(inSkinPack.x));</span><br><span class="line">ivec2 skinWeight0 = UnPackUInt32To2Short(uint(inSkinPack.y));</span><br><span class="line">ivec2 skinWeight1 = UnPackUInt32To2Short(uint(inSkinPack.z));</span><br><span class="line">vec4  skinWeight  = vec4(skinWeight0 / 65535.0, skinWeight1 / 65535.0);</span><br><span class="line"></span><br><span class="line">// dual quats</span><br><span class="line">mat2x4 dualQuat0 = bonesData.dualQuats[skinIndex.x];</span><br><span class="line">mat2x4 dualQuat1 = bonesData.dualQuats[skinIndex.y];</span><br><span class="line">mat2x4 dualQuat2 = bonesData.dualQuats[skinIndex.z];</span><br><span class="line">mat2x4 dualQuat3 = bonesData.dualQuats[skinIndex.w];</span><br><span class="line"></span><br><span class="line">if (dot(dualQuat0[0], dualQuat1[0]) &lt; 0.0) &#123;</span><br><span class="line">	dualQuat1 *= -1.0;</span><br><span class="line">&#125;</span><br><span class="line">if (dot(dualQuat0[0], dualQuat2[0]) &lt; 0.0) &#123;</span><br><span class="line">	dualQuat2 *= -1.0;</span><br><span class="line">&#125;</span><br><span class="line">if (dot(dualQuat0[0], dualQuat3[0]) &lt; 0.0) &#123;</span><br><span class="line">	dualQuat3 *= -1.0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mat2x4 blendDualQuat = dualQuat0 * skinWeight.x;</span><br><span class="line">blendDualQuat += dualQuat1 * skinWeight.y;</span><br><span class="line">blendDualQuat += dualQuat2 * skinWeight.z;</span><br><span class="line">blendDualQuat += dualQuat3 * skinWeight.w;</span><br></pre></td></tr></table></figure>
+
+<p>最后利用<code>blendDualQuat</code>对顶点、法线、切线数据进行转化即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">vec3 DualQuatTransformPosition(mat2x4 dualQuat, vec3 position)</span><br><span class="line">&#123;</span><br><span class="line">	float len = length(dualQuat[0]);</span><br><span class="line">	dualQuat /= len;</span><br><span class="line">	</span><br><span class="line">	vec3 result = position.xyz + 2.0 * cross(dualQuat[0].xyz, cross(dualQuat[0].xyz, position.xyz) + dualQuat[0].w * position.xyz);</span><br><span class="line">	vec3 trans  = 2.0 * (dualQuat[0].w * dualQuat[1].xyz - dualQuat[1].w * dualQuat[0].xyz + cross(dualQuat[0].xyz, dualQuat[1].xyz));</span><br><span class="line">	result += trans;</span><br><span class="line"></span><br><span class="line">	return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vec3 DualQuatTransformVector(mat2x4 dualQuat, vec3 vector)</span><br><span class="line">&#123;</span><br><span class="line">	return vector + 2.0 * cross(dualQuat[0].xyz, cross(dualQuat[0].xyz, vector) + dualQuat[0].w * vector);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 对偶四元素还原Matrix进行计算</span><br><span class="line">if (bonesData.debugParam.x &lt; 1.0)</span><br><span class="line">&#123;</span><br><span class="line">	mat4x4 boneMatrix = DualQuat2Matrix(blendDualQuat[0], blendDualQuat[1]);</span><br><span class="line">	position = boneMatrix * vec4(inPosition.xyz, 1.0);</span><br><span class="line">	normal   = mat3(boneMatrix) * inNormal;</span><br><span class="line"></span><br><span class="line">	outColor = vec4(1.1, 1.0, 1.0, 1.0);</span><br><span class="line">&#125;</span><br><span class="line">// 不还原，直接计算</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">	position.xyz = DualQuatTransformPosition(blendDualQuat, inPosition.xyz);</span><br><span class="line">	position.w   = 1.0;</span><br><span class="line">	normal = DualQuatTransformVector(blendDualQuat, inNormal);</span><br><span class="line"></span><br><span class="line">	outColor = vec4(1.0, 1.1, 1.0, 1.0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 转换法线</span><br><span class="line">mat3 normalMatrix = transpose(inverse(mat3(uboMVP.modelMatrix)));</span><br><span class="line">normal = normalize(normalMatrix * normal);</span><br></pre></td></tr></table></figure>
+
+<p>首先定义出针对顶点的转化函数<code>DualQuatTransformPosition</code>以及针对向量的转化函数<code>DualQuatTransformVector</code>，然后对输入的顶点以及法线数据转化即可。最终的Shader代码如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br></pre></td><td class="code"><pre><span class="line">#version 450</span><br><span class="line"></span><br><span class="line">layout (location = 0) in vec3  inPosition;</span><br><span class="line">layout (location = 1) in vec2  inUV0;</span><br><span class="line">layout (location = 2) in vec3  inNormal;</span><br><span class="line">layout (location = 3) in vec3  inSkinPack;</span><br><span class="line"></span><br><span class="line">layout (binding = 0) uniform MVPBlock </span><br><span class="line">&#123;</span><br><span class="line">	mat4 modelMatrix;</span><br><span class="line">	mat4 viewMatrix;</span><br><span class="line">	mat4 projectionMatrix;</span><br><span class="line">&#125; uboMVP;</span><br><span class="line"></span><br><span class="line">#define MAX_BONES 64</span><br><span class="line"></span><br><span class="line">layout (binding = 1) uniform BonesTransformBlock </span><br><span class="line">&#123;</span><br><span class="line">	mat2x4 	dualQuats[MAX_BONES];</span><br><span class="line">	vec4 	debugParam;</span><br><span class="line">&#125; bonesData;</span><br><span class="line"></span><br><span class="line">layout (location = 0) out vec2 outUV;</span><br><span class="line">layout (location = 1) out vec3 outNormal;</span><br><span class="line">layout (location = 2) out vec4 outColor;</span><br><span class="line"></span><br><span class="line">out gl_PerVertex </span><br><span class="line">&#123;</span><br><span class="line">    vec4 gl_Position;   </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ivec4 UnPackUInt32To4Byte(uint packIndex)</span><br><span class="line">&#123;</span><br><span class="line">	uint idx0 = (packIndex &gt;&gt; 24) &amp; 0xFF;</span><br><span class="line">	uint idx1 = (packIndex &gt;&gt; 16) &amp; 0xFF;</span><br><span class="line">	uint idx2 = (packIndex &gt;&gt; 8)  &amp; 0xFF;</span><br><span class="line">	uint idx3 = (packIndex &gt;&gt; 0)  &amp; 0xFF;</span><br><span class="line">	return ivec4(idx0, idx1, idx2, idx3);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ivec2 UnPackUInt32To2Short(uint packIndex)</span><br><span class="line">&#123;</span><br><span class="line">	uint idx0 = (packIndex &gt;&gt; 16) &amp; 0xFFFF;</span><br><span class="line">	uint idx1 = (packIndex &gt;&gt; 0)  &amp; 0xFFFF;</span><br><span class="line">	return ivec2(idx0, idx1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mat4x4 DualQuat2Matrix(vec4 real, vec4 dual) &#123;</span><br><span class="line">	</span><br><span class="line">	float len2 = dot(real, real);</span><br><span class="line">	float qx = real.x;</span><br><span class="line">	float qy = real.y;</span><br><span class="line">	float qz = real.z;</span><br><span class="line">	float qw = real.w;</span><br><span class="line"></span><br><span class="line">	float tx = dual.x;</span><br><span class="line">	float ty = dual.y;</span><br><span class="line">	float tz = dual.z;</span><br><span class="line">	float tw = dual.w; </span><br><span class="line">	</span><br><span class="line">	mat4x4 matrix;</span><br><span class="line">	matrix[0][0] = qw * qw + qx * qx - qy * qy - qz * qz;</span><br><span class="line">	matrix[1][0] = 2 * qx * qy - 2 * qw * qz;</span><br><span class="line">	matrix[2][0] = 2 * qx * qz + 2 * qw * qy;</span><br><span class="line">	matrix[0][1] = 2 * qx * qy + 2 * qw * qz;</span><br><span class="line">	matrix[1][1] = qw * qw + qy * qy - qx * qx - qz * qz;</span><br><span class="line">	matrix[2][1] = 2 * qy * qz - 2 * qw * qx;</span><br><span class="line">	matrix[0][2] = 2 * qx * qz - 2 * qw * qy;</span><br><span class="line">	matrix[1][2] = 2 * qy * qz + 2 * qw * qx;</span><br><span class="line">	matrix[2][2] = qw * qw + qz * qz - qx * qx - qy * qy;</span><br><span class="line"></span><br><span class="line">	matrix[3][0] = -2 * tw * qx + 2 * qw * tx - 2 * ty * qz + 2 * qy * tz;</span><br><span class="line">	matrix[3][1] = -2 * tw * qy + 2 * tx * qz - 2 * qx * tz + 2 * qw * ty;</span><br><span class="line">	matrix[3][2] = -2 * tw * qz + 2 * qx * ty + 2 * qw * tz - 2 * tx * qy;</span><br><span class="line"></span><br><span class="line">	matrix[0][3] = 0;</span><br><span class="line">	matrix[1][3] = 0;</span><br><span class="line">	matrix[2][3] = 0;</span><br><span class="line">	matrix[3][3] = len2;</span><br><span class="line"></span><br><span class="line">	matrix /= len2;</span><br><span class="line"></span><br><span class="line">	return matrix;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vec3 DualQuatTransformPosition(mat2x4 dualQuat, vec3 position)</span><br><span class="line">&#123;</span><br><span class="line">	float len = length(dualQuat[0]);</span><br><span class="line">	dualQuat /= len;</span><br><span class="line">	</span><br><span class="line">	vec3 result = position.xyz + 2.0 * cross(dualQuat[0].xyz, cross(dualQuat[0].xyz, position.xyz) + dualQuat[0].w * position.xyz);</span><br><span class="line">	vec3 trans  = 2.0 * (dualQuat[0].w * dualQuat[1].xyz - dualQuat[1].w * dualQuat[0].xyz + cross(dualQuat[0].xyz, dualQuat[1].xyz));</span><br><span class="line">	result += trans;</span><br><span class="line"></span><br><span class="line">	return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vec3 DualQuatTransformVector(mat2x4 dualQuat, vec3 vector)</span><br><span class="line">&#123;</span><br><span class="line">	return vector + 2.0 * cross(dualQuat[0].xyz, cross(dualQuat[0].xyz, vector) + dualQuat[0].w * vector);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() </span><br><span class="line">&#123;</span><br><span class="line">	// skin info</span><br><span class="line">	ivec4 skinIndex   = UnPackUInt32To4Byte(uint(inSkinPack.x));</span><br><span class="line">	ivec2 skinWeight0 = UnPackUInt32To2Short(uint(inSkinPack.y));</span><br><span class="line">	ivec2 skinWeight1 = UnPackUInt32To2Short(uint(inSkinPack.z));</span><br><span class="line">	vec4  skinWeight  = vec4(skinWeight0 / 65535.0, skinWeight1 / 65535.0);</span><br><span class="line"></span><br><span class="line">	// dual quats</span><br><span class="line">	mat2x4 dualQuat0 = bonesData.dualQuats[skinIndex.x];</span><br><span class="line">	mat2x4 dualQuat1 = bonesData.dualQuats[skinIndex.y];</span><br><span class="line">	mat2x4 dualQuat2 = bonesData.dualQuats[skinIndex.z];</span><br><span class="line">	mat2x4 dualQuat3 = bonesData.dualQuats[skinIndex.w];</span><br><span class="line">	</span><br><span class="line">	if (dot(dualQuat0[0], dualQuat1[0]) &lt; 0.0) &#123;</span><br><span class="line">		dualQuat1 *= -1.0;</span><br><span class="line">	&#125;</span><br><span class="line">	if (dot(dualQuat0[0], dualQuat2[0]) &lt; 0.0) &#123;</span><br><span class="line">		dualQuat2 *= -1.0;</span><br><span class="line">	&#125;</span><br><span class="line">	if (dot(dualQuat0[0], dualQuat3[0]) &lt; 0.0) &#123;</span><br><span class="line">		dualQuat3 *= -1.0;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	mat2x4 blendDualQuat = dualQuat0 * skinWeight.x;</span><br><span class="line">	blendDualQuat += dualQuat1 * skinWeight.y;</span><br><span class="line">	blendDualQuat += dualQuat2 * skinWeight.z;</span><br><span class="line">	blendDualQuat += dualQuat3 * skinWeight.w;</span><br><span class="line"></span><br><span class="line">	vec4 position;</span><br><span class="line">	vec3 normal;</span><br><span class="line"></span><br><span class="line">	// 对偶四元素还原Matrix进行计算</span><br><span class="line">	if (bonesData.debugParam.x &lt; 1.0)</span><br><span class="line">	&#123;</span><br><span class="line">		mat4x4 boneMatrix = DualQuat2Matrix(blendDualQuat[0], blendDualQuat[1]);</span><br><span class="line">		position = boneMatrix * vec4(inPosition.xyz, 1.0);</span><br><span class="line">		normal   = mat3(boneMatrix) * inNormal;</span><br><span class="line"></span><br><span class="line">		outColor = vec4(1.1, 1.0, 1.0, 1.0);</span><br><span class="line">	&#125;</span><br><span class="line">	// 不还原，直接计算</span><br><span class="line">	else</span><br><span class="line">	&#123;</span><br><span class="line">		position.xyz = DualQuatTransformPosition(blendDualQuat, inPosition.xyz);</span><br><span class="line">		position.w   = 1.0;</span><br><span class="line">		normal = DualQuatTransformVector(blendDualQuat, inNormal);</span><br><span class="line"></span><br><span class="line">		outColor = vec4(1.0, 1.1, 1.0, 1.0);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 转换法线</span><br><span class="line">	mat3 normalMatrix = transpose(inverse(mat3(uboMVP.modelMatrix)));</span><br><span class="line">	normal = normalize(normalMatrix * normal);</span><br><span class="line"></span><br><span class="line">	outUV     = inUV0;</span><br><span class="line">	outNormal = normal;</span><br><span class="line">	</span><br><span class="line">	gl_Position = uboMVP.projectionMatrix * uboMVP.viewMatrix * uboMVP.modelMatrix * position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以发现利用对偶四元素不仅可以压缩掉一部分数据，还能保证动画的效果质量，整个优化的改动其实也比较小，针对移动设备，这种微小的优化在某些时候是非常可取的。</p>
+
       
 
       
@@ -206,15 +231,11 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">VertexBuffer</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">IndexBuffer</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Skeleton</a>
         		</li>
       		
 		</ul>
@@ -234,16 +255,75 @@
 
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/02/8_OptimizeVertexIndexBuffer/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://boblchen.github.io/public/2019/11/29/28_SkeletonQuat/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/public/2019/11/13/27_SkeletonPackIndexWeight/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">27_SkeletonPackIndexWeight</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -263,902 +343,14 @@
 
 
 
-
-  
-    <article id="post-7_UniformBuffer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/02/7_UniformBuffer/">7_UniformBuffer</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/02/7_UniformBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T16:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">Github项目</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/7_UniformBuffer" target="_blank" rel="noopener">Demo源码地址</a></p>
-<p>在之前的几个Demo里面，我们都是在为后续的Demo做准备，包括封装CommandBuffer、封装Buffer、集成ImGUI等等。做了这么久的准备工作，暂时不想再进行相关的封装工作，现在迫切的需要一个新的Demo来验证之前的封装是否合理。在这个Demo里面，我们将传递一些参数给Shader，通过控制不同的参数来达到一些需要的效果。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/02/7_UniformBuffer/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">UniformBuffer</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/02/7_UniformBuffer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-6_ImageGUI" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/01/6_ImageGUI/">6_ImGUI</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/01/6_ImageGUI/" class="archive-article-date">
-  	<time datetime="2019-08-01T12:09:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/6_ImageGUI" target="_blank" rel="noopener">ImageGUI</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在之前的Demo里面，我们对一些需要大量编码的工作进行了简单封装。为了方便后续<strong>Demo</strong>的进行，现在急需一个<strong>UI</strong>来进行参数或者功能相关的调节。幸运的是，<strong>Github</strong>上有现成的<strong>UI</strong>库可以使用，该项目叫做<a href="https://github.com/ocornut/imgui" target="_blank" rel="noopener"><strong>imgui</strong></a>。这个UI库有<strong>Vulkan</strong>的实现<strong><a href="https://github.com/ocornut/imgui/blob/master/examples/imgui_impl_vulkan.cpp" target="_blank" rel="noopener">点我查看</a></strong></p>
-        
-          <a class="article-more-a" href="/public/2019/08/01/6_ImageGUI/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">IMGUI</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/01/6_ImageGUI/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-5_OptimizeCommandBuffer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/01/5_OptimizeCommandBuffer/">5_OptimizeCommandBuffer</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/01/5_OptimizeCommandBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T11:45:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/5_OptimizeCommandBuffer" target="_blank" rel="noopener">OptimizeCommandBuffer</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在<a href="http://xiaopengyou.fun/public/2019/08/01/4_OptimizeBuffer/#more" target="_blank" rel="noopener">4_OptimizeBuffer</a>这个Demo里面，我们对<strong>Buffer</strong>进行了封装。封装过的<strong>Buffer</strong>使用起来非常方便，代码量急剧减少。但是在这个Demo里面，我们在优化<strong>CreateMeshBuffers</strong>时，我们会发现虽然<strong>Buffer</strong>的代码量减少了，但是<strong>CommandBuffer</strong>相关的代码任然非常庞大。为了减少代码量，需要对<strong>CommandBuffer</strong>也进行简单的封装。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/01/5_OptimizeCommandBuffer/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">VKCommandBuffer</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/01/5_OptimizeCommandBuffer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-4_OptimizeBuffer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/01/4_OptimizeBuffer/">Vulkan Demo 4_OptimizeBuffer</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/01/4_OptimizeBuffer/" class="archive-article-date">
-  	<time datetime="2019-08-01T10:25:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/4_OptimizeBuffer" target="_blank" rel="noopener">OptimizeBuffer</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在<a href="http://xiaopengyou.fun/public/2019/08/01/3_DemoBase/#more" target="_blank" rel="noopener">3_DemoBase</a>这个Demo里面，我们对一些常用的功能和属性进行简单的封装，但是回过头来看一下，会发现整个创建流程还是异常的繁琐，特别是<strong>Buffer</strong>的创建、使用、销毁。仍然本着能偷懒就偷懒的原则，打着优化的旗号实则为了偷懒，有必要对<strong>Buffer</strong>也进行一下简单的封装。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/01/4_OptimizeBuffer/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">VKBuffer</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/01/4_OptimizeBuffer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-3_DemoBase" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/01/3_DemoBase/">Vulkan Demo 03 DemoBase</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/01/3_DemoBase/" class="archive-article-date">
-  	<time datetime="2019-07-31T16:16:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="DemoBase"><a href="#DemoBase" class="headerlink" title="DemoBase"></a><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/2_Triangle" target="_blank" rel="noopener">DemoBase</a></h1><p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在<a href="http://xiaopengyou.fun/public/2019/07/28/2-Triangle/#more" target="_blank" rel="noopener">2_Triangle</a>这个Demo里面，会发现为了绘制一个三角形做了太多的准备工作，后面还有大量的Demo，如果每个Demo都来搞一遍就有点儿费时费力了。为了偷懒以及稍微进行结构优化，才有了这个Demo。在这个Demo里面主要演示了如何将一些公用的功能进行简单封装。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/01/3_DemoBase/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Triangle</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/01/3_DemoBase/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-2_Triangle" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/07/28/2_Triangle/">Vulkan Demo 02 Triangle</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/07/28/2_Triangle/" class="archive-article-date">
-  	<time datetime="2019-07-27T16:16:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Triangle"><a href="#Triangle" class="headerlink" title="Triangle"></a><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/2_Triangle" target="_blank" rel="noopener">Triangle</a></h1><p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>在这之前有一些注意事项需要说明，这些注意事项非常关键，决定着之后一些东西的理解。</p>
-        
-          <a class="article-more-a" href="/public/2019/07/28/2_Triangle/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Triangle</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/07/28/2_Triangle/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-UniformBuffer设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/06/23/UniformBuffer设计/">UniformBuffer设计</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/06/23/UniformBuffer设计/" class="archive-article-date">
-  	<time datetime="2019-06-23T03:51:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Vulkan-Uniform-Buffer设计"><a href="#Vulkan-Uniform-Buffer设计" class="headerlink" title="Vulkan Uniform Buffer设计"></a>Vulkan Uniform Buffer设计</h1><p>最近我一直在思考关于UniformBuffer的结构如何设计。由于工作太忙，只能断断续续的设计它的结构以便于能够更好的匹配绘制流程。对D3D12或者Vulkan有过了解的同学应该也会有这个疑问，就是它们的UniformBuffer如何才能使用起来更加方便。</p>
-        
-          <a class="article-more-a" href="/public/2019/06/23/UniformBuffer设计/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/06/23/UniformBuffer设计/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-VulkanBuffer与内存" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/06/07/VulkanBuffer与内存/">Vulkan Buffer与内存</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/06/07/VulkanBuffer与内存/" class="archive-article-date">
-  	<time datetime="2019-06-07T15:43:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Vulkan-Buffer与内存"><a href="#Vulkan-Buffer与内存" class="headerlink" title="Vulkan Buffer与内存"></a>Vulkan Buffer与内存</h1><h3 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h3><p>在Vulkan里面，所有需要存储的资源都视为Buffer。其实这个不难理解，因为无论是Texture、VertexBuffer、IndexBuffer或者UniformBuffer等等，其实都最终都是一段内存，因此Vulkan将这些资源都视为Buffer。创建Buffer时就需要指定Buffer的大小、用途、共享模式等等。如下所示：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">VkBufferCreateInfo vertexBufferInfo;</span><br><span class="line">ZeroVulkanStruct(vertexBufferInfo, VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO);</span><br><span class="line">vertexBufferInfo.size  = vertices.size() * <span class="keyword">sizeof</span>(Vertex);</span><br><span class="line">vertexBufferInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;</span><br><span class="line">VERIFYVULKANRESULT(vkCreateBuffer(m_Device, &amp;vertexBufferInfo, VULKAN_CPU_ALLOCATOR, &amp;tempVertexBuffer.buffer));</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/public/2019/06/07/VulkanBuffer与内存/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">内存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/06/07/VulkanBuffer与内存/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-物理设备与簇" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/06/03/物理设备与簇/">物理设备与簇</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/06/03/物理设备与簇/" class="archive-article-date">
-  	<time datetime="2019-06-03T13:53:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="物理设备与簇"><a href="#物理设备与簇" class="headerlink" title="物理设备与簇"></a>物理设备与簇</h1><h2 id="物理设备"><a href="#物理设备" class="headerlink" title="物理设备"></a>物理设备</h2><p>物理设备可以简单的将它与设备上的GPU对应起来。例如集成显卡对应一个物理设备，独立显卡RTX2080TI对应一个物理设备。那么就有可能出现一台设备上面出现多个物理设备，例如：集成显卡<code>Intel(R) HD Graphics 630</code>、独立显卡<code>RTX2080TI</code>、计算卡<code>NVIDIA P106</code>。</p>
-        
-          <a class="article-more-a" href="/public/2019/06/03/物理设备与簇/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/06/03/物理设备与簇/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
   
   
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/public/page/2/">&laquo; Prev</a><a class="page-number" href="/public/">1</a><a class="page-number" href="/public/page/2/">2</a><span class="page-number current">3</span>
-    </nav>
+  
+
+  
+
+  
+
   
 
 
@@ -1181,8 +373,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
