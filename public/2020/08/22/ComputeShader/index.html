@@ -9,7 +9,7 @@
   <title>ComputeShader调度 | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Compute Shader 调度有些时候在决定ComputeShader尺寸的时候只能靠拍脑袋，具体数值应该怎样确定不得而知，为了帮助大家理解如何确定数值，对GPU的调度做了一个简要的分析。">
-<meta name="keywords" content="Vulkan,物理设备,3D">
+<meta name="keywords" content="Vulkan,3D,物理设备">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ComputeShader调度">
 <meta property="og:url" content="https://boblchen.github.io/public/2020/08/22/ComputeShader/index.html">
@@ -258,11 +258,11 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
         		</li>
       		
 		</ul>
@@ -346,6 +346,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/public/2020/08/22/SnapdragonProfiler/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          SnapdragonProfiler工具
+        
+      </div>
+    </a>
   
   
     <a href="/public/2020/01/15/31_MSAA/" id="article-nav-older" class="article-nav-link-wrap">
@@ -479,19 +488,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">物理设备</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">3D</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Demo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">内存</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -507,11 +504,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Edge</a>
+                <a href="javascript:void(0)" class="js-tag color1">Bloom</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Bloom</a>
+                <a href="javascript:void(0)" class="js-tag color5">Edge</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -519,15 +516,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Stencil</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RenderTarget</a>
+                <a href="javascript:void(0)" class="js-tag color5">Demo</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">VKCommandBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">物理设备</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">内存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -539,23 +544,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Texture3D</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Stencil</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">RenderTarget</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">MSAA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VKBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">VertexBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">IndexBuffer</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -564,6 +569,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">UniformBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">VertexBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">IndexBuffer</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -592,10 +605,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">OBJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">MSAA</a>
               </li>
             
             <div class="clearfix"></div>

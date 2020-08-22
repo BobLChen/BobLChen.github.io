@@ -160,6 +160,107 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-13_DynamicUniformBuffer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/public/2019/08/15/13_DynamicUniformBuffer/">13_DynamicUniformBuffer</a>
+    </h1>
+  
+
+        
+        <a href="/public/2019/08/15/13_DynamicUniformBuffer/" class="archive-article-date">
+  	<time datetime="2019-08-15T14:49:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://github.com/BobLChen/VulkanDemos/blob/master/examples/13_DynamicUniformBuffer/DynamicUniformBuffer.cpp" target="_blank" rel="noopener">DynamicUniformBuffer</a></p>
+<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
+<p>上一个Demo里面我们通过PushConstant实现了使用同一个Shader绘制不同模型的需求。但是PushConstant有弊端，它能够使用的数据量非常少，在RTX2080TI上面只有256字节可以使用，我相信在其它常规设备上面也只会有这个量。所以我们要来了解一下DynamicUniformBuffer。</p>
+        
+          <a class="article-more-a" href="/public/2019/08/15/13_DynamicUniformBuffer/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">DynamicUniformBuffer</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/public/2019/08/15/13_DynamicUniformBuffer/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-12_PushConstants" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1073,106 +1174,6 @@
 
 
   
-    <article id="post-3_DemoBase" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/08/01/3_DemoBase/">Vulkan Demo 03 DemoBase</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/08/01/3_DemoBase/" class="archive-article-date">
-  	<time datetime="2019-07-31T16:16:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="DemoBase"><a href="#DemoBase" class="headerlink" title="DemoBase"></a><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/2_Triangle" target="_blank" rel="noopener">DemoBase</a></h1><p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在<a href="http://xiaopengyou.fun/public/2019/07/28/2-Triangle/#more" target="_blank" rel="noopener">2_Triangle</a>这个Demo里面，会发现为了绘制一个三角形做了太多的准备工作，后面还有大量的Demo，如果每个Demo都来搞一遍就有点儿费时费力了。为了偷懒以及稍微进行结构优化，才有了这个Demo。在这个Demo里面主要演示了如何将一些公用的功能进行简单封装。</p>
-        
-          <a class="article-more-a" href="/public/2019/08/01/3_DemoBase/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Triangle</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/08/01/3_DemoBase/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/public/page/2/">&laquo; Prev</a><a class="page-number" href="/public/">1</a><a class="page-number" href="/public/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/public/page/4/">4</a><a class="extend next" rel="next" href="/public/page/4/">Next &raquo;</a>
@@ -1274,19 +1275,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">物理设备</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">3D</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Demo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">内存</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1302,11 +1291,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Edge</a>
+                <a href="javascript:void(0)" class="js-tag color1">Bloom</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Bloom</a>
+                <a href="javascript:void(0)" class="js-tag color5">Edge</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1314,15 +1303,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Stencil</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">RenderTarget</a>
+                <a href="javascript:void(0)" class="js-tag color5">Demo</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">VKCommandBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">物理设备</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">内存</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1334,23 +1331,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Texture3D</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Stencil</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">RenderTarget</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">MSAA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VKBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">VertexBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">IndexBuffer</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1359,6 +1356,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">UniformBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">VertexBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">IndexBuffer</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1387,10 +1392,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">OBJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">MSAA</a>
               </li>
             
             <div class="clearfix"></div>
