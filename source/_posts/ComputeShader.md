@@ -38,7 +38,7 @@ categories:
 
 ![3](3.png)
 
-**GPC**是`Graphics Processing Cluster`的简称，可以理解为处理单元簇，GPU被划分为几个这样的簇。低中高端显卡决定了簇的数量。
+**GPC**是`Graphics Processing Cluster`的简称，可以理解为处理单元簇，GPU被划分为几个这样的簇。低中高端显卡决定了簇的数量或者簇的数量决定了是否为低中高端显卡。
 
 ### SM
 
@@ -50,7 +50,7 @@ categories:
 
 ### Warp
 
-**Warp**是什么呢？Warp是Nvidia用来描述线程束(集合)取得一个名词，一个**Warp**里面有**32**个线程，一个Warp是同步执行相同指令的。
+**Warp**是什么呢？Warp是Nvidia用来描述线程束(集合)取得一个名词，一个**Warp**里面有**32**个线程，一个Warp执行相同的指令。
 
 目前为止，一个**SM**里面包含了**32个Warp**也就是**1024**个线程。
 
@@ -60,8 +60,8 @@ categories:
 
 为了更好的说明，我们以`GTX 1650 Max-Q`显卡为例，该显卡有**16**个**SM**单元，每个单元有**32**个**Warp**。恰好，通过**Nvidia**的[扩展](<https://www.khronos.org/registry/OpenGL/extensions/NV/NV_shader_thread_group.txt>)，可以在Shader里面拿到这些量，既：
 
-- `gl_SMIDNV`为`SM ID`，范围在**[0,15]**
-- `gl_WarpIDNV` 为`Warp ID`，范围在**[0,31]**
+- `gl_SMIDNV`为`SM ID`，范围在`[0,15]`
+- `gl_WarpIDNV` 为`Warp ID`，范围在`[0,31]`
 - `gl_WarpsPerSMNV`为每个**SM**的**Warp**最大数量
 - `gl_SMCountNV`为GPU的最大**SM**数量
 
@@ -110,3 +110,9 @@ outColor = vec3(
 ![dispatch13-zoom](dispatch13-zoom.gif)![dispatch13-zoom-red](dispatch13-zoom-red.gif)![dispatch13-zoom-green](dispatch13-zoom-green.gif)
 
 我们就可以发现调度变得混乱起来。大家可以算一下上面这种情况线程的利用率会是多少。
+
+## 其它
+
+至于AMD、高通、Mali等GPU大家可以结合他们公开的架构信息来推测其调度机制。
+
+综上，相信大家以后可以不用在调度`ComputeShader`时用拍脑袋来决定如何调度了。

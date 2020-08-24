@@ -9,7 +9,7 @@
   <title>20_Material | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="20_Material 项目Github地址请戳我 之前的Demo里面做了很多封装，例如对Buffer、Pipeline、Texture等进行简单封装以方便后续的使用。通过上个Demo发现虽然经过了封装，但是还是存在一些问题，主要关于Shader和Material。我想在这个Demo里面设计出一个非常简单的Shader以及Material的结构出来以方便后续的Demo。">
-<meta name="keywords" content="Vulkan,3D,Tutorial,Material">
+<meta name="keywords" content="Vulkan,3D,Material,Tutorial">
 <meta property="og:type" content="article">
 <meta property="og:title" content="20_Material">
 <meta property="og:url" content="https://boblchen.github.io/public/2019/09/20/20_Material/index.html">
@@ -17,7 +17,7 @@
 <meta property="og:description" content="20_Material 项目Github地址请戳我 之前的Demo里面做了很多封装，例如对Buffer、Pipeline、Texture等进行简单封装以方便后续的使用。通过上个Demo发现虽然经过了封装，但是还是存在一些问题，主要关于Shader和Material。我想在这个Demo里面设计出一个非常简单的Shader以及Material的结构出来以方便后续的Demo。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/BobLChen/VulkanDemos/master/preview/19_OptimizeDeferredShading_1.jpg">
-<meta property="og:updated_time" content="2020-06-17T09:15:07.298Z">
+<meta property="og:updated_time" content="2020-08-24T01:38:11.813Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="20_Material">
 <meta name="twitter:description" content="20_Material 项目Github地址请戳我 之前的Demo里面做了很多封装，例如对Buffer、Pipeline、Texture等进行简单封装以方便后续的使用。通过上个Demo发现虽然经过了封装，但是还是存在一些问题，主要关于Shader和Material。我想在这个Demo里面设计出一个非常简单的Shader以及Material的结构出来以方便后续的Demo。">
@@ -222,11 +222,11 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Material</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Material</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
         		</li>
       		
 		</ul>
@@ -448,19 +448,27 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">物理设备</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">3D</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">DeferredShading</a>
+                <a href="javascript:void(0)" class="js-tag color5">Demo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Tutorial</a>
+                <a href="javascript:void(0)" class="js-tag color3">内存</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Material</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Tutorial</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -476,39 +484,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Demo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">VKCommandBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">物理设备</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">内存</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">TextureArray</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">DynamicUniformBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Texture3D</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Stencil</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DeferredShading</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -516,7 +496,27 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">VKCommandBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">MSAA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DynamicUniformBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">TextureArray</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Texture3D</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -9,7 +9,7 @@
   <title>ComputeShader调度 | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Compute Shader 调度有些时候在决定ComputeShader尺寸的时候只能靠拍脑袋，具体数值应该怎样确定不得而知，为了帮助大家理解如何确定数值，对GPU的调度做了一个简要的分析。">
-<meta name="keywords" content="Vulkan,3D,物理设备">
+<meta name="keywords" content="Vulkan,物理设备,3D">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ComputeShader调度">
 <meta property="og:url" content="https://boblchen.github.io/public/2020/08/22/ComputeShader/index.html">
@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://boblchen.github.io/public/2020/08/22/ComputeShader/dispatch13-zoom.gif">
 <meta property="og:image" content="https://boblchen.github.io/public/2020/08/22/ComputeShader/dispatch13-zoom-red.gif">
 <meta property="og:image" content="https://boblchen.github.io/public/2020/08/22/ComputeShader/dispatch13-zoom-green.gif">
-<meta property="og:updated_time" content="2020-08-22T01:43:49.232Z">
+<meta property="og:updated_time" content="2020-08-24T01:40:54.235Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ComputeShader调度">
 <meta name="twitter:description" content="Compute Shader 调度有些时候在决定ComputeShader尺寸的时候只能靠拍脑袋，具体数值应该怎样确定不得而知，为了帮助大家理解如何确定数值，对GPU的调度做了一个简要的分析。">
@@ -209,17 +209,17 @@
 <p><img src="2.png" alt="2"></p>
 <h3 id="GPC"><a href="#GPC" class="headerlink" title="GPC"></a>GPC</h3><p>然后一大块一大块的<strong>GPC</strong>模块，是如下图红箭头所示。</p>
 <p><img src="3.png" alt="3"></p>
-<p><strong>GPC</strong>是<code>Graphics Processing Cluster</code>的简称，可以理解为处理单元簇，GPU被划分为几个这样的簇。低中高端显卡决定了簇的数量。</p>
+<p><strong>GPC</strong>是<code>Graphics Processing Cluster</code>的简称，可以理解为处理单元簇，GPU被划分为几个这样的簇。低中高端显卡决定了簇的数量或者簇的数量决定了是否为低中高端显卡。</p>
 <h3 id="SM"><a href="#SM" class="headerlink" title="SM"></a>SM</h3><p>注意看上图，上图里面一个<strong>GPC</strong>又被划分为很多<strong>SM</strong>单元。<strong>SM</strong>是<code>Streaming Multiprocessor</code>的简称，称为流处理器。如下图所示：</p>
 <p><img src="4.png" alt="4"></p>
 <p>注意看黄色的小字：<strong>Warp Scheduler + Dispatch (32 thread/clk)</strong>，SM里面有一个<strong>Warp</strong>调度器。</p>
-<h3 id="Warp"><a href="#Warp" class="headerlink" title="Warp"></a>Warp</h3><p><strong>Warp</strong>是什么呢？Warp是Nvidia用来描述线程束(集合)取得一个名词，一个<strong>Warp</strong>里面有<strong>32</strong>个线程，一个Warp是同步执行相同指令的。</p>
+<h3 id="Warp"><a href="#Warp" class="headerlink" title="Warp"></a>Warp</h3><p><strong>Warp</strong>是什么呢？Warp是Nvidia用来描述线程束(集合)取得一个名词，一个<strong>Warp</strong>里面有<strong>32</strong>个线程，一个Warp执行相同的指令。</p>
 <p>目前为止，一个<strong>SM</strong>里面包含了<strong>32个Warp</strong>也就是<strong>1024</strong>个线程。</p>
 <h2 id="调度-匹配"><a href="#调度-匹配" class="headerlink" title="调度(匹配)"></a>调度(匹配)</h2><p>最关键的地方来了，<strong>PixelShader</strong>的调度无法由我们控制，但是<strong>ComputeShader</strong>的调度是可以被我控制的。为了让<strong>ComputeShader</strong>拥有更好的性能，我们需要调整ComputeShader的线程组大小以及调度数量来迎合GPU。</p>
 <p>为了更好的说明，我们以<code>GTX 1650 Max-Q</code>显卡为例，该显卡有<strong>16</strong>个<strong>SM</strong>单元，每个单元有<strong>32</strong>个<strong>Warp</strong>。恰好，通过<strong>Nvidia</strong>的<a href="https://www.khronos.org/registry/OpenGL/extensions/NV/NV_shader_thread_group.txt" target="_blank" rel="noopener">扩展</a>，可以在Shader里面拿到这些量，既：</p>
 <ul>
-<li><code>gl_SMIDNV</code>为<code>SM ID</code>，范围在<strong>[0,15]</strong></li>
-<li><code>gl_WarpIDNV</code> 为<code>Warp ID</code>，范围在<strong>[0,31]</strong></li>
+<li><code>gl_SMIDNV</code>为<code>SM ID</code>，范围在<code>[0,15]</code></li>
+<li><code>gl_WarpIDNV</code> 为<code>Warp ID</code>，范围在<code>[0,31]</code></li>
 <li><code>gl_WarpsPerSMNV</code>为每个<strong>SM</strong>的<strong>Warp</strong>最大数量</li>
 <li><code>gl_SMCountNV</code>为GPU的最大<strong>SM</strong>数量</li>
 </ul>
@@ -241,6 +241,8 @@
 <p><img src="dispatch13.gif" alt="dispatch13"><img src="dispatch13-green.gif" alt="dispatch13-green"><img src="dispatch13-red.gif" alt="dispatch13-red"></p>
 <p><img src="dispatch13-zoom.gif" alt="dispatch13-zoom"><img src="dispatch13-zoom-red.gif" alt="dispatch13-zoom-red"><img src="dispatch13-zoom-green.gif" alt="dispatch13-zoom-green"></p>
 <p>我们就可以发现调度变得混乱起来。大家可以算一下上面这种情况线程的利用率会是多少。</p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p>至于AMD、高通、Mali等GPU大家可以结合他们公开的架构信息来推测其调度机制。</p>
+<p>综上，相信大家以后可以不用在调度<code>ComputeShader</code>时用拍脑袋来决定如何调度了。</p>
 
       
 
@@ -258,11 +260,11 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">物理设备</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
         		</li>
       		
 		</ul>
@@ -488,19 +490,27 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">物理设备</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">3D</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">DeferredShading</a>
+                <a href="javascript:void(0)" class="js-tag color5">Demo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Tutorial</a>
+                <a href="javascript:void(0)" class="js-tag color3">内存</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Material</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Tutorial</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -516,39 +526,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Demo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">VKCommandBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">物理设备</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">内存</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">TextureArray</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">DynamicUniformBuffer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Texture3D</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Stencil</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DeferredShading</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -556,7 +538,27 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">VKCommandBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">MSAA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PushConstants</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DynamicUniformBuffer</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">TextureArray</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Texture3D</a>
               </li>
              
               <li class="article-tag-list-item">
