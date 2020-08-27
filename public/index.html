@@ -160,6 +160,102 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-LinearizeDepth" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/public/2020/08/27/LinearizeDepth/">LinearizeDepth</a>
+    </h1>
+  
+
+        
+        <a href="/public/2020/08/27/LinearizeDepth/" class="archive-article-date">
+  	<time datetime="2020-08-27T14:15:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">n   = near</span><br><span class="line">f   = far</span><br><span class="line">z   = depth buffer Z-value</span><br><span class="line">EZ  = eye Z value</span><br><span class="line">LZ  = depth buffer Z-value remapped to a linear [<span class="number">0.</span><span class="number">.1</span>] range (near plane to far plane)</span><br><span class="line">LZ2 = depth buffer Z-value remapped to a linear [<span class="number">0.</span><span class="number">.1</span>] range (eye to far plane)</span><br><span class="line"></span><br><span class="line">DX:</span><br><span class="line">EZ  = (n * f) / (f - z * (f - n))</span><br><span class="line">LZ  = (eyeZ - n) / (f - n) = z / (f - z * (f - n))</span><br><span class="line">LZ2 = eyeZ / f = n / (f - z * (f - n))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">GL:</span><br><span class="line">EZ  = (<span class="number">2</span> * n * f) / (f + n - z * (f - n))</span><br><span class="line">LZ  = (eyeZ - n) / (f - n) = n * (z + <span class="number">1.0</span>) / (f + n - z * (f - n))</span><br><span class="line">LZ2 = eyeZ / f = (<span class="number">2</span> * n) / (f + n - z * (f - n))</span><br><span class="line"></span><br><span class="line">LZ2 = <span class="number">1.0</span> / (c0 * z + c1)</span><br><span class="line"></span><br><span class="line">DX:</span><br><span class="line">  c1 = f / n</span><br><span class="line">  c0 = <span class="number">1.0</span> - c1</span><br><span class="line"></span><br><span class="line">GL:</span><br><span class="line">  c0 = (<span class="number">1</span> - f / n) / <span class="number">2</span></span><br><span class="line">  c1 = (<span class="number">1</span> + f / n) / <span class="number">2</span></span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Demo</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MSAA</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/public/2020/08/27/LinearizeDepth/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-SnapdragonProfiler" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1018,107 +1114,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/public/2019/10/26/25_Bloom/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-24_NormalEdge" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/public/2019/10/19/24_NormalEdge/">24_NormalEdge</a>
-    </h1>
-  
-
-        
-        <a href="/public/2019/10/19/24_NormalEdge/" class="archive-article-date">
-  	<time datetime="2019-10-19T15:51:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/BobLChen/VulkanDemos/tree/master/examples/24_NormalEdge" target="_blank" rel="noopener">24_NormalEdge</a></p>
-<p><a href="https://github.com/BobLChen/VulkanDemos" target="_blank" rel="noopener">项目Github地址请戳我</a></p>
-<p>在这个Demo里面加强一下RenderTarget的使用，顺便试试输出多个数据是否可以很好的工作。在这个Demo里面输出Color以及Normal数据，利用Normal数据来检测边缘。</p>
-        
-          <a class="article-more-a" href="/public/2019/10/19/24_NormalEdge/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">3D</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Tutorial</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Edge</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/Vulkan//" class="article-tag-list-link color2">Vulkan</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/public/2019/10/19/24_NormalEdge/">展开全文 >></a>
         </p>
       
 
