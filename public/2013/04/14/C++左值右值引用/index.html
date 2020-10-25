@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://boblchen.github.io/public">
-  <title>Category: C++ | Hello World</title>
+  <title>C++左值右值引用 | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="我亦无他唯手熟尔">
-<meta name="keywords" content="3D Engine Opengl Stage3D DirectX Vulkan C++">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://boblchen.github.io/public/categories/C/index.html">
+  <meta name="description" content="C++ 11中引入了右值引用和移动语义，可以避免无谓的复制，提高程序性能。">
+<meta name="keywords" content="C++,编译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++左值右值引用">
+<meta property="og:url" content="https://boblchen.github.io/public/2013/04/14/C++左值右值引用/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="我亦无他唯手熟尔">
+<meta property="og:description" content="C++ 11中引入了右值引用和移动语义，可以避免无谓的复制，提高程序性能。">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-10-25T13:40:37.452Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="我亦无他唯手熟尔">
+<meta name="twitter:title" content="C++左值右值引用">
+<meta name="twitter:description" content="C++ 11中引入了右值引用和移动语义，可以避免无谓的复制，提高程序性能。">
   
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
   
@@ -158,36 +159,175 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-C++左值右值引用" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      C++左值右值引用
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/public/archives/2013" class="archive-year">2013</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2013/04/14/C++左值右值引用/" class="archive-article-date">
+
+        
+        <a href="/public/2013/04/14/C++左值右值引用/" class="archive-article-date">
   	<time datetime="2013-04-14T14:13:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2013-04-14</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2013/04/14/C++左值右值引用/">C++左值右值引用</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>C++ 11中引入了右值引用和移动语义，可以避免无谓的复制，提高程序性能。</p>
+<a id="more"></a>
 
-        <div class="article-info info-on-right">
-          
+<h2 id="左值、右值"><a href="#左值、右值" class="headerlink" title="左值、右值"></a>左值、右值</h2><p>C++中所有的值都必然属于左值、右值二者之一。左值是指表达式结束后依然存在的持久化对象，右值是指表达式结束时就不再存在的临时对象。所有的具名变量或者对象都是左值，而右值不具名。很难得到左值和右值的真正定义，但是有一个可以区分左值和右值的便捷方法:看能不能对表达式取地址，如果能，则为左值，否则为右值。</p>
+<h2 id="左值引用、右值引用"><a href="#左值引用、右值引用" class="headerlink" title="左值引用、右值引用"></a>左值引用、右值引用</h2><p>左值引用就相当于给变量取了一个别名;右值引用则关联到右值，右值被存储到了特定的位置，虽然右值无法无法获取地址，但是右值引用可以获取地址，该地址表示临时对象的存错位置。</p>
+<p>传统的c++引用被称为左值引用，用法如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> &amp; ii = I;</span><br></pre></td></tr></table></figure>
+
+<p>C++11中新增了右值引用:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> &amp;&amp; iii = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p>现在来看一下左值引用的汇编代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> &amp; ii = i;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0x080483f3  movl   $0x1,-0x10(%ebp)</span><br><span class="line">0x080483fa  lea    -0x10(%ebp),%eax</span><br><span class="line">0x080483fd  mov    %eax,-0x8(%ebp)</span><br></pre></td></tr></table></figure>
+
+<p>第一句是将1赋值给i，第二句将i的地址放入eax中，第三句将eax中的值传给ii。可见引用就是从一个变量处取得变量的地址，然后赋值给引用变量。</p>
+<p>然后再看一下右值引用的汇编代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> &amp;&amp; iii = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">0x08048400  mov    $0xa,%eax</span><br><span class="line">0x08048405  mov    %eax,-0xc(%ebp)</span><br><span class="line">0x08048408  lea    -0xc(%ebp),%eax</span><br><span class="line">0x0804840b  mov    %eax,-0x4(%ebp)</span><br></pre></td></tr></table></figure>
+
+<p>第一句将10赋值给eax，第二句将eax放入-0xc(%ebp)处，前面说到“临时变量会引用关联到右值时，右值被存储到特定位置”，在这段程序中，-0xc(%ebp)便是该临时变量的地址，后两句通过eax将该地址存到iii处。</p>
+<p>通过上述代码，我们还可以发现，在上述的程序中-0x4(%ebp)存放着右值引用iii，-0x8(%ebp)存放着左值引用，-0xc(%ebp)存放着10，而-0x10(%ebp)存放着1，左值引用和右值引用同int一样是四个字节（因为都是地址）</p>
+<p>同时，我们可以深入理解下临时变量，在本程序中，有名字的1（名字为i）和没有名字的10（临时变量）的值实际是按同一方式处理的，也就是说，临时变量根本上来说就是一个没有名字的变量而已。它的生命周期和函数栈帧是一致的。也可以说临时变量和它的引用具有相同的生命周期。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>先准备一个示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> g_ID = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ABC</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">int</span> a;</span><br><span class="line">	<span class="keyword">int</span> b;</span><br><span class="line"></span><br><span class="line">	ABC()</span><br><span class="line">	&#123;</span><br><span class="line">		a = g_ID++;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"New ABC:a=%d\n"</span>， a);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	ABC(<span class="keyword">const</span> ABC&amp; abc)</span><br><span class="line">	&#123;</span><br><span class="line">		a = g_ID++;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"New ABC(const ABC&amp; abc):a=%d\n"</span>， a);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	~ABC()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Delete ABC:a=%d\n"</span>， a);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">ABC <span class="title">GetABC</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> ABC();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc， <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ABC abc = GetABC();</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"-----:a=%d\n"</span>， abc.a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在编译的时候加上<code>-fno-elide-constructors</code>选项来关闭返回值的优化。编译命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc main.cpp -o main.out -lstdc++ -fno-elide-constructors</span><br></pre></td></tr></table></figure>
+
+<p>然后运行可执行程序，输出结果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">New ABC:a=0</span><br><span class="line">New ABC(const ABC&amp; abc):a=1</span><br><span class="line">Delete ABC:a=0</span><br><span class="line">New ABC(const ABC&amp; abc):a=2</span><br><span class="line">Delete ABC:a=1</span><br><span class="line">-----:a=2</span><br><span class="line">Delete ABC:a=2</span><br></pre></td></tr></table></figure>
+
+<p>注意输出日志，我们会发现仅一行代码<code>ABC abc = GetABC();</code>就创建了三个对象出来。如果未开启任何优化，那么这对于我们的程序来讲性能存在很大的问题。现在我们来分析一下产生这个的原因。</p>
+<p>首先分析函数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ABC <span class="title">GetABC</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> ABC();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以发现<code>return ABC();</code>中的<code>ABC()</code>创建了一个临时对象，然后<code>return</code>之后临时对象通过拷贝构造函数<code>ABC(const ABC&amp; abc)</code>又创建了一个新的临时对象。这个临时对象用于<code>ABC abc = GetABC();</code>这行语句，用于拷贝赋值给对象<code>abc</code>。这也就解释了为何会有以下的一个输出结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">New ABC:a=0 <span class="comment"># return ABC()语句中创建对象</span></span><br><span class="line">New ABC(const ABC&amp; abc):a=1 <span class="comment"># return拷贝赋值给ABC GetABC()中的临时对象</span></span><br><span class="line">Delete ABC:a=0 <span class="comment"># return ABC()语句中创建对象离开了函数作用域被销毁</span></span><br><span class="line">New ABC(const ABC&amp; abc):a=2 <span class="comment"># ABC abc = GetABC();临时对象拷贝构造给了abc</span></span><br><span class="line">Delete ABC:a=1 <span class="comment"># ABC GetABC()中的临时对象离开了作用域自动销毁</span></span><br><span class="line">-----:a=2 <span class="comment"># print语句</span></span><br><span class="line">Delete ABC:a=2 <span class="comment"># 离开作用域被销毁</span></span><br></pre></td></tr></table></figure>
+
+<p>如果我们使用右值引用会是怎样一种情况呢？修改代码如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> g_ID = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ABC</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">int</span> a;</span><br><span class="line">	<span class="keyword">int</span> b;</span><br><span class="line"></span><br><span class="line">	ABC()</span><br><span class="line">	&#123;</span><br><span class="line">		a = g_ID++;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"New ABC:a=%d\n"</span>, a);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	ABC(<span class="keyword">const</span> ABC&amp; abc)</span><br><span class="line">	&#123;</span><br><span class="line">		a = g_ID++;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"New ABC(const ABC&amp; abc):a=%d\n"</span>, a);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	~ABC()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Delete ABC:a=%d\n"</span>, a);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">ABC <span class="title">GetABC</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> ABC();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ABC&amp;&amp; abc = GetABC();</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"-----:a=%d\n"</span>, abc.a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们看看输出结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">New ABC:a=0</span><br><span class="line">New ABC(const ABC&amp; abc):a=1</span><br><span class="line">Delete ABC:a=0</span><br><span class="line">-----:a=1</span><br><span class="line">Delete ABC:a=1</span><br></pre></td></tr></table></figure>
+
+<p>我们会发现构造的临时对象少了一个，这个是因为<code>ABC&amp;&amp; abc = GetABC();</code>中的<code>abc</code>绑定了一个临时对象。</p>
+<h2 id="其它示例"><a href="#其它示例" class="headerlink" title="其它示例"></a>其它示例</h2><p>典型的左值:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;   <span class="comment">// i 是左值</span></span><br><span class="line"><span class="keyword">int</span> *p = &amp;i; <span class="comment">// i 的地址是可辨认的</span></span><br><span class="line">i = <span class="number">2</span>; <span class="comment">// i 在内存中的值可以改变</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>;</span></span><br><span class="line">A a; <span class="comment">// 用户自定义类实例化的对象也是左值</span></span><br></pre></td></tr></table></figure>
+
+<p>典型的右值:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">2</span>; <span class="comment">// 2 是右值</span></span><br><span class="line"><span class="keyword">int</span> x = i + <span class="number">2</span>; <span class="comment">// (i + 2) 是右值</span></span><br><span class="line"><span class="keyword">int</span> *p = &amp;(i + <span class="number">2</span>);<span class="comment">//错误，不能对右值取地址</span></span><br><span class="line">i + <span class="number">2</span> = <span class="number">4</span>; <span class="comment">// 错误，不能对右值赋值</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>;</span></span><br><span class="line">A a = A(); <span class="comment">// A() 是右值</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;<span class="keyword">return</span> a + b;&#125;</span><br><span class="line"><span class="keyword">int</span> i = sum(<span class="number">1</span>, <span class="number">2</span>) <span class="comment">// sum(1, 2) 是右值</span></span><br></pre></td></tr></table></figure>
+
+<p>左值引用:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">int</span> &amp;r = i;</span><br><span class="line"><span class="keyword">int</span> &amp;r = <span class="number">5</span>; <span class="comment">// 错误，不能左值引用绑定右值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// const 引用是例外</span></span><br><span class="line"><span class="comment">// 可以认为指向一个临时左值的引用，其值为5</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r = <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+
+<p>对于函数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">square</span><span class="params">(<span class="keyword">int</span>&amp; a)</span> </span>&#123;<span class="keyword">return</span> a * a;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i = <span class="number">2</span>;</span><br><span class="line">square(i); <span class="comment">// 正确</span></span><br><span class="line">square(<span class="number">2</span>); <span class="comment">// 报错，左值引用绑定右值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 变通一下</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">square</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp; a)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> a * a;</span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">// 可以调用 square(2)</span></span><br></pre></td></tr></table></figure>
+
+<p>左值可以创造右值, 右值也可创造左值:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> x = i + <span class="number">2</span>; <span class="comment">// i + 2 是右值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> v[<span class="number">3</span>];</span><br><span class="line"><span class="comment">// 指针解引用可以把右值转化为左值</span></span><br><span class="line">*(v + <span class="number">1</span>) = <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>一些注意事项</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 函数也可以返回左值</span></span><br><span class="line"><span class="keyword">int</span> myglobal ;</span><br><span class="line"><span class="function"><span class="keyword">int</span>&amp; <span class="title">foo</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> myglobal;&#125;</span><br><span class="line">foo() = <span class="number">50</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一个常见的例子，[]操作符几乎总是返回左值</span></span><br><span class="line"><span class="built_in">array</span>[<span class="number">3</span>] = <span class="number">50</span>; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 左值并不总是可修改的</span></span><br><span class="line"><span class="comment">// i是左值, 但不可修改</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> i = <span class="number">1</span>;  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 右值有时是可修改的</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dog</span>;</span></span><br><span class="line"><span class="comment">// bark() 可能会修改 dog() 对象</span></span><br><span class="line">dog().bark();</span><br></pre></td></tr></table></figure>
+
+<h2 id="右值引用和移动"><a href="#右值引用和移动" class="headerlink" title="右值引用和移动"></a>右值引用和移动</h2><p>右值引用的两大用途：</p>
+<ul>
+<li>移动语意</li>
+<li>完美转发</li>
+</ul>
+<h3 id="移动语意-std-move"><a href="#移动语意-std-move" class="headerlink" title="移动语意(std::move)"></a>移动语意(std::move)</h3><p>可以将左值转化为右值引用:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>; <span class="comment">// 左值</span></span><br><span class="line"><span class="keyword">int</span> &amp;b = a; <span class="comment">// 左值引用</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 移动语意: 转换左值为右值引用</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;c = <span class="built_in">std</span>::move(a); </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printInt</span><span class="params">(<span class="keyword">int</span>&amp; i)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"lval ref:%d\n"</span>, i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printInt</span><span class="params">(<span class="keyword">int</span>&amp;&amp; i)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"rval ref:%d\n"</span>, i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">  </span><br><span class="line">	<span class="comment">// 调用 printInt(int&amp;), i是左值</span></span><br><span class="line">	printInt(i);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 调用 printInt(int&amp;&amp;), 6是右值</span></span><br><span class="line">	printInt(<span class="number">6</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 调用 printInt(int&amp;&amp;)，移动语意</span></span><br><span class="line">	printInt(<span class="built_in">std</span>::move(i));   </span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于编译器调用时无法区分:</p>
+<ul>
+<li>printInt(int) 与 printInt(int&amp;)</li>
+<li>printInt(int) 与 printInt(int&amp;&amp;)<br>如果再定义 printInt(int) 函数，会报错</li>
+</ul>
+<p>为什么需要移动语意:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FloatVector</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">    <span class="keyword">float</span>* <span class="built_in">array</span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 复制构造函数</span></span><br><span class="line">    FloatVector(<span class="keyword">const</span> FloatVector&amp; rhs) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Copy Construct\n"</span>);</span><br><span class="line">        size = rhs.size;</span><br><span class="line">        <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">float</span>[size];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;size; i++) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">array</span>[i] = rhs.<span class="built_in">array</span>[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    FloatVector(<span class="keyword">int</span> n) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Construct(n)\n"</span>);</span><br><span class="line">        size = n;</span><br><span class="line">        <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">float</span>[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Foo</span><span class="params">(FloatVector v)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* Do something */</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 假设有一个函数，返回值是一个FloatVector</span></span><br><span class="line"><span class="function">FloatVector <span class="title">CreateFloatVector</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> FloatVector(<span class="number">1024</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// Case 1:</span></span><br><span class="line">    FloatVector reusable = CreateFloatVector();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里会调用 FloatVector 的复制构造函数</span></span><br><span class="line">    <span class="comment">// 如果我们不希望 foo 随意修改 reusable</span></span><br><span class="line">    <span class="comment">// 这样做是 ok 的</span></span><br><span class="line">    Foo(reusable); </span><br><span class="line">    <span class="comment">/* Do something with reusable */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Case 2:</span></span><br><span class="line">    <span class="comment">// CreateFloatVector 会返回一个临时的右值</span></span><br><span class="line">    <span class="comment">// 传参过程中会调用拷贝构造函数</span></span><br><span class="line">    <span class="comment">// 多余地被复制一次</span></span><br><span class="line">    <span class="comment">// 虽然大部分情况下会被编译器优化掉</span></span><br><span class="line">    Foo(CreateFloatVector());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Construct(n)</span><br><span class="line">Copy Construct</span><br><span class="line">Copy Construct</span><br><span class="line">Copy Construct</span><br><span class="line">Construct(n)</span><br><span class="line">Copy Construct</span><br><span class="line">Copy Construct</span><br></pre></td></tr></table></figure>
+
+<p>我们发现，3行代码调用了7次构造函数。显然跟我们的预期不符。</p>
+<p>解决方法, 添加一个移动构造函数:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FloatVector</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">    <span class="keyword">float</span>* <span class="built_in">array</span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 复制构造函数</span></span><br><span class="line">    FloatVector(<span class="keyword">const</span> FloatVector&amp; rhs) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Copy Construct\n"</span>);</span><br><span class="line">        size = rhs.size;</span><br><span class="line">        <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">float</span>[size];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;size; i++) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">array</span>[i] = rhs.<span class="built_in">array</span>[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    FloatVector(<span class="keyword">int</span> n) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Construct(n)\n"</span>);</span><br><span class="line">        size = n;</span><br><span class="line">        <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">float</span>[n];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 移动构造函数</span></span><br><span class="line">    FloatVector(FloatVector&amp;&amp; rhs) </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Move Constructor\n"</span>);</span><br><span class="line">        size = rhs.size; </span><br><span class="line">        <span class="built_in">array</span> = rhs.<span class="built_in">array</span>;</span><br><span class="line">        rhs.size = <span class="number">0</span>;</span><br><span class="line">        rhs.<span class="built_in">array</span> = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Foo</span><span class="params">(FloatVector v)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* Do something */</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 假设有一个函数，返回值是一个FloatVector</span></span><br><span class="line"><span class="function">FloatVector <span class="title">CreateFloatVector</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> FloatVector(<span class="number">1024</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// Case 1:</span></span><br><span class="line">    FloatVector reusable = CreateFloatVector();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里会调用 FloatVector 的复制构造函数</span></span><br><span class="line">    <span class="comment">// 如果我们不希望 foo 随意修改 reusable</span></span><br><span class="line">    <span class="comment">// 这样做是 ok 的</span></span><br><span class="line">    Foo(reusable); </span><br><span class="line">    <span class="comment">/* Do something with reusable */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Case 2:</span></span><br><span class="line">    <span class="comment">// CreateFloatVector 会返回一个临时的右值</span></span><br><span class="line">    <span class="comment">// 传参过程中会调用拷贝构造函数</span></span><br><span class="line">    <span class="comment">// 多余地被复制一次</span></span><br><span class="line">    <span class="comment">// 虽然大部分情况下会被编译器优化掉</span></span><br><span class="line">    Foo(CreateFloatVector());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么，Foo(CreateFloatVector())就不会调用拷贝构造函数，而会调用移动构造函数 (当然更大的可能性是编译器直接把这一步优化掉)。输出如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Construct(n)</span><br><span class="line">Move Constructor</span><br><span class="line">Move Constructor</span><br><span class="line">Copy Construct</span><br><span class="line">Construct(n)</span><br><span class="line">Move Constructor</span><br><span class="line">Move Constructor</span><br></pre></td></tr></table></figure>
+
+<h3 id="完美转发"><a href="#完美转发" class="headerlink" title="完美转发"></a>完美转发</h3><p>完美转发是指：</p>
+<ul>
+<li>只有在需要的时候，才调用复制构造函数</li>
+<li>左值被转发为左值，右值被转发为右值</li>
+</ul>
+<p>参数转发：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FloatVector</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">    <span class="keyword">float</span>* <span class="built_in">array</span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 复制构造函数</span></span><br><span class="line">    FloatVector(<span class="keyword">const</span> FloatVector&amp; rhs) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Copy Construct\n"</span>);</span><br><span class="line">        size = rhs.size;</span><br><span class="line">        <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">float</span>[size];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;size; i++) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">array</span>[i] = rhs.<span class="built_in">array</span>[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    FloatVector(<span class="keyword">int</span> n) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Construct(n)\n"</span>);</span><br><span class="line">        size = n;</span><br><span class="line">        <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">float</span>[n];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 移动构造函数</span></span><br><span class="line">    FloatVector(FloatVector&amp;&amp; rhs) </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Move Constructor\n"</span>);</span><br><span class="line">        size = rhs.size; </span><br><span class="line">        <span class="built_in">array</span> = rhs.<span class="built_in">array</span>;</span><br><span class="line">        rhs.size = <span class="number">0</span>;</span><br><span class="line">        rhs.<span class="built_in">array</span> = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 假设有一个函数，返回值是一个FloatVector</span></span><br><span class="line"><span class="function">FloatVector <span class="title">CreateFloatVector</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> FloatVector(<span class="number">1024</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Foo</span><span class="params">(FloatVector v)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* Do something */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 参数转发</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Relay</span><span class="params">(T arg)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Foo(arg);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FloatVector reusable = CreateFloatVector();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"---\n"</span>);</span><br><span class="line">    Relay(reusable);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"+++\n"</span>);</span><br><span class="line">    Relay(CreateFloatVector());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Construct(n)</span><br><span class="line">Move Constructor</span><br><span class="line">Move Constructor</span><br><span class="line">---</span><br><span class="line">Copy Construct</span><br><span class="line">Copy Construct</span><br><span class="line">+++</span><br><span class="line">Construct(n)</span><br><span class="line">Move Constructor</span><br><span class="line">Move Constructor</span><br><span class="line">Copy Construct</span><br></pre></td></tr></table></figure>
+
+<p>这个实现有个问题，假如定义了两个版本的<code>Foo</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Foo</span><span class="params">(FloatVector&amp; v)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Foo</span><span class="params">(FloatVector&amp;&amp; v)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>永远只有<code>Foo(FloatVector&amp; v)</code>会被调用(右值引用FloatVector&amp;&amp; v是个左值，这里的v是有名字的)，所以我们需要改写上文的<code>Relay</code>函数，借助 std::forward。代码如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FloatVector</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">    <span class="keyword">float</span>* <span class="built_in">array</span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 复制构造函数</span></span><br><span class="line">    FloatVector(<span class="keyword">const</span> FloatVector&amp; rhs) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Copy Construct\n"</span>);</span><br><span class="line">        size = rhs.size;</span><br><span class="line">        <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">float</span>[size];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;size; i++) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">array</span>[i] = rhs.<span class="built_in">array</span>[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    FloatVector(<span class="keyword">int</span> n) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Construct(n)\n"</span>);</span><br><span class="line">        size = n;</span><br><span class="line">        <span class="built_in">array</span> = <span class="keyword">new</span> <span class="keyword">float</span>[n];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 移动构造函数</span></span><br><span class="line">    FloatVector(FloatVector&amp;&amp; rhs) </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Move Constructor\n"</span>);</span><br><span class="line">        size = rhs.size; </span><br><span class="line">        <span class="built_in">array</span> = rhs.<span class="built_in">array</span>;</span><br><span class="line">        rhs.size = <span class="number">0</span>;</span><br><span class="line">        rhs.<span class="built_in">array</span> = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Foo</span><span class="params">(FloatVector&amp; v)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* Do something */</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Foo(FloatVector&amp; v)\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Foo</span><span class="params">(FloatVector&amp;&amp; v)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* Do something */</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Foo(FloatVector&amp;&amp; v)\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 假设有一个函数，返回值是一个FloatVector</span></span><br><span class="line"><span class="function">FloatVector <span class="title">CreateFloatVector</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> FloatVector(<span class="number">1024</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 参数转发</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Relay</span><span class="params">(T arg)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Foo(<span class="built_in">std</span>::forward&lt;T&gt;(arg));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FloatVector reusable = CreateFloatVector();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"---\n"</span>);</span><br><span class="line">    Relay(reusable);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"+++\n"</span>);</span><br><span class="line">    Relay(CreateFloatVector());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Construct(n)</span><br><span class="line">Move Constructor</span><br><span class="line">Move Constructor</span><br><span class="line">---</span><br><span class="line">Copy Construct</span><br><span class="line">Foo(FloatVector&amp;&amp; v)</span><br><span class="line">+++</span><br><span class="line">Construct(n)</span><br><span class="line">Move Constructor</span><br><span class="line">Move Constructor</span><br><span class="line">Foo(FloatVector&amp;&amp; v)</span><br></pre></td></tr></table></figure>
+
+<p>于是就有</p>
+<ul>
+<li>Relay(reusable)调用Foo(FloatVector&amp; v)</li>
+<li>Relay(CreateFloatVector())调用Foo(FloatVector&amp;&amp; v)</li>
+</ul>
+<p>要解释完美转发的原理，首先引入<code>C++11</code>的引用折叠原则：</p>
+<ul>
+<li>T&amp; &amp; =&gt; T&amp;</li>
+<li>T&amp; &amp;&amp; =&gt; T&amp;</li>
+<li>T&amp;&amp; &amp; =&gt; T&amp;</li>
+<li>T&amp;&amp; &amp;&amp; =&gt; T&amp;&amp;</li>
+</ul>
+<p>所以，在<code>relay</code>函数中</p>
+<ul>
+<li>Relay(9); =&gt; T = int&amp;&amp; =&gt; T&amp;&amp; = int&amp;&amp; &amp;&amp; = int&amp;&amp;</li>
+<li>Relay(x); =&gt; T = int&amp; =&gt; T&amp;&amp; = int&amp; &amp;&amp; = int &amp;</li>
+</ul>
+<p>因此，在这种情况下，T&amp;&amp; 被称作<code>universal reference</code>，即满足：</p>
+<ul>
+<li>T 是模板类型</li>
+<li>T 是被推导出来的，适用引用折叠，即<code>T</code>是一个函数模板类型，而不是类模板类型</li>
+</ul>
+<p>然后，C++11 定义了<code>remove_reference</code>，用于返回引用指向的类型:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">remove_reference</span>;</span> </span><br><span class="line"></span><br><span class="line">remove_reference&lt;<span class="keyword">int</span>&amp;&gt;::type == <span class="keyword">int</span></span><br><span class="line">remove_reference&lt;<span class="keyword">int</span>&gt;::type  == <span class="keyword">int</span></span><br></pre></td></tr></table></figure>
+
+<p>于是，<code>std::forword</code>的实现如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">T</span>&amp;&amp; <span class="title">forward</span>(<span class="title">typename</span> <span class="title">remove_reference</span>&lt;T&gt;:</span>:type&amp; arg) </span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;T&amp;&amp;&gt;(arg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>等于是把右值引用(右值引用本身是个左值)转成了右值，左值保持不变。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -203,7 +343,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -216,70 +356,113 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://boblchen.github.io/public/2013/04/14/C++左值右值引用/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/public/2013/03/12/C++编译链接过程/" class="archive-article-date">
-  	<time datetime="2013-03-12T11:41:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2013-03-12</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/public/2019/06/03/物理设备与簇/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          物理设备与簇
+        
+      </div>
+    </a>
+  
+  
+    <a href="/public/2013/03/12/C++编译链接过程/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">C++编译链接过程</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/public/2013/03/12/C++编译链接过程/">C++编译链接过程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">编译</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/public/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -302,10 +485,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/public/",
